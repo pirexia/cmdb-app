@@ -341,6 +341,8 @@ $container->set(App\Models\Role::class, function (ContainerInterface $c) { retur
 $container->set(App\Models\Source::class, function (ContainerInterface $c) { return new App\Models\Source($c->get(PDO::class)); });
 $container->set(App\Models\User::class, function (ContainerInterface $c) { return new App\Models\User($c->get(PDO::class)); });
 $container->set(App\Models\LogActivo::class, function (ContainerInterface $c) { return new App\Models\LogActivo($c->get(PDO::class)); });
+$container->set(App\Models\SmtpConfig::class, function (ContainerInterface $c) { return new App\Models\SmtpConfig($c->get(PDO::class)); });
+
 
 // --- 4. Definiciones de Servicios Más Complejos (Dependen de los básicos y modelos) ---
 // Estos servicios orquestan la lógica de negocio y dependen de otros servicios o modelos.
@@ -560,6 +562,18 @@ $container->set(App\Controllers\ImportController::class, function (ContainerInte
         $c->get(App\Services\CsvImporterService::class)
     );
 });
+
+$container->set(App\Controllers\SmtpController::class, function (ContainerInterface $c) {
+    return new App\Controllers\SmtpController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(LoggerInterface::class),
+        $c->get('config'),
+        $c->get('translator'),
+        $c->get(App\Services\SmtpService::class)
+    );
+});
+
 
 $container->set(App\Controllers\LogController::class, function (ContainerInterface $c) {
     return new App\Controllers\LogController(

@@ -1,4 +1,3 @@
-
 <?php
 /**
  * app/Services/SmtpService.php
