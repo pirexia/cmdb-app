@@ -1,0 +1,40 @@
+/* public/assets/css/style.css */
+/* Tu CSS personalizado aquí */
+body {
+    background-color: #f8f9fa; /* Color de fondo claro */
+}
+
+.card {
+    border-radius: 0.75rem; /* Bordes redondeados para las tarjetas */
+}
+
+.shadow-lg {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; /* Sombra más pronunciada */
+}
+
+/* Estilos para el footer si es necesario */
+.footer {
+    background-color: #e9ecef; /* Un gris claro para el footer */
+}
+
+/* Estilos para Navbar Fijo */
+.navbar {
+    position: fixed; /* Fija el navbar en la posición de la ventana del navegador */
+    top: 0;          /* Lo alinea en la parte superior */
+    width: 100%;     /* Ocupa todo el ancho de la ventana */
+    z-index: 1030;   /* Asegura que esté por encima de la mayoría del contenido (Bootstrap usa 1030 para navbars) */
+    box-shadow: 0 2px 4px rgba(0,0,0,.1); /* Opcional: Sombra para que se vea elevado */
+}
+
+/* Ajuste para el contenido principal para que no quede oculto bajo el navbar fijo */
+/* El padding-top del body o main debe ser igual o mayor a la altura del navbar */
+body {
+    padding-top: 70px; /* Ajusta este valor si tu navbar tiene una altura diferente */
+    /* El navbar de Bootstrap 5 suele tener una altura de unos 56px a 60px.
+       Añade un poco más para que el contenido no se pegue. */
+}
+
+/* Opcional: Si el navbar tiene un margen inferior (mb-4), puedes eliminarlo si es fijo */
+.navbar.mb-4 {
+    margin-bottom: 0 !important;
+}

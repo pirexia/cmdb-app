@@ -1,0 +1,95 @@
+<?php
+// app/Models/LogActivo.php
+
+namespace App\Models;
+
+use PDO;
+use PDOException;
+
+class LogActivo
+{
+    private PDO $db;
+
+    public function __construct(PDO $db)
+    {
+        $this->db = $db;
+    }
+
+    /**
+     * Registra un cambio en un activo.
+     * @param int $assetId ID del activo afectado.
+     * @param int $userId ID del usuario que realizó el cambio.
+     * @param string $operationType Tipo de operación (CREACION, MODIFICACION, ELIMINACION).
+     * @param array|null $oldData Datos del activo antes de la modificación (para MODIFICACION y ELIMINACION).
+     * @param array|null $newData Datos del activo después de la modificación (para CREACION y MODIFICACION).
+     * @param string|null $fullDescription Descripción legible del cambio.
+     * @return int|false ID del nuevo registro de log o false si falla.
+     */
+    public function logChange(
+        int $assetId,
+        int $userId,
+        string $operationType,
+        ?array $oldData = null,
+        ?array $newData = null,
+        ?string $fullDescription = null
+    ) {
+        try {
+            $campoModificado = null;
+            $valorAnterior = null;
+            $valorNuevo = null;
+
+            // Para MODIFICACION, intenta detectar los campos cambiados
+            if ($operationType === 'MODIFICACION' && $oldData && $newData) {
+                $changes = [];
+                foreach ($newData as $key => $value) {
+                    // Evitar comparar timestamps que se actualizan automáticamente
+                    if (in_array($key, ['fecha_creacion', 'fecha_actualizacion'])) {
+                        continue;
+                    }
+                    // Comprobar si el valor ha cambiado
+                    if (!isset($oldData[$key]) || $oldData[$key] !== $value) {
+                        $changes[] = $key;
+                        $valorAnterior = json_encode($oldData[$key]); // Almacenar como JSON
+                        $valorNuevo = json_encode($value);           // Almacenar como JSON
+                        $campoModificado = $key; // Guarda solo el último campo cambiado para la columna, pero la descripción puede ser más completa.
+                        // Para logs más detallados, podrías guardar un array de cambios en fullDescription o en una tabla separada.
+                    }
+                }
+                if (empty($fullDescription) && !empty($changes)) {
+                    $fullDescription = "Campos modificados: " . implode(', ', $changes);
+                }
+            } elseif ($operationType === 'CREACION' && $newData) {
+                 $fullDescription = $fullDescription ?? "Activo creado: " . ($newData['nombre'] ?? 'Desconocido');
+            } elseif ($operationType === 'ELIMINACION' && $oldData) {
+                 $fullDescription = $fullDescription ?? "Activo eliminado: " . ($oldData['nombre'] ?? 'Desconocido');
+            }
+
+
+            $stmt = $this->db->prepare("
+                INSERT INTO log_activos (
+                    id_activo, id_usuario, tipo_operacion,
+                    campo_modificado, valor_anterior, valor_nuevo,
+                    descripcion_completa
+                ) VALUES (
+                    :id_activo, :id_usuario, :tipo_operacion,
+                    :campo_modificado, :valor_anterior, :valor_nuevo,
+                    :descripcion_completa
+                )
+            ");
+
+            $stmt->bindValue(':id_activo', $assetId, PDO::PARAM_INT);
+            $stmt->bindValue(':id_usuario', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':tipo_operacion', $operationType, PDO::PARAM_STR);
+            $stmt->bindValue(':campo_modificado', $campoModificado, PDO::PARAM_STR);
+            $stmt->bindValue(':valor_anterior', $valorAnterior, PDO::PARAM_STR);
+            $stmt->bindValue(':valor_nuevo', $valorNuevo, PDO::PARAM_STR);
+            $stmt->bindValue(':descripcion_completa', $fullDescription, PDO::PARAM_STR);
+
+            $stmt->execute();
+            return $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            error_log("Error al registrar log de activo: " . $e->getMessage());
+            return false;
+        }
+    }
+}

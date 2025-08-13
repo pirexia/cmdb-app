@@ -1,0 +1,228 @@
+[2025-06-03 11:04:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-03 11:04:01] CMDB_CLI_App.WARNING: No hay destinatarios de notificación configurados en .env. Skipping notifications.  
+[2025-06-03 11:04:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-03 11:24:37] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-03 11:24:37] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-03 11:24:37] CMDB_CLI_App.CRITICAL: Cron Job: Error crítico en las notificaciones: App\Services\MailService::sendEmail(): Argument #1 ($to) must be of type array|string, null given, called in /var/www/html/cmdb_app/app/Services/NotificationService.php on line 129 - #0 /var/www/html/cmdb_app/app/Services/NotificationService.php(129): App\Services\MailService->sendEmail()
+#1 /var/www/html/cmdb_app/run_notifications.php(121): App\Services\NotificationService->sendExpirationNotifications()
+#2 {main}  
+[2025-06-03 11:27:59] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-03 11:27:59] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-03 11:28:00] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-03 11:28:00] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-03 11:28:00] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-04 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-04 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-04 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-04 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-04 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-05 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-05 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-05 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-05 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-05 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-06 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-06 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-06 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-06 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-06 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-06 08:09:49] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-06 08:09:49] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-06 08:09:49] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-06 08:09:49] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-06 08:09:49] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-07 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-07 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-07 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-07 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-07 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-08 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-08 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-08 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-08 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-08 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-09 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-09 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-09 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-09 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-09 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-10 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-10 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-10 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-10 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-10 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-11 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-11 01:00:01] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-11 01:00:01] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-12 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-12 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-12 01:00:01] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-12 01:00:01] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-12 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-13 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-13 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-13 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-13 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-13 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-14 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-14 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-14 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-14 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-14 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-15 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-15 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-15 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-15 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-15 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-16 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-16 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-16 01:00:02] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-16 01:00:02] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-16 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-06-17 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-06-17 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-06-17 01:00:01] CMDB_CLI_App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Aviso de Caducidad CMDB: Elementos próximos a expirar en 30 días'  
+[2025-06-17 01:00:01] CMDB_CLI_App.INFO: Correo de notificación de caducidad enviado con éxito a andres.matias@dachser.com.  
+[2025-06-17 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-10 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-10 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-10 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-10 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-11 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-11 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-12 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-12 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-12 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-12 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-13 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-13 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-13 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-13 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-14 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-14 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-14 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-14 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-15 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-15 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-15 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-15 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-16 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-16 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-16 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-16 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-17 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-17 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-17 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-17 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-18 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-18 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-18 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-18 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-19 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-19 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-19 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-19 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-20 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-20 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-20 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-20 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-21 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-21 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-21 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-21 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-22 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-22 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-22 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-22 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-23 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-23 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-23 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-23 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-24 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-24 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-24 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-24 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-25 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-25 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-25 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-25 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-26 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-26 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-26 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-26 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-27 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-27 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-27 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-27 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-28 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-28 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-28 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-28 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-29 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-29 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-29 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-29 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-30 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-30 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-30 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-30 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-07-31 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-07-31 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-07-31 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-07-31 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-01 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-01 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-01 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-01 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-02 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-02 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-02 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-02 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-03 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-03 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-03 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-03 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-04 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-04 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-04 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-04 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-05 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-05 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-05 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-05 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-06 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-06 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-06 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-06 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-07 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-07 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-07 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-07 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-08 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-08 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-08 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-08 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-09 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-09 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-09 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-09 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-10 01:00:02] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-10 01:00:02] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-10 01:00:02] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-10 01:00:02] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-11 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-11 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-11 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-12 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-12 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-12 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-12 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-08-13 01:00:01] CMDB_CLI_App.INFO: Cron Job: Ejecutando notificaciones de caducidad.  
+[2025-08-13 01:00:01] CMDB_CLI_App.INFO: Iniciando envío de notificaciones de caducidad para los próximos 30 días.  
+[2025-08-13 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
+[2025-08-13 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
