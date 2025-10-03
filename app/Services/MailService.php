@@ -3,44 +3,77 @@
 
 namespace App\Services;
 
+// Importaciones necesarias para PHPMailer y logging.
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception as MailerException;
 use Psr\Log\LoggerInterface;
-use League\Plates\Engine as PlatesEngine; // Para renderizar plantillas de correo
+use League\Plates\Engine as PlatesEngine;
 
+// Importar el nuevo servicio SMTP.
+use App\Services\SmtpService;
+
+/**
+ * Clase MailService
+ * Este servicio encapsula la lógica para el envío de correos electrónicos
+ * utilizando la librería PHPMailer y la configuración almacenada en la base de datos.
+ */
 class MailService
 {
-    private PHPMailer $mailer;
-    private LoggerInterface $logger;
-    private PlatesEngine $view; // Para usar Plates como motor de plantillas de correo
-    private array $config; // Para la configuración SMTP
+    private PHPMailer $mailer;           // Instancia de PHPMailer para el envío.
+    private LoggerInterface $logger;       // Instancia del logger para registrar eventos.
+    private PlatesEngine $view;           // Motor de plantillas PlatesPHP para renderizar correos.
+    private SmtpService $smtpService;      // Servicio para obtener la configuración SMTP desde la DB.
+    private $isConfigured = false;       // Flag para asegurar que la configuración se hace una sola vez.
 
-    public function __construct(PHPMailer $mailer, LoggerInterface $logger, PlatesEngine $view, array $config)
-    {
+    /**
+     * Constructor del servicio. Recibe todas las dependencias necesarias.
+     * @param PHPMailer $mailer
+     * @param LoggerInterface $logger
+     * @param PlatesEngine $view
+     * @param SmtpService $smtpService El servicio que obtiene la configuración SMTP de la base de datos.
+     */
+    public function __construct(
+        PHPMailer $mailer,
+        LoggerInterface $logger,
+        PlatesEngine $view,
+        SmtpService $smtpService
+    ) {
         $this->mailer = $mailer;
         $this->logger = $logger;
         $this->view = $view;
-        $this->config = $config;
+        $this->smtpService = $smtpService;
+    }
 
-        $smtpConfig = $this->config['smtp'];
+    /**
+     * Configura la instancia de PHPMailer con los parámetros obtenidos
+     * del SmtpService. Este método se llama internamente antes de cada envío
+     * para asegurar que la configuración esté actualizada.
+     */
+    private function setupMailer(): void
+    {
+        // Si ya está configurado, no hacer nada para evitar sobreescribir.
+        if ($this->isConfigured) {
+            return;
+        }
+
+        // Obtener la configuración SMTP de la base de datos a través del servicio.
+        $smtpConfig = $this->smtpService->getSmtpConfig();
 
         $this->mailer->isSMTP();
         $this->mailer->Host       = $smtpConfig['host'];
         $this->mailer->Port       = $smtpConfig['port'];
         $this->mailer->CharSet    = 'UTF-8';
-
-        // Autenticación condicional
-        $this->mailer->SMTPAuth = $smtpConfig['auth_required']; // Usa la nueva variable
+        $this->mailer->SMTPAuth   = $smtpConfig['auth_required'];
+        
         if ($smtpConfig['auth_required']) {
             $this->mailer->Username = $smtpConfig['username'];
             $this->mailer->Password = $smtpConfig['password'];
         } else {
-            $this->mailer->Username = ''; // Asegurar que estén vacíos si no hay autenticación
+            $this->mailer->Username = '';
             $this->mailer->Password = '';
         }
 
-        // Cifrado condicional
         if (!empty($smtpConfig['encryption'])) {
             $this->mailer->SMTPSecure = match ($smtpConfig['encryption']) {
                 'tls' => PHPMailer::ENCRYPTION_STARTTLS,
@@ -48,15 +81,9 @@ class MailService
                 default => false,
             };
         } else {
-            $this->mailer->SMTPSecure = false; // Sin cifrado
+            $this->mailer->SMTPSecure = false;
         }
 
-        // Configuración de SSL/TLS para evitar errores de certificado en entornos internos
-        // Esto solo aplica si SMTPSecure NO es false.
-        // Solo aplica si el error persiste. Para TLS 1.2 por puerto 25, normalmente NO es necesario esto.
-        // Si tienes "SSL routines::certificate verify failed", HABILITA esta sección.
-        // Si tu SMTP no necesita verificación de certificado, pero sí cifrado TLS.
-        // PHPMailer por defecto ya negocia TLS 1.2 si está disponible.
         $this->mailer->SMTPOptions = [
             'ssl' => [
                 'verify_peer'       => false,
@@ -64,11 +91,9 @@ class MailService
                 'allow_self_signed' => true
             ]
         ];
-        // Si el problema de "certificate verify failed" PERSISTE con TLS 1.2 en puerto 25,
-        // DESCOMENTA la sección SMTPOptions de arriba.
-        // Por ahora, lo dejo COMENTADO para que la conexión sea lo más estándar posible primero.
 
         $this->mailer->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
+        $this->isConfigured = true; // Marcar como configurado.
     }
 
     /**
@@ -81,12 +106,15 @@ class MailService
      */
     public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): bool
     {
+        // Asegura que PHPMailer esté configurado antes de intentar enviar.
+        $this->setupMailer();
+        
         try {
-            // Limpiar destinatarios y adjuntos de envíos anteriores
+            // Limpiar destinatarios y adjuntos de envíos anteriores para evitar duplicados.
             $this->mailer->clearAddresses();
             $this->mailer->clearAttachments();
 
-            // Añadir destinatario(s)
+            // Añadir destinatario(s).
             if (is_array($to)) {
                 foreach ($to as $recipient) {
                     $this->mailer->addAddress($recipient);
@@ -96,13 +124,11 @@ class MailService
             }
 
             $this->mailer->Subject = $subject;
-            $this->mailer->isHTML(true); // El correo es HTML
+            $this->mailer->isHTML(true);
 
-            // Renderizar la plantilla de correo usando Plates
-            // Asegúrate de que Plates esté configurado para buscar en app/Views/emails
+            // Renderizar la plantilla de correo usando PlatesPHP.
             $this->mailer->Body = $this->view->render('emails/' . $templateName, $templateData);
-            // Si necesitas un texto plano alternativo
-            $this->mailer->AltBody = strip_tags($this->mailer->Body);
+            $this->mailer->AltBody = strip_tags($this->mailer->Body); // Versión de texto plano para clientes de correo que no soportan HTML.
 
             $this->mailer->send();
             $this->logger->info("Correo enviado a " . (is_array($to) ? implode(', ', $to) : $to) . " con asunto: '{$subject}'");

@@ -1,6 +1,16 @@
 <?php
-// run_notifications.php
-// Script para ser ejecutado por un cron job para enviar notificaciones.
+/**
+ * run_notifications.php
+ *
+ * Este script de línea de comandos se utiliza para enviar notificaciones automáticas
+ * de elementos próximos a expirar (activos y contratos).
+ * Está diseñado para ser ejecutado como un 'cron job' en el servidor.
+ *
+ * Requisitos:
+ * - Se ejecuta desde el directorio raíz de la aplicación (cmdb_app/).
+ * - Se asume que el contenedor de dependencias (PHP-DI) está disponible.
+ * - Debe tener acceso a la base de datos y a la configuración.
+ */
 
 // Importaciones necesarias para las clases utilizadas en el script CLI
 use Dotenv\Dotenv;
@@ -10,22 +20,51 @@ use App\Services\MailService;
 use App\Services\NotificationService;
 use PHPMailer\PHPMailer\PHPMailer;
 use League\Plates\Engine as PlatesEngine;
-use Monolog\Logger;                 // <--- ASEGÚRATE QUE ESTA LÍNEA ESTÁ AQUÍ
-use Monolog\Handler\StreamHandler;  // <--- ASEGÚRATE QUE ESTA LÍNEA ESTÁ AQUÍ
-use Monolog\Formatter\LineFormatter; // <--- ASEGÚRATE QUE ESTA LÍNEA ESTÁ AQUÍ
-use Psr\Log\LoggerInterface;       // <--- Mantén esta importación, aunque la gestionemos manualmente
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
+use Psr\Log\LoggerInterface;
 
+// Se cargan las dependencias de Composer.
+// Asume que este script se ejecuta desde el directorio raíz del proyecto.
 require __DIR__ . '/vendor/autoload.php';
 
-// Cargar las variables de entorno
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-// Cargar la configuración de la aplicación
-$appConfig = require __DIR__ . '/app/Config/config.php';
-
-// Inicializar el contenedor de inyección de dependencias (PHP-DI)
+// Se carga la configuración de la aplicación y se crea el contenedor de dependencias.
+// (Este es un proceso simplificado para un script CLI).
+$config_data = require __DIR__ . '/app/Config/config.php';
 $container = new \DI\Container();
+
+// Definir la configuración de la aplicación en el contenedor.
+$container->set('config', function () use ($config_data) {
+    return $config_data;
+});
+
+// Definición para la función de traducción global.
+$container->set('translator', function (ContainerInterface $c) {
+    $langConfig = $c->get('config')['lang'];
+    $defaultLang = $c->get('config')['app']['default_language'] ?? 'es';
+
+    return function (string $key, array $replacements = [], ?string $langCode = null) use ($langConfig, $defaultLang) {
+        $currentLang = $langCode ?? $defaultLang;
+        $translations = [];
+
+        $langFilePath = $langConfig[$currentLang] ?? null;
+        if (!$langFilePath || !file_exists($langFilePath)) {
+            $langFilePath = $langConfig[$defaultLang];
+        }
+        
+        if (file_exists($langFilePath)) {
+            $translations = require $langFilePath;
+        }
+
+        $text = $translations[$key] ?? $key;
+        foreach ($replacements as $placeholder => $value) {
+            $text = str_replace($placeholder, $value, $text);
+        }
+        return $text;
+    };
+});
+
 
 // === Definir servicios necesarios de forma que LoggerInterface se instancie directamente ===
 
@@ -33,7 +72,7 @@ $container = new \DI\Container();
 $cliLogger = new Logger('CMDB_CLI_App'); // <--- Instanciamos directamente Monolog\Logger
 $logPath = $appConfig['paths']['logs'] . '/app_cli.log'; // Log CLI separado
 $logLevel = $appConfig['app']['env'] === 'development' ? Logger::DEBUG : Logger::INFO;
-$formatter = new LineFormatter("[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n", "Y-m-d H:i:s", true, true);
+$formatter = new LineFormatter("[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n", "Y-m-d H:i>
 $streamHandler = new StreamHandler($logPath, $logLevel);
 $streamHandler->setFormatter($formatter);
 $cliLogger->pushHandler($streamHandler);
@@ -46,7 +85,7 @@ $container->set('logger', $cliLogger); // También por el nombre 'logger'
 $container->set('db', function (\Psr\Container\ContainerInterface $c) use ($appConfig) {
     $dbConfig = $appConfig['db'];
     $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['name']};charset={$dbConfig['charset']}";
-    $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES => false];
+    $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, >
     return new PDO($dsn, $dbConfig['user'], $dbConfig['pass'], $options);
 });
 
@@ -58,69 +97,73 @@ $container->set(PlatesEngine::class, function (\Psr\Container\ContainerInterface
     return $engine;
 });
 
-// Configuración de PHPMailer - Ahora recibe el LoggerInterface del contenedor
-$container->set('mailer', function (\Psr\Container\ContainerInterface $c) use ($appConfig) {
-    $smtpConfig = $appConfig['smtp'];
-    $mail = new PHPMailer(true);
-    try {
-        $mail->isSMTP();
-        $mail->Host       = $smtpConfig['host'];
-        $mail->Port       = $smtpConfig['port'];
-        $mail->CharSet    = 'UTF-8';
-        $mail->SMTPAuth   = $smtpConfig['auth_required'];
-        if ($smtpConfig['auth_required']) { $mail->Username = $smtpConfig['username']; $mail->Password = $smtpConfig['password']; }
-        if (!empty($smtpConfig['encryption'])) {
-            $mail->SMTPSecure = match ($smtpConfig['encryption']) {
-                'tls' => PHPMailer::ENCRYPTION_STARTTLS,
-                'ssl' => PHPMailer::ENCRYPTION_SMTPS,
-                default => false,
-            };
-        } else { $mail->SMTPSecure = false; }
-        $mail->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
-        $mail->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
-        return $mail;
-    } catch (Throwable $e) {
-        // Usa el logger obtenido del contenedor
-        $c->get(LoggerInterface::class)->error("Error al configurar PHPMailer en CLI: {$e->getMessage()}");
-        return null;
-    }
-});
 
-// Pasamos $appConfig directamente a su constructor, ya que no tiene una definición 'config' en el contenedor CLI
-$container->set(App\Services\MailService::class, function (\Psr\Container\ContainerInterface $c) use ($appConfig) { // <-- Usamos $appConfig aquí
-    return new App\Services\MailService(
-        $c->get('mailer'),
-        $c->get(Psr\Log\LoggerInterface::class), // El logger ya se resolvió bien
-        $c->get(League\Plates\Engine::class),
-        $appConfig // <--- ¡CAMBIO CLAVE AQUÍ! Pasamos el array $appConfig directamente
+// Definiciones de modelos y servicios que se usarán en el script.
+$container->set(App\Models\Asset::class, function (ContainerInterface $c) { return new App\Models\Asset($c->get('db')); });
+$container->set(App\Models\Contract::class, function (ContainerInterface $c) { return new App\Models\Contract($c->get('db')); });
+$container->set(App\Services\SmtpService::class, function (ContainerInterface $c) {
+    return new App\Services\SmtpService(
+        $c->get('config'),
+        $c->get('logger'),
+        $c->get('translator'),
+        $c->get('db')
     );
 });
 
-// Definiciones de Modelos (para NotificationService)
-$container->set(Asset::class, function (\Psr\Container\ContainerInterface $c) { return new Asset($c->get('db')); });
-$container->set(Contract::class, function (\Psr\Container\ContainerInterface $c) { return new Contract($c->get('db')); });
+// Definición de MailService.
+$container->set(App\Services\MailService::class, function (ContainerInterface $c) {
+    return new App\Services\MailService(
+        $c->get(\PHPMailer\PHPMailer\PHPMailer::class),
+        $c->get('logger'),
+        $c->get(\League\Plates\Engine::class),
+        $c->get(App\Services\SmtpService::class) // <-- Usa el SmtpService para la configuración.
+    );
+});
 
-// === INSTANCIA DE NotificationService ===
-// Obtenemos las dependencias del contenedor y pasamos $appConfig directamente
-$assetModel = $container->get(Asset::class);
-$contractModel = $container->get(Contract::class);
-$mailService = $container->get(MailService::class); // MailService ya está en el contenedor
-$logger = $container->get(LoggerInterface::class); // <--- Obtenemos la instancia concreta de LoggerInterface
+// Definición de NotificationService.
+$container->set(App\Services\NotificationService::class, function (ContainerInterface $c) {
+    return new App\Services\NotificationService(
+        $c->get(App\Models\Asset::class),
+        $c->get(App\Models\Contract::class),
+        $c->get(App\Services\MailService::class),
+        $c->get('logger'),
+        $c->get('config'),
+        $c->get('translator')
+    );
+});
 
-$notificationService = new NotificationService(
-    $assetModel,
-    $contractModel,
-    $mailService,
-    $logger, // Pasamos el logger resuelto por el contenedor
-    $appConfig
-);
-
-$logger->info("Cron Job: Ejecutando notificaciones de caducidad.");
+// --- Lógica del Script CLI ---
 
 try {
-    $notificationService->sendExpirationNotifications();
-    $logger->info("Cron Job: Proceso de notificaciones finalizado.");
-} catch (Throwable $e) {
-    $logger->critical("Cron Job: Error crítico en las notificaciones: " . $e->getMessage() . " - " . $e->getTraceAsString());
+    $logger = $container->get('logger');
+    $notificationService = $container->get(App\Services\NotificationService::class);
+    $config = $container->get('config');
+
+    $recipients = $config['notifications']['recipients'];
+    $daysAdvance = $config['notifications']['days_advance'] ?? 30;
+
+    if (empty($recipients)) {
+        $logger->warning($container->get('translator')('no_notification_recipients_configured'));
+        exit(0);
+    }
+
+    $logger->info($container->get('translator')('cron_job_notifications_starting', ['%days%' => $daysAdvance, '%emails%' => implode(', ', $recipients)]));
+
+    // Obtener los ítems próximos a expirar.
+    $expiringAssets = $notificationService->getExpiringAssets($daysAdvance);
+    $expiringContracts = $notificationService->getExpiringContracts($daysAdvance);
+    
+    // Si hay ítems a notificar, enviar el correo.
+    if (!empty($expiringAssets) || !empty($expiringContracts)) {
+        $notificationService->sendExpirationNotice($recipients, $expiringAssets, $expiringContracts, $daysAdvance);
+        $logger->info($container->get('translator')('email_notification_sent_success', ['%emails%' => implode(', ', $recipients)]));
+    } else {
+        $logger->info($container->get('translator')('no_expiring_items', ['%s' => $daysAdvance]));
+    }
+
+    $logger->info($container->get('translator')('cron_job_notifications_finished'));
+    
+} catch (\Throwable $e) {
+    $logger->critical($container->get('translator')('cron_job_notifications_critical_error', ['%message%' => $e->getMessage(), '%trace%' => $e->getTraceAsString()]));
+    exit(1);
 }
-?>

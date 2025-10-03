@@ -397,7 +397,6 @@ $container->set(App\Services\MailService::class, function (ContainerInterface $c
         $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
         $c->get(Psr\Log\LoggerInterface::class),
         $c->get(PlatesEngine::class),
-        $c->get(App\Services\SmtpService::class),
         $c->get('config')
     );
 });
@@ -565,13 +564,13 @@ $container->set(App\Controllers\ImportController::class, function (ContainerInte
 });
 
 $container->set(App\Controllers\SmtpController::class, function (ContainerInterface $c) {
-    return new App\Controllers\SmtpController(
+    return new App->Controllers\SmtpController(
         $c->get(PlatesEngine::class),
-        $c->get(App\Services\SessionService::class),
+        $c->get(App->Services\SessionService::class),
         $c->get(LoggerInterface::class),
         $c->get('config'),
         $c->get('translator'),
-        $c->get(App\Services\SmtpService::class)
+        $c->get(App->Services\SmtpService::class)
     );
 });
 

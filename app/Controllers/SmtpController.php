@@ -64,7 +64,10 @@ class SmtpController
         $t = $this->translator;
         
         // Obtiene la configuración SMTP actual desde el servicio o el archivo de configuración.
-        $smtpConfig = $this->config['smtp'];
+        //$smtpConfig = $this->config['smtp'];
+
+        // Obtiene la configuración SMTP actual de la base de datos.
+        $smtpConfig = $this->smtpService->getSmtpConfig();
 
         $flashMessages = $this->sessionService->getFlashMessages();
 

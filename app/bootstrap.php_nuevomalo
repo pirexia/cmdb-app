@@ -1,6 +1,7 @@
 <?php
 /**
  * app/bootstrap.php
+ *
  * Configuración del contenedor de inyección de dependencias (PHP-DI).
  * Este archivo define cómo PHP-DI crea y gestiona las instancias de las clases
  * y sus dependencias a lo largo de toda la aplicación.
@@ -14,15 +15,18 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 // Clases de Librerías de Terceros (Vendors)
-use DI\Factory; // Para definir fábricas explícitas en PHP-DI
-use League\Plates\Engine as PlatesEngine; // Motor de plantillas PlatesPHP
-use Monolog\Formatter\LineFormatter;      // Para formatear los logs de Monolog
-use Monolog\Handler\StreamHandler;        // Para enviar logs a un stream (ej. archivo) en Monolog
-use Monolog\Logger;                       // Clase principal de Monolog para logging
-use PHPMailer\PHPMailer\Exception as MailerException; // Excepciones de PHPMailer
-use PHPMailer\PHPMailer\PHPMailer;        // Clase principal de PHPMailer para envío de correos
-use PHPMailer\PHPMailer\SMTP;             // Clase para constantes SMTP de PHPMailer (ej. ENCRYPTION_STARTTLS)
-use League\Csv\Writer;                    // Clase para la importación de CSVs
+use DI\Factory;
+use League\Plates\Engine as PlatesEngine;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use PDO;
+use PDOException;
+use PHPMailer\PHPMailer\Exception as MailerException;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use League\Csv\Writer;
+use League\Csv\Reader;
 
 // Clases de la Aplicación (App\)
 // Controladores
@@ -33,13 +37,14 @@ use App\Controllers\AuthController;
 use App\Controllers\ContractController;
 use App\Controllers\CustomFieldsController;
 use App\Controllers\DashboardController;
+use App\Controllers\ImportController;
 use App\Controllers\LanguageController;
+use App\Controllers\LogController;
 use App\Controllers\MasterController;
 use App\Controllers\ModelController;
 use App\Controllers\SmtpController;
+use App\Controllers\SourceController;
 use App\Controllers\UserController;
-use App\Controllers\ImportController;
-use App\Controllers\LogController;
 
 // Modelos
 use App\Models\AcquisitionFormat;
@@ -56,169 +61,105 @@ use App\Models\FileAttachment;
 use App\Models\Language;
 use App\Models\Location;
 use App\Models\Manufacturer;
-use App\Models\Model; // Alias para App\Models\Model (evita conflicto con Model de PSR-7 si lo usáramos)
+use App\Models\Model;
 use App\Models\PasswordResetToken;
 use App\Models\Provider;
 use App\Models\Role;
-use App\Models\Source; // Para la nueva gestión de fuentes de usuario
+use App\Models\Source;
 use App\Models\User;
 use App\Models\LogActivo;
 use App\Models\SmtpConfig;
 
 // Servicios
 use App\Services\AuthService;
-use App\Services\LdapService; // Para la nueva autenticación LDAP/AD
+use App\Services\CsvImporterService;
+use App\Services\CsvTemplateService;
+use App\Services\LdapService;
 use App\Services\LogService;
 use App\Services\MailService;
 use App\Services\NotificationService;
 use App\Services\SessionService;
-use App\Services\CsvTemplateService;
-use App\Services\CsvImporterService;
 use App\Services\SmtpService;
 
-// --- 1. Cargar la Configuración de la Aplicación ---
 
-// Se pasa directamente a las definiciones que la necesitan
+// --- 1. Cargar la Configuración de la Aplicación ---
 $config_data = require __DIR__ . '/Config/config.php';
 $container->set('config', function () use ($config_data) {
     return $config_data;
 });
 
-// --- 2. Definiciones de Servicios Básicos e Infraestructura (sin dependencias complejas entre sí) ---
 
-// 2.1. Configuración de la vista (PlatesPHP)
-// Esta definición es fundamental para renderizar todas las vistas HTML de la aplicación.
-$container->set(PlatesEngine::class, function (ContainerInterface $c) {
-    $config = $c->get('config'); // Obtiene la configuración general desde el contenedor
-    $viewsPath = $config['paths']['views']; // Obtiene la ruta base de los directorios de vistas
+// --- 2. Definiciones de Servicios Básicos e Infraestructura ---
 
-    // Verificar si el directorio de vistas existe y es un directorio
-    if (!is_dir($viewsPath)) {
-        error_log("Error de configuración de PlatesPHP: El directorio de vistas '{$viewsPath}' no existe o no es un directorio.");
-        // En un entorno de producción, podrías redirigir a una página de error o mostrar un mensaje genérico.
-        die('Error crítico: Directorio de plantillas no encontrado. Por favor, contacte al administrador.');
-    }
-
-    $engine = new PlatesEngine($viewsPath); // Inicializa PlatesPHP con el directorio base de las vistas
-
-    // Añadir directorios específicos para nombres cortos de plantillas (ej. 'auth/login' en lugar de 'auth/login.php')
-    $engine->addFolder('layout', $viewsPath . '/layout');
-    $engine->addFolder('auth', $viewsPath . '/auth');
-    $engine->addFolder('admin', $viewsPath . '/admin');
-    $engine->addFolder('masters', $viewsPath . '/masters');
-    $engine->addFolder('partials', $viewsPath . '/partials');
-    $engine->addFolder('emails', $viewsPath . '/emails'); // Para plantillas de correo
-
-    // Registrar una función 'asset' para generar URLs de assets estáticos (CSS, JS, imágenes)
-    $engine->registerFunction('asset', function (string $path) use ($config) {
-        return $config['paths']['public_assets'] . '/' . ltrim($path, '/');
-    });
-
-    // Añadir datos globales a todas las vistas de PlatesPHP.
-    // Esto hace que servicios como authService, sessionService y la función t() estén
-    // disponibles directamente en cualquier plantilla renderizada por Plates.
-    $engine->addData([
-        'authService' => $c->get(App\Services\AuthService::class),
-        'sessionService' => $c->get(App\Services\SessionService::class),
-        'config' => $config, // Pasar la configuración completa a las vistas
-        't' => $c->get('translator'), // La función de traducción 't()'
-    ]);
-
-    return $engine;
-});
-
-// 2.2. Conexión a la base de datos (PDO)
-// La instancia de PDO es fundamental y es una dependencia de muchos modelos.
+// 2.1. Conexión a la base de datos (PDO)
 $container->set('db', function (ContainerInterface $c) {
-    $dbConfig = $c->get('config')['db']; // Obtiene la configuración de la DB
+    $dbConfig = $c->get('config')['db'];
     $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['name']};charset={$dbConfig['charset']}";
     $options = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,      // Lanza PDOException en errores
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,            // Fetch por defecto como array asociativo
-        PDO::ATTR_EMULATE_PREPARES   => false,                       // Deshabilita emulación de prepares (para prepared statements reales)
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     try {
         $pdo = new PDO($dsn, $dbConfig['user'], $dbConfig['pass'], $options);
         return $pdo;
     } catch (PDOException $e) {
-        // Registrar error de conexión fatal y detener la aplicación
         error_log("Error FATAL de conexión a la base de datos: " . $e->getMessage());
         die('Error crítico: Fallo en la conexión a la base de datos. Por favor, contacte al administrador.');
     }
 });
-// Mapeo para PDO::class: Le dice a PHP-DI que cuando una clase pida 'PDO' por tipo,
-// debe usar la definición del servicio 'db' que acabamos de crear.
-$container->set(PDO::class, \DI\Factory(function (ContainerInterface $c) {
-    return $c->get('db'); // Retorna la instancia de PDO ya definida como 'db'
+$container->set(PDO::class, Factory(function (ContainerInterface $c) {
+    return $c->get('db');
 }));
 
-
-// 2.3. Logger (Monolog)
-// Configuración del logger principal de la aplicación.
+// 2.2. Logger (Monolog)
 $container->set('logger', function (ContainerInterface $c) {
-    $config = $c->get('config'); // Obtiene la configuración general
-    $logPath = $config['paths']['logs'] . '/app.log'; // Ruta al archivo de log principal
-    $app_name = $config['app']['name'] ?? 'CMDB_App_Logger'; // Nombre de la aplicación para el logger
-    $logLevel = $config['app']['env'] === 'development' ? Logger::DEBUG : Logger::INFO; // Nivel de log (DEBUG en dev, INFO en prod)
-
-    $logger = new Logger($app_name); // Crea una instancia de Monolog Logger
+    $config = $c->get('config');
+    $logPath = $config['paths']['logs'] . '/app.log';
+    $app_name = $config['app']['name'] ?? 'CMDB_App_Logger';
+    $logLevel = $config['app']['env'] === 'development' ? Logger::DEBUG : Logger::INFO;
+    $logger = new Logger($app_name);
     $formatter = new LineFormatter(
-        "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\\n", // Formato de la línea de log
-        "Y-m-d H:i:s", // Formato de la fecha/hora
-        true,          // Incluir stack traces para excepciones
-        true           // Permitir saltos de línea dentro del mensaje
+        "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\\n",
+        "Y-m-d H:i:s",
+        true,
+        true
     );
-    $streamHandler = new StreamHandler($logPath, $logLevel); // Handler para escribir a un archivo
-    $streamHandler->setFormatter($formatter); // Asigna el formateador al handler
-    $logger->pushHandler($streamHandler); // Añade el handler al logger
-
+    $streamHandler = new StreamHandler($logPath, $logLevel);
+    $streamHandler->setFormatter($formatter);
+    $logger->pushHandler($streamHandler);
     return $logger;
 });
-// Mapeo para Psr\Log\LoggerInterface: Le dice a PHP-DI que cuando una clase pida la interfaz
-// LoggerInterface, debe usar la definición del servicio 'logger'.
-$container->set(Psr\Log\LoggerInterface::class, \DI\Factory(function (ContainerInterface $c) {
-    return $c->get('logger'); // Retorna la instancia de logger ya definida
+$container->set(LoggerInterface::class, Factory(function (ContainerInterface $c) {
+    return $c->get('logger');
 }));
 
 
-// 2.4. Servicio de Sesión (SessionService)
-// Encapsula la gestión de sesiones de PHP.
+// 2.3. Servicio de Sesión (SessionService)
 $container->set(App\Services\SessionService::class, function (ContainerInterface $c) {
-    $config = $c->get('config'); // El SessionService constructor espera el array de config completo
     return new App\Services\SessionService(
         $c->get('config')['session']
     );
 });
 
 
-// 2.5. Traductor (Translator Callable)
-// Proporciona la función `t()` para la internacionalización.
+// 2.4. Traductor (Translator Callable)
 $container->set('translator', function (ContainerInterface $c) {
-    $langConfig = $c->get('config')['lang']; // Configuración de rutas de archivos de idioma
-    $sessionService = $c->get(App\Services\SessionService::class); // Necesita el servicio de sesión para el idioma del usuario
-    $defaultLang = $c->get('config')['app']['default_language'] ?? 'es'; // Idioma por defecto de la aplicación
+    $langConfig = $c->get('config')['lang'];
+    $sessionService = $c->get(App\Services\SessionService::class);
+    $defaultLang = $c->get('config')['app']['default_language'] ?? 'es';
 
-    // La función de traducción real que se devolverá
     return function (string $key, array $replacements = [], ?string $langCode = null) use ($langConfig, $sessionService, $defaultLang) {
-        // Determina el idioma actual: el que se pasa > el de la sesión > el por defecto
         $currentLang = $langCode ?? $sessionService->getUserLanguage() ?? $defaultLang;
         $translations = [];
-
-        // Carga el archivo de idioma. Si no existe o no es válido, usa el por defecto.
         $langFilePath = $langConfig[$currentLang] ?? null;
         if (!$langFilePath || !file_exists($langFilePath)) {
-            $langFilePath = $langConfig[$defaultLang]; // Fallback al idioma por defecto
+            $langFilePath = $langConfig[$defaultLang];
         }
-        
         if (file_exists($langFilePath)) {
-            // Carga el array de traducciones desde el archivo PHP
             $translations = require $langFilePath;
         }
-
-        // Obtiene el texto. Si la clave no existe, devuelve la clave literal (para depuración).
         $text = $translations[$key] ?? $key;
-        
-        // Reemplaza los placeholders (ej. %s, %name%) en el texto.
         foreach ($replacements as $placeholder => $value) {
             $text = str_replace($placeholder, $value, $text);
         }
@@ -227,67 +168,61 @@ $container->set('translator', function (ContainerInterface $c) {
 });
 
 
-// 2.6. PHPMailer (Clase de envío de correos)
-// Configuración de la instancia de PHPMailer.
-$container->set(PHPMailer::class, function (ContainerInterface $c) { // Usamos el FQCN para la definición
-    $smtpConfig = $c->get('config')['smtp']; // Obtiene la configuración SMTP
-    $mail = new PHPMailer(true); // Instancia PHPMailer, true habilita excepciones
-
+// 2.5. PHPMailer
+$container->set(PHPMailer::class, function (ContainerInterface $c) {
+    $smtpConfig = $c->get('config')['smtp'];
+    $mail = new PHPMailer(true);
     try {
-        $mail->isSMTP(); // Habilita SMTP
+        $mail->isSMTP();
         $mail->Host       = $smtpConfig['host'];
         $mail->Port       = $smtpConfig['port'];
-        $mail->CharSet    = 'UTF-8'; // Juego de caracteres para correos
-
-        // Autenticación SMTP condicional (si se requieren usuario/contraseña)
-        $mail->SMTPAuth = $smtpConfig['auth_required'];
-        if ($smtpConfig['auth_required']) {
-            $mail->Username = $smtpConfig['username'];
-            $mail->Password = $smtpConfig['password'];
-        } else {
-            $mail->Username = '';
-            $mail->Password = '';
-        }
-
-        // Cifrado SMTP condicional (TLS/SSL)
+        $mail->CharSet    = 'UTF-8';
+        $mail->SMTPAuth   = $smtpConfig['auth_required'];
+        if ($smtpConfig['auth_required']) { $mail->Username = $smtpConfig['username']; $mail->Password = $smtpConfig['password']; }
         if (!empty($smtpConfig['encryption'])) {
             $mail->SMTPSecure = match ($smtpConfig['encryption']) {
-                'tls' => PHPMailer::ENCRYPTION_STARTTLS, // Constante para StartTLS
-                'ssl' => PHPMailer::ENCRYPTION_SMTPS,    // Constante para SSL/SMTPS
-                default => false, // Sin cifrado si no coincide
+                'tls' => PHPMailer::ENCRYPTION_STARTTLS,
+                'ssl' => PHPMailer::ENCRYPTION_SMTPS,
+                default => false,
             };
-        } else {
-            $mail->SMTPSecure = false; // Deshabilitar cifrado
-        }
-
-        // Opciones SMTP para deshabilitar verificación de certificado SSL/TLS (para entornos internos/dev)
-        // ¡ADVERTENCIA! Reduce la seguridad. Usar SÓLO si se entiende el riesgo.
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer'       => false,
-                'verify_peer_name'  => false,
-                'allow_self_signed' => true
-            ]
-        ];
-
-        // Remitente del correo
+        } else { $mail->SMTPSecure = false; }
+        $mail->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
         $mail->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
-
         return $mail;
-    } catch (MailerException $e) { // MailerException ya está importada
-        // Registrar el error de configuración de PHPMailer en el logger
+    } catch (MailerException $e) {
         $c->get('logger')->error("Error al configurar PHPMailer: {$e->getMessage()}");
-        return null; // Devolver null si la configuración falla (puede causar problemas downstream si no se maneja)
+        return null;
     }
 });
 
-// 2.7. Definición para CsvTemplateService (Importación de CSVs)
+
+// 2.6. Servicio de Plantillas CSV (CsvTemplateService)
 $container->set(App\Services\CsvTemplateService::class, function (ContainerInterface $c) {
     return new App\Services\CsvTemplateService(
-        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get(LoggerInterface::class),
         $c->get('translator'),
         $c->get(App\Models\AssetType::class),
         $c->get(App\Models\CustomFieldDefinition::class)
+    );
+});
+
+
+// 2.7. Servicio de Importación CSV (CsvImporterService)
+$container->set(App\Services\CsvImporterService::class, function (ContainerInterface $c) {
+    return new App\Services\CsvImporterService(
+        $c->get(LoggerInterface::class),
+        $c->get('translator'),
+        $c->get(App\Models\Asset::class),
+        $c->get(App\Models\Manufacturer::class),
+        $c->get(App\Models\Provider::class),
+        $c->get(App\Models\Contract::class),
+        $c->get(App\Models\AssetType::class),
+        $c->get(App\Models\AssetStatus::class),
+        $c->get(App\Models\ContractType::class),
+        $c->get(App\Models\Location::class),
+        $c->get(App\Models\Department::class),
+        $c->get(App\Models\AcquisitionFormat::class),
+        $c->get(App\Models\Model::class)
     );
 });
 
@@ -299,7 +234,7 @@ $container->set(App\Services\LdapService::class, function (ContainerInterface $c
     );
 });
 
-// 2.9. Servicio de Logs (LogService)
+// 2.9. Servicio de Logs (LogService) <--- ¡NUEVA DEFINICIÓN!
 $container->set(App\Services\LogService::class, function (ContainerInterface $c) {
     return new App\Services\LogService(
         $c->get(PDO::class),
@@ -307,7 +242,7 @@ $container->set(App\Services\LogService::class, function (ContainerInterface $c)
     );
 });
 
-// 2.10. Servicio SMTP (SmtpService)
+// 2.10. Servicio SMTP (SmtpService) <--- ¡NUEVA DEFINICIÓN!
 $container->set(App\Services\SmtpService::class, function (ContainerInterface $c) {
     return new App\Services\SmtpService(
         $c->get('config'),
@@ -317,9 +252,8 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
     );
 });
 
-// --- 3. Definiciones de Modelos (Dependen principalmente de PDO 'db') ---
-// Todos estos modelos necesitan una instancia de PDO en su constructor.
-// Se ordenan alfabéticamente para mayor claridad.
+
+// --- 3. Definiciones de Modelos (Dependen de PDO 'db') ---
 $container->set(App\Models\AcquisitionFormat::class, function (ContainerInterface $c) { return new App\Models\AcquisitionFormat($c->get(PDO::class)); });
 $container->set(App\Models\Asset::class, function (ContainerInterface $c) { return new App\Models\Asset($c->get(PDO::class)); });
 $container->set(App\Models\AssetContract::class, function (ContainerInterface $c) { return new App\Models\AssetContract($c->get(PDO::class)); });
@@ -344,25 +278,34 @@ $container->set(App\Models\LogActivo::class, function (ContainerInterface $c) { 
 $container->set(App\Models\SmtpConfig::class, function (ContainerInterface $c) { return new App\Models\SmtpConfig($c->get(PDO::class)); });
 
 
-// --- 4. Definiciones de Servicios Más Complejos (Dependen de los básicos y modelos) ---
-// Estos servicios orquestan la lógica de negocio y dependen de otros servicios o modelos.
-// Se ordenan por dependencia o alfabéticamente si no hay dependencia clara.
+// --- 4. Definiciones de Servicios Más Complejos ---
 
-// Definición para CsvTemplateService
-$container->set(App\Services\CsvTemplateService::class, function (ContainerInterface $c) {
-    return new App\Services\CsvTemplateService(
+$container->set(App\Services\AuthService::class, function (ContainerInterface $c) {
+    return new App\Services\AuthService(
+        $c->get(App\Models\User::class),
+        $c->get(App\Models\PasswordResetToken::class),
+        $c->get(App\Models\Role::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(PHPMailer::class),
         $c->get(Psr\Log\LoggerInterface::class),
-        $c->get('translator'),
-        $c->get(App\Models\AssetType::class), // Depende de AssetType
-        $c->get(App\Models\CustomFieldDefinition::class) // Depende de CustomFieldDefinition
+        $c->get('config'),
+        $c->get(App\Services\LdapService::class),
+        $c->get(App\Models\Source::class)
     );
 });
 
-// Definición para CsvImporterService (NUEVO)
-// Inyecta todos los modelos que puede necesitar para importar diferentes entidades.
+$container->set(App\Services\CsvTemplateService::class, function (ContainerInterface $c) {
+    return new App\Services\CsvTemplateService(
+        $c->get(LoggerInterface::class),
+        $c->get('translator'),
+        $c->get(App\Models\AssetType::class),
+        $c->get(App\Models\CustomFieldDefinition::class)
+    );
+});
+
 $container->set(App\Services\CsvImporterService::class, function (ContainerInterface $c) {
     return new App\Services\CsvImporterService(
-        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get(LoggerInterface::class),
         $c->get('translator'),
         $c->get(App\Models\Asset::class),
         $c->get(App\Models\Manufacturer::class),
@@ -378,26 +321,25 @@ $container->set(App\Services\CsvImporterService::class, function (ContainerInter
     );
 });
 
-$container->set(App\Services\AuthService::class, function (ContainerInterface $c) {
-    return new App\Services\AuthService(
-        $c->get(App\Models\User::class),
-        $c->get(App\Models\PasswordResetToken::class),
-        $c->get(App\Models\Role::class),
-        $c->get(App\Services\SessionService::class),
-        $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
-        $c->get(Psr\Log\LoggerInterface::class), // Usamos la interfaz
-        $c->get('config'),
-        $c->get(App\Services\LdapService::class), // La inyección de LdapService
-        $c->get(App\Models\Source::class)
+$container->set(App\Services\LdapService::class, function (ContainerInterface $c) {
+    return new App\Services\LdapService(
+        $c->get(LoggerInterface::class),
+        $c->get('translator')
+    );
+});
+
+$container->set(App\Services\LogService::class, function (ContainerInterface $c) {
+    return new App\Services\LogService(
+        $c->get(PDO::class),
+        $c->get(LoggerInterface::class)
     );
 });
 
 $container->set(App\Services\MailService::class, function (ContainerInterface $c) {
     return new App\Services\MailService(
-        $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
+        $c->get(PHPMailer::class),
         $c->get(Psr\Log\LoggerInterface::class),
         $c->get(PlatesEngine::class),
-        $c->get(App\Services\SmtpService::class),
         $c->get('config')
     );
 });
@@ -413,9 +355,16 @@ $container->set(App\Services\NotificationService::class, function (ContainerInte
     );
 });
 
+$container->set(App\Services\SmtpService::class, function (ContainerInterface $c) {
+    return new App\Services\SmtpService(
+        $c->get('config'),
+        $c->get(LoggerInterface::class),
+        $c->get('translator'),
+        $c->get(PDO::class)
+    );
+});
 
-// --- 5. Definiciones de Controladores (Dependen de servicios y modelos) ---
-// Todos los controladores dependen de PlatesEngine, SessionService, LoggerInterface, translator, etc.
+// --- 5. Definiciones de Controladores ---
 $container->set(App\Controllers\AdminController::class, function (ContainerInterface $c) {
     return new App\Controllers\AdminController(
         $c->get(PlatesEngine::class),
@@ -428,8 +377,8 @@ $container->set(App\Controllers\AdminController::class, function (ContainerInter
 
 $container->set(App\Controllers\ApiController::class, function (ContainerInterface $c) {
     return new App\Controllers\ApiController(
-        $c, // Pasamos el contenedor completo si el controlador necesita acceder a él directamente
-        $c->get(Psr\Log\LoggerInterface::class),
+        $c,
+        $c->get(LoggerInterface::class),
         $c->get('translator')
     );
 });
@@ -494,7 +443,6 @@ $container->set(App\Controllers\CustomFieldsController::class, function (Contain
     );
 });
 
-// Definición para DashboardController
 $container->set(App\Controllers\DashboardController::class, function (ContainerInterface $c) {
     return new App\Controllers\DashboardController(
         $c->get(PlatesEngine::class),
@@ -510,10 +458,32 @@ $container->set(App\Controllers\DashboardController::class, function (ContainerI
     );
 });
 
+$container->set(App\Controllers\ImportController::class, function (ContainerInterface $c) {
+    return new App\Controllers\ImportController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get('logger'),
+        $c->get(App\Services\CsvTemplateService::class),
+        $c->get('translator'),
+        $c->get(App\Models\AssetType::class),
+        $c->get(App\Services\CsvImporterService::class)
+    );
+});
+
 $container->set(App\Controllers\LanguageController::class, function (ContainerInterface $c) {
     return new App\Controllers\LanguageController(
         $c->get(App\Services\SessionService::class),
         $c->get('config')
+    );
+});
+
+$container->set(App\Controllers\LogController::class, function (ContainerInterface $c) {
+    return new App\Controllers\LogController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(LoggerInterface::class),
+        $c->get(App\Services\LogService::class),
+        $c->get('translator')
     );
 });
 
@@ -522,7 +492,7 @@ $container->set(App\Controllers\MasterController::class, function (ContainerInte
         $c->get(PlatesEngine::class),
         $c->get(App\Services\SessionService::class),
         $c->get('logger'),
-        $c->get('db'),
+        $c->get(PDO::class),
         $c->get('translator')
     );
 });
@@ -539,31 +509,6 @@ $container->set(App\Controllers\ModelController::class, function (ContainerInter
     );
 });
 
-$container->set(App\Controllers\UserController::class, function (ContainerInterface $c) {
-    return new App\Controllers\UserController(
-        $c->get(PlatesEngine::class),
-        $c->get(App\Services\SessionService::class),
-        $c->get('logger'),
-        $c->get(App\Models\User::class),
-        $c->get(App\Models\Role::class),
-        $c->get('translator'),
-        $c->get(App\Models\Source::class)
-    );
-});
-
-// Definición para ImportController
-$container->set(App\Controllers\ImportController::class, function (ContainerInterface $c) {
-    return new App\Controllers\ImportController(
-        $c->get(PlatesEngine::class),
-        $c->get(App\Services\SessionService::class),
-        $c->get('logger'),
-        $c->get(App\Services\CsvTemplateService::class),
-        $c->get('translator'),
-        $c->get(App\Models\AssetType::class),
-        $c->get(App\Services\CsvImporterService::class)
-    );
-});
-
 $container->set(App\Controllers\SmtpController::class, function (ContainerInterface $c) {
     return new App\Controllers\SmtpController(
         $c->get(PlatesEngine::class),
@@ -575,13 +520,25 @@ $container->set(App\Controllers\SmtpController::class, function (ContainerInterf
     );
 });
 
-
-$container->set(App\Controllers\LogController::class, function (ContainerInterface $c) {
-    return new App\Controllers\LogController(
+$container->set(App\Controllers\SourceController::class, function (ContainerInterface $c) {
+    return new App\Controllers\SourceController(
         $c->get(PlatesEngine::class),
         $c->get(App\Services\SessionService::class),
-        $c->get(Psr\Log\LoggerInterface::class),
-        $c->get(App\Services\LogService::class),
-        $c->get('translator')
+        $c->get('logger'),
+        $c->get(App\Models\Source::class),
+        $c->get('translator'),
+        $c->get(App\Services\LdapService::class)
+    );
+});
+
+$container->set(App\Controllers\UserController::class, function (ContainerInterface $c) {
+    return new App\Controllers\UserController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get('logger'),
+        $c->get(App\Models\User::class),
+        $c->get(App\Models\Role::class),
+        $c->get('translator'),
+        $c->get(App\Models\Source::class)
     );
 });

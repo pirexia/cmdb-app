@@ -148,6 +148,8 @@
                 }
             } else if (currentPath.startsWith('/admin/logs')) {
                  <?php $this->insert('partials/datatables_logs') ?>
+            } else if (currentPath.startsWith('/admin/smtp')) {
+                 <?php $this->insert('partials/smtp_script') ?>
             }
         });
     </script>

@@ -103,15 +103,15 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
 
         // --- RUTAS PARA LA AUDITORÍA DE LOGS (LogController) ---
         $adminGroup->group('/logs', function (RouteCollectorProxy $logGroup) {
-             $logGroup->get('', LogController::class . ':listLogs'); // <--- NUEVA RUTA PARA LOGS
+             $logGroup->get('', LogController::class . ':listLogs');
              $logGroup->get('/', LogController::class . ':listLogs');
         });
 
         // --- RUTAS PARA CONFIGURACIÓN SMTP (SmtpController) ---
         $adminGroup->group('/smtp', function (RouteCollectorProxy $smtpGroup) {
-             $smtpGroup->get('', SmtpController::class . ':showForm'); // <--- ¡NUEVA RUTA!
+             $smtpGroup->get('', SmtpController::class . ':showForm');
              $smtpGroup->get('/', SmtpController::class . ':showForm');
-             $smtpGroup->post('/update', SmtpController::class . ':processForm'); // <--- ¡NUEVA RUTA!
+             $smtpGroup->post('/update', SmtpController::class . ':processForm');
         });
 
         // --- RUTAS PARA CAMPOS PERSONALIZADOS (CustomFieldsController) ---
