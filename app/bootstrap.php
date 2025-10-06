@@ -229,56 +229,12 @@ $container->set('translator', function (ContainerInterface $c) {
 
 // 2.6. PHPMailer (Clase de envío de correos)
 // Configuración de la instancia de PHPMailer.
-$container->set(PHPMailer::class, function (ContainerInterface $c) { // Usamos el FQCN para la definición
-    $smtpConfig = $c->get('config')['smtp']; // Obtiene la configuración SMTP
-    $mail = new PHPMailer(true); // Instancia PHPMailer, true habilita excepciones
-
-    try {
-        $mail->isSMTP(); // Habilita SMTP
-        $mail->Host       = $smtpConfig['host'];
-        $mail->Port       = $smtpConfig['port'];
-        $mail->CharSet    = 'UTF-8'; // Juego de caracteres para correos
-
-        // Autenticación SMTP condicional (si se requieren usuario/contraseña)
-        $mail->SMTPAuth = $smtpConfig['auth_required'];
-        if ($smtpConfig['auth_required']) {
-            $mail->Username = $smtpConfig['username'];
-            $mail->Password = $smtpConfig['password'];
-        } else {
-            $mail->Username = '';
-            $mail->Password = '';
-        }
-
-        // Cifrado SMTP condicional (TLS/SSL)
-        if (!empty($smtpConfig['encryption'])) {
-            $mail->SMTPSecure = match ($smtpConfig['encryption']) {
-                'tls' => PHPMailer::ENCRYPTION_STARTTLS, // Constante para StartTLS
-                'ssl' => PHPMailer::ENCRYPTION_SMTPS,    // Constante para SSL/SMTPS
-                default => false, // Sin cifrado si no coincide
-            };
-        } else {
-            $mail->SMTPSecure = false; // Deshabilitar cifrado
-        }
-
-        // Opciones SMTP para deshabilitar verificación de certificado SSL/TLS (para entornos internos/dev)
-        // ¡ADVERTENCIA! Reduce la seguridad. Usar SÓLO si se entiende el riesgo.
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer'       => false,
-                'verify_peer_name'  => false,
-                'allow_self_signed' => true
-            ]
-        ];
-
-        // Remitente del correo
-        $mail->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
-
-        return $mail;
-    } catch (MailerException $e) { // MailerException ya está importada
-        // Registrar el error de configuración de PHPMailer en el logger
-        $c->get('logger')->error("Error al configurar PHPMailer: {$e->getMessage()}");
-        return null; // Devolver null si la configuración falla (puede causar problemas downstream si no se maneja)
-    }
+$container->set(PHPMailer::class, function (ContainerInterface $c) {    
+    // Simplemente crea una instancia de PHPMailer.
+    // La configuración se aplicará dinámicamente en MailService
+    // para asegurar que siempre se usen los datos más recientes de la BBDD.
+    // El 'true' habilita las excepciones, que serán capturadas en MailService.
+    return new PHPMailer(true);
 });
 
 // 2.7. Definición para CsvTemplateService (Importación de CSVs)
@@ -397,8 +353,7 @@ $container->set(App\Services\MailService::class, function (ContainerInterface $c
         $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
         $c->get(Psr\Log\LoggerInterface::class),
         $c->get(PlatesEngine::class),
-        $c->get(App\Services\SmtpService::class),
-        $c->get('config')
+        $c->get(App\Services\SmtpService::class)
     );
 });
 
@@ -572,6 +527,28 @@ $container->set(App\Controllers\SmtpController::class, function (ContainerInterf
         $c->get('config'),
         $c->get('translator'),
         $c->get(App\Services\SmtpService::class)
+    );
+});
+
+// Definición para SourceController
+$container->set(App\Controllers\SourceController::class, function (ContainerInterface $c) {
+    return new App\Controllers\SourceController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get(App\Models\Source::class),
+        $c->get('translator')
+    );
+});
+
+// Definición para SourceController
+$container->set(App\Controllers\SourceController::class, function (ContainerInterface $c) {
+    return new App\Controllers\SourceController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get(App\Models\Source::class),
+        $c->get('translator')
     );
 });
 

@@ -24,7 +24,6 @@ class MailService
     private LoggerInterface $logger;       // Instancia del logger para registrar eventos.
     private PlatesEngine $view;           // Motor de plantillas PlatesPHP para renderizar correos.
     private SmtpService $smtpService;      // Servicio para obtener la configuración SMTP desde la DB.
-    private $isConfigured = false;       // Flag para asegurar que la configuración se hace una sola vez.
 
     /**
      * Constructor del servicio. Recibe todas las dependencias necesarias.
@@ -50,40 +49,35 @@ class MailService
      * del SmtpService. Este método se llama internamente antes de cada envío
      * para asegurar que la configuración esté actualizada.
      */
-    private function setupMailer(): void
+    private function setupMailer(): bool
     {
-        // Si ya está configurado, no hacer nada para evitar sobreescribir.
-        if ($this->isConfigured) {
-            return;
-        }
-
         // Obtener la configuración SMTP de la base de datos a través del servicio.
         $smtpConfig = $this->smtpService->getSmtpConfig();
 
+        // Si no hay host, la configuración no es válida para enviar correos.
+        if (empty($smtpConfig['host'])) {
+            $this->logger->error('Configuración SMTP no encontrada o inválida. No se puede enviar el correo.');
+            return false;
+        }
+
         $this->mailer->isSMTP();
         $this->mailer->Host       = $smtpConfig['host'];
-        $this->mailer->Port       = $smtpConfig['port'];
+        $this->mailer->Port       = (int)$smtpConfig['port'];
         $this->mailer->CharSet    = 'UTF-8';
-        $this->mailer->SMTPAuth   = $smtpConfig['auth_required'];
+        $this->mailer->SMTPAuth   = (bool)$smtpConfig['auth_required'];
         
-        if ($smtpConfig['auth_required']) {
+        if ($this->mailer->SMTPAuth) {
             $this->mailer->Username = $smtpConfig['username'];
             $this->mailer->Password = $smtpConfig['password'];
-        } else {
-            $this->mailer->Username = '';
-            $this->mailer->Password = '';
         }
 
         if (!empty($smtpConfig['encryption'])) {
-            $this->mailer->SMTPSecure = match ($smtpConfig['encryption']) {
-                'tls' => PHPMailer::ENCRYPTION_STARTTLS,
-                'ssl' => PHPMailer::ENCRYPTION_SMTPS,
-                default => false,
-            };
+            $this->mailer->SMTPSecure = $smtpConfig['encryption']; // Acepta 'tls' o 'ssl'
         } else {
             $this->mailer->SMTPSecure = false;
         }
 
+        // ¡ADVERTENCIA! Esta opción reduce la seguridad. Usar con precaución.
         $this->mailer->SMTPOptions = [
             'ssl' => [
                 'verify_peer'       => false,
@@ -93,7 +87,7 @@ class MailService
         ];
 
         $this->mailer->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
-        $this->isConfigured = true; // Marcar como configurado.
+        return true;
     }
 
     /**
@@ -106,11 +100,12 @@ class MailService
      */
     public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): bool
     {
-        // Asegura que PHPMailer esté configurado antes de intentar enviar.
-        $this->setupMailer();
-        
         try {
-            // Limpiar destinatarios y adjuntos de envíos anteriores para evitar duplicados.
+            // Configura el mailer con los datos más recientes de la BBDD. Si falla, no continúa.
+            if (!$this->setupMailer()) {
+                return false;
+            }
+            
             $this->mailer->clearAddresses();
             $this->mailer->clearAttachments();
 

@@ -92,7 +92,8 @@ class SmtpService
     public function getSmtpConfig(): array
     {
         $dbConfig = $this->smtpConfigModel->getConfig();
-        $config = $this->config['smtp']; // Fallback a la configuración del archivo
+        // Usar un array vacío como fallback si la configuración del archivo no existe.
+        $config = $this->config['smtp'] ?? []; 
 
         if ($dbConfig) {
             $config['host'] = $dbConfig['host'];

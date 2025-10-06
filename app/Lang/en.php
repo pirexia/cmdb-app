@@ -659,4 +659,9 @@ return [
     'smtp_config_saved_log' => 'SMTP configuration saved to database.',
     'smtp_config_save_pdo_error' => 'Database error saving SMTP configuration: %message%',
     'smtp_config_save_general_error' => 'Unexpected error saving SMTP configuration: %message%',
+    'smtp_test_connection_successful_log' => 'SMTP test connection successful for host: %host%',
+    'smtp_test_connection_failed_log' => 'SMTP test connection failed for host: %host%. Error: %error%',
+    'smtp_test_unexpected_error_log' => 'Unexpected error during SMTP connection test: %message%',
+    'smtp_test_unexpected_error' => 'An unexpected error occurred during the connection test.',
+    'debug_api_test_smtp_connection_attempt' => 'SMTP test connection API called for host: %host%. Result: %result%.',
 ];
