@@ -104,54 +104,53 @@
 
     <!-- Lógica de inclusión de scripts dinámicos (partials) -->
     <!-- Nota: Los scripts dinámicos se insertan aquí para que puedan acceder a las variables PHP y a las librerías cargadas previamente. -->
+    <?php
+    // Lógica PHP para incluir el script parcial correcto según la URL.
+    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    ?>
     <script>
-        $(document).ready(function() {
-            // Lógica para incluir scripts de DataTables y formularios específicos por página.
-            var currentPath = window.location.pathname;
-
-            if (currentPath === '/dashboard') {
-                <?php $this->insert('partials/dashboard_scripts', [
-                    'assetsByType' => $assetsByType ?? [],
-                    'assetsByStatus' => $assetsByStatus ?? [],
-                    't' => $t
-                ]) ?>
-            } else if (currentPath.startsWith('/assets')) {
-                <?php $this->insert('partials/datatables_assets') ?>
-            } else if (currentPath.startsWith('/admin/masters/')) {
-                if (currentPath.match(/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format|language)(\/?$|\/create|\/edit\/|\/delete)/)) {
-                    <?php $this->insert('partials/datatables_masters') ?>
-                }
-                if (currentPath.startsWith('/admin/masters/model')) {
-                    <?php $this->insert('partials/datatables_models') ?>
-                }
-                if (currentPath.startsWith('/admin/masters/contract')) {
-                    <?php $this->insert('partials/datatables_contracts') ?>
-                }
-            } else if (currentPath.startsWith('/admin/custom-fields')) {
-                <?php $this->insert('partials/datatables_custom_fields') ?>
-                if (currentPath.startsWith('/admin/custom-fields/create') || currentPath.startsWith('/admin/custom-fields/edit/')) {
-                    <?php $this->insert('partials/custom_fields_form_scripts') ?>
-                }
-            } else if (currentPath.startsWith('/admin/users')) {
-                <?php $this->insert('partials/datatables_users') ?>
-                if (currentPath.startsWith('/admin/users/create') || currentPath.startsWith('/admin/users/edit/')) {
-                    <?php $this->insert('partials/users_form_scripts') ?>
-                }
-            } else if (currentPath.startsWith('/admin/sources')) {
-                <?php $this->insert('partials/datatables_sources') ?>
-                if (currentPath.startsWith('/admin/sources/create') || currentPath.startsWith('/admin/sources/edit/')) {
-                    <?php $this->insert('partials/sources_form_scripts') ?>
-                }
-            } else if (currentPath.startsWith('/admin/import')) {
-                if (currentPath === '/admin/import' || currentPath === '/admin/import/') {
-                    <?php $this->insert('partials/import_index_scripts') ?>
-                }
-            } else if (currentPath.startsWith('/admin/logs')) {
-                 <?php $this->insert('partials/datatables_logs') ?>
-            } else if (currentPath.startsWith('/admin/smtp')) {
-                 <?php $this->insert('partials/smtp_script') ?>
+    $(document).ready(function() {
+    <?php
+        if ($currentPath === '/dashboard') {
+            $this->insert('partials/dashboard_scripts', [
+                'assetsByType' => $assetsByType ?? [],
+                'assetsByStatus' => $assetsByStatus ?? [],
+                't' => $t
+            ]);
+        } elseif (str_starts_with($currentPath, '/assets')) {
+            $this->insert('partials/datatables_assets');
+        } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
+            $this->insert('partials/datatables_models');
+        } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {
+            $this->insert('partials/datatables_contracts');
+        } elseif (preg_match('/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format|language)/', $currentPath)) {
+            $this->insert('partials/datatables_masters');
+        } elseif (str_starts_with($currentPath, '/admin/custom-fields')) {
+            $this->insert('partials/datatables_custom_fields');
+            if (str_starts_with($currentPath, '/admin/custom-fields/create') || str_starts_with($currentPath, '/admin/custom-fields/edit/')) {
+                $this->insert('partials/custom_fields_form_scripts');
             }
-        });
+        } elseif (str_starts_with($currentPath, '/admin/users')) {
+            $this->insert('partials/datatables_users');
+            if (str_starts_with($currentPath, '/admin/users/create') || str_starts_with($currentPath, '/admin/users/edit/')) {
+                $this->insert('partials/users_form_scripts');
+            }
+        } elseif (str_starts_with($currentPath, '/admin/sources')) {
+            $this->insert('partials/datatables_sources');
+            if (str_starts_with($currentPath, '/admin/sources/create') || str_starts_with($currentPath, '/admin/sources/edit/')) {
+                $this->insert('partials/sources_form_scripts');
+            }
+        } elseif (str_starts_with($currentPath, '/admin/import')) {
+            if ($currentPath === '/admin/import' || $currentPath === '/admin/import/') {
+                $this->insert('partials/import_index_scripts');
+            }
+        } elseif (str_starts_with($currentPath, '/admin/logs')) {
+            $this->insert('partials/datatables_logs');
+        } elseif (str_starts_with($currentPath, '/admin/smtp')) {
+            $this->insert('partials/smtp_script');
+        }
+    ?>
+    });
     </script>
 
     <!-- Script para los mensajes flash que se ocultan automáticamente -->

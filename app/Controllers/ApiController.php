@@ -89,4 +89,28 @@ class ApiController
         return $response->withHeader('Content-Type', 'application/json');
         // ===============================================
     }
+
+    /**
+     * Endpoint para probar la conexión SMTP.
+     * Recibe los datos de configuración por POST y devuelve un JSON con el resultado.
+     */
+    public function testSmtpConnection(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $data = $request->getParsedBody();
+
+        // Obtener el SmtpService del contenedor
+        $smtpService = $this->container->get(\App\Services\SmtpService::class);
+
+        // Llamar al método de prueba
+        $result = $smtpService->testSmtpConnection($data);
+
+        $this->logger->info($t('debug_api_test_smtp_connection_attempt', [
+            '%host%' => $data['host'] ?? 'N/A',
+            '%result%' => $result['success'] ? 'Success' : 'Failure'
+        ]));
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 }

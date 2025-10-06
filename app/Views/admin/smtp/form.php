@@ -60,10 +60,36 @@
                     <input type="text" class="form-control" id="from_name" name="from_name" value="<?= htmlspecialchars($smtpConfig['from_name'] ?? '') ?>" required>
                 </div>
 
-                <button type="submit" class="btn btn-success me-2"><?= $t('save') ?></button>
+                <button type="submit" class="btn btn-primary me-2"><?= $t('save') ?></button>
+                <button type="button" id="test-smtp-btn" class="btn btn-info"><?= $t('test_connection') ?></button>
                 <a href="/dashboard" class="btn btn-secondary"><?= $t('cancel') ?></a>
+
+                <!-- Div para mostrar los resultados del test -->
+                <div id="test-results" class="mt-3"></div>
+
             </form>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function setupSmtpForm() {
+        const authCheckbox = document.getElementById('auth_required');
+        const credentialsDiv = document.getElementById('smtp-credentials');
+
+        if (authCheckbox && credentialsDiv) {
+            authCheckbox.addEventListener('change', function() {
+                credentialsDiv.style.display = this.checked ? 'block' : 'none';
+            });
+            // Ejecutar al inicio para establecer el estado correcto
+            credentialsDiv.style.display = authCheckbox.checked ? 'block' : 'none';
+        }
+    }
+
+    // Ejecutar la configuración. Si el DOM ya está cargado, se ejecuta de inmediato.
+    // Si no, espera al evento DOMContentLoaded.
+    setupSmtpForm();
+});
+</script>
 <?php $this->stop() ?>

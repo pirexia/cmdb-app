@@ -14,6 +14,8 @@ use App\Models\SmtpConfig;    // Modelo para interactuar con la tabla de configu
 use Psr\Log\LoggerInterface;  // Interfaz de logger para registrar eventos.
 use PDO;                      // Clase de conexión a la base de datos.
 use Exception;                // Para manejar excepciones generales.
+use PHPMailer\PHPMailer\PHPMailer; // Para la prueba de conexión
+use PHPMailer\PHPMailer\Exception as MailerException; // Para capturar errores de PHPMailer
 
 /**
  * Clase SmtpService
@@ -107,5 +109,65 @@ class SmtpService
         }
 
         return $config;
+    }
+
+    /**
+     * Prueba la conexión a un servidor SMTP con la configuración proporcionada.
+     * @param array $config Los detalles de configuración SMTP a probar.
+     * @return array ['success' => bool, 'message' => string]
+     */
+    public function testSmtpConnection(array $config): array
+    {
+        $t = $this->translator;
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configurar la instancia temporal de PHPMailer
+            $mail->isSMTP();
+            $mail->Host = $config['host'] ?? '';
+            $mail->Port = (int)($config['port'] ?? 587);
+            $mail->SMTPAuth = (bool)($config['auth_required'] ?? false);
+
+            if ($mail->SMTPAuth) {
+                $mail->Username = $config['username'] ?? '';
+                // Para la prueba, usamos la contraseña en texto plano que viene del formulario.
+                $mail->Password = $config['password'] ?? '';
+            }
+
+            if (!empty($config['encryption'])) {
+                $mail->SMTPSecure = $config['encryption'];
+            }
+
+            // Deshabilitar la verificación de certificados SSL para la prueba,
+            // ya que es una causa común de fallos en entornos locales/internos.
+            $mail->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ];
+
+            // Activar el modo debug para capturar la salida detallada
+            $mail->SMTPDebug = 0; // Cambiar a 2 para depuración exhaustiva si es necesario
+
+            // Intentar conectar
+            if ($mail->smtpConnect()) {
+                $mail->smtpClose(); // Cerrar la conexión si fue exitosa
+                $this->logger->info($t('smtp_test_connection_successful_log', ['%host%' => $config['host']]));
+                return ['success' => true, 'message' => $t('connection_successful')];
+            } else {
+                // Esto es un fallback, ya que smtpConnect() suele lanzar una excepción en caso de fallo.
+                $this->logger->warning($t('smtp_test_connection_failed_log', ['%host%' => $config['host'], '%error%' => $mail->ErrorInfo]));
+                return ['success' => false, 'message' => $t('connection_failed') . ': ' . $mail->ErrorInfo];
+            }
+        } catch (MailerException $e) {
+            $this->logger->warning($t('smtp_test_connection_failed_log', ['%host%' => $config['host'], '%error%' => $e->getMessage()]));
+            // Devolvemos el mensaje de error de PHPMailer, que es muy descriptivo.
+            return ['success' => false, 'message' => $t('connection_failed') . ': ' . $e->getMessage()];
+        } catch (Exception $e) {
+            $this->logger->error($t('smtp_test_unexpected_error_log', ['%message%' => $e->getMessage()]));
+            return ['success' => false, 'message' => $t('smtp_test_unexpected_error')];
+        }
     }
 }

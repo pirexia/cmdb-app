@@ -661,4 +661,9 @@ return [
     'smtp_config_saved_log' => 'Configuración SMTP guardada en la base de datos.',
     'smtp_config_save_pdo_error' => 'Error de base de datos al guardar la configuración SMTP: %message%',
     'smtp_config_save_general_error' => 'Error inesperado al guardar la configuración SMTP: %message%',
+    'smtp_test_connection_successful_log' => 'Prueba de conexión SMTP exitosa para el host: %host%',
+    'smtp_test_connection_failed_log' => 'Prueba de conexión SMTP fallida para el host: %host%. Error: %error%',
+    'smtp_test_unexpected_error_log' => 'Error inesperado durante la prueba de conexión SMTP: %message%',
+    'smtp_test_unexpected_error' => 'Ocurrió un error inesperado durante la prueba de conexión.',
+    'debug_api_test_smtp_connection_attempt' => 'API de prueba de conexión SMTP llamada para host: %host%. Resultado: %result%.',
 ];

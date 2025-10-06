@@ -10,6 +10,10 @@
  * - Se ejecuta desde el directorio raíz de la aplicación (cmdb_app/).
  * - Se asume que el contenedor de dependencias (PHP-DI) está disponible.
  * - Debe tener acceso a la base de datos y a la configuración.
+ * Script de línea de comandos para enviar notificaciones de caducidad.
+ * Diseñado para ser ejecutado como un 'cron job'.
+ * 
+ * Uso: php run_notifications.php
  */
 
 // Importaciones necesarias para las clases utilizadas en el script CLI
@@ -24,29 +28,46 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Psr\Log\LoggerInterface;
+declare(strict_types=1);
 
 // Se cargan las dependencias de Composer.
 // Asume que este script se ejecuta desde el directorio raíz del proyecto.
+// --- 1. Bootstrap de la Aplicación ---
+// Carga el autoloader de Composer y el contenedor de dependencias.
 require __DIR__ . '/vendor/autoload.php';
 
 // Se carga la configuración de la aplicación y se crea el contenedor de dependencias.
 // (Este es un proceso simplificado para un script CLI).
 $config_data = require __DIR__ . '/app/Config/config.php';
 $container = new \DI\Container();
+$containerBuilder = new \DI\ContainerBuilder();
+$containerBuilder->addDefinitions(__DIR__ . '/app/bootstrap.php');
+$container = $containerBuilder->build();
 
 // Definir la configuración de la aplicación en el contenedor.
 $container->set('config', function () use ($config_data) {
     return $config_data;
 });
+// --- 2. Configuración del Logger para CLI ---
+// Añadimos un handler para que los logs también se muestren en la consola.
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 // Definición para la función de traducción global.
 $container->set('translator', function (ContainerInterface $c) {
     $langConfig = $c->get('config')['lang'];
     $defaultLang = $c->get('config')['app']['default_language'] ?? 'es';
+/** @var Logger $logger */
+$logger = $container->get('logger');
+$logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG)); // Salida a consola
 
     return function (string $key, array $replacements = [], ?string $langCode = null) use ($langConfig, $defaultLang) {
         $currentLang = $langCode ?? $defaultLang;
         $translations = [];
+try {
+    // --- 3. Ejecución de la Lógica ---
+    /** @var \App\Services\NotificationService $notificationService */
+    $notificationService = $container->get(\App\Services\NotificationService::class);
 
         $langFilePath = $langConfig[$currentLang] ?? null;
         if (!$langFilePath || !file_exists($langFilePath)) {
@@ -56,6 +77,8 @@ $container->set('translator', function (ContainerInterface $c) {
         if (file_exists($langFilePath)) {
             $translations = require $langFilePath;
         }
+    // El servicio ahora se encarga de toda la lógica interna.
+    $notificationService->processAndSendExpirationNotices();
 
         $text = $translations[$key] ?? $key;
         foreach ($replacements as $placeholder => $value) {
@@ -64,6 +87,8 @@ $container->set('translator', function (ContainerInterface $c) {
         return $text;
     };
 });
+    $logger->info($container->get('translator')('cron_job_notifications_finished'));
+    exit(0); // Salida exitosa
 
 
 // === Definir servicios necesarios de forma que LoggerInterface se instancie directamente ===
@@ -107,6 +132,13 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
         $c->get('logger'),
         $c->get('translator'),
         $c->get('db')
+} catch (Throwable $e) {
+    // Captura cualquier error fatal durante la inicialización o ejecución.
+    $logger->critical(
+        $container->get('translator')('cron_job_notifications_critical_error', [
+            '%message%' => $e->getMessage(), 
+            '%trace%' => $e->getTraceAsString()
+        ])
     );
 });
 
@@ -166,4 +198,5 @@ try {
 } catch (\Throwable $e) {
     $logger->critical($container->get('translator')('cron_job_notifications_critical_error', ['%message%' => $e->getMessage(), '%trace%' => $e->getTraceAsString()]));
     exit(1);
+    exit(1); // Salida con error
 }
