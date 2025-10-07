@@ -98,8 +98,8 @@ class DashboardController
         $daysAdvance = $this->config['notifications']['days_advance'] ?? 30;
         $notificationThreshold = (new DateTime())->add(new DateInterval("P{$daysAdvance}D"))->format('Y-m-d');
         
-        $expiringAssets = $this->assetModel->getExpiringAssets($notificationThreshold);
-        $expiringContracts = $this->contractModel->getExpiringContracts($notificationThreshold);
+        $expiringAssets = $this->assetModel->getExpiringAssets($notificationThreshold) ?: [];
+        $expiringContracts = $this->contractModel->getExpiringContracts($notificationThreshold) ?: [];
 
         // Se renderiza la vista 'dashboard' con todos los datos obtenidos.
         $html = $this->view->render('dashboard', [

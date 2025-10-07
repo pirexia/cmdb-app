@@ -79,10 +79,12 @@ use App\Services\SmtpService;
 // --- 1. Cargar la Configuración de la Aplicación ---
 
 // Se pasa directamente a las definiciones que la necesitan
-$config_data = require __DIR__ . '/Config/config.php';
-$container->set('config', function () use ($config_data) {
-    return $config_data;
-});
+if (!$container->has('config')) {
+    $config_data = require __DIR__ . '/Config/config.php';
+    $container->set('config', function () use ($config_data) {
+        return $config_data;
+    });
+}
 
 // --- 2. Definiciones de Servicios Básicos e Infraestructura (sin dependencias complejas entre sí) ---
 
@@ -277,7 +279,9 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
 // Todos estos modelos necesitan una instancia de PDO en su constructor.
 // Se ordenan alfabéticamente para mayor claridad.
 $container->set(App\Models\AcquisitionFormat::class, function (ContainerInterface $c) { return new App\Models\AcquisitionFormat($c->get(PDO::class)); });
-$container->set(App\Models\Asset::class, function (ContainerInterface $c) { return new App\Models\Asset($c->get(PDO::class)); });
+$container->set(App\Models\Asset::class, function (ContainerInterface $c) {
+    return new App\Models\Asset($c->get(PDO::class), $c->get(Psr\Log\LoggerInterface::class));
+});
 $container->set(App\Models\AssetContract::class, function (ContainerInterface $c) { return new App\Models\AssetContract($c->get(PDO::class)); });
 $container->set(App\Models\AssetStatus::class, function (ContainerInterface $c) { return new App\Models\AssetStatus($c->get(PDO::class)); });
 $container->set(App\Models\AssetType::class, function (ContainerInterface $c) { return new App\Models\AssetType($c->get(PDO::class)); });
@@ -354,17 +358,6 @@ $container->set(App\Services\MailService::class, function (ContainerInterface $c
         $c->get(Psr\Log\LoggerInterface::class),
         $c->get(PlatesEngine::class),
         $c->get(App\Services\SmtpService::class)
-    );
-});
-
-$container->set(App\Services\NotificationService::class, function (ContainerInterface $c) {
-    return new App\Services\NotificationService(
-        $c->get(App\Models\Asset::class),
-        $c->get(App\Models\Contract::class),
-        $c->get(App\Services\MailService::class),
-        $c->get(Psr\Log\LoggerInterface::class),
-        $c->get('config'),
-        $c->get('translator')
     );
 });
 

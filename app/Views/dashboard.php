@@ -123,6 +123,9 @@
                                     <?php if (!empty($asset['fecha_fin_soporte_extended'])): ?>
                                         <?= $t('extended_support_end_date') ?>: <?= htmlspecialchars($asset['fecha_fin_soporte_extended']) ?>
                                     <?php endif; ?>
+                                    <?php if (!empty($asset['fecha_fin_vida'])): ?>
+                                        <?= $t('eol_date') ?>: <?= htmlspecialchars($asset['fecha_fin_vida']) ?>
+                                    <?php endif; ?>
                                 </small>
                             </li>
                         <?php endforeach; ?>
@@ -158,4 +161,3 @@
 </div>
 
 <?php $this->stop() ?>
-

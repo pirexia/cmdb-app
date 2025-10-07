@@ -54,9 +54,10 @@ class MailService
         // Obtener la configuración SMTP de la base de datos a través del servicio.
         $smtpConfig = $this->smtpService->getSmtpConfig();
 
-        // Si no hay host, la configuración no es válida para enviar correos.
-        if (empty($smtpConfig['host'])) {
-            $this->logger->error('Configuración SMTP no encontrada o inválida. No se puede enviar el correo.');
+        // Si no hay host o email de remitente, la configuración no es válida para enviar correos.
+        // Esto previene el error "Invalid address: (From):"
+        if (empty($smtpConfig['host']) || empty($smtpConfig['from_email'])) {
+            $this->logger->error('Configuración SMTP no encontrada o inválida en la base de datos. Asegúrate de que la configuración SMTP esté guardada en la aplicación. No se puede enviar el correo.');
             return false;
         }
 
@@ -77,13 +78,16 @@ class MailService
             $this->mailer->SMTPSecure = false;
         }
 
-        // ¡ADVERTENCIA! Esta opción reduce la seguridad. Usar con precaución.
+        // ¡ADVERTENCIA! Esta opción reduce la seguridad y solo debe usarse si confías
+        // plenamente en el servidor SMTP y no puedes instalar su certificado CA.
+        // Es una causa común de fallos en entornos locales o con certificados autofirmados.
         $this->mailer->SMTPOptions = [
             'ssl' => [
                 'verify_peer'       => false,
                 'verify_peer_name'  => false,
                 'allow_self_signed' => true
-            ]
+            ],
+            'tls' => ['verify_peer' => false] // Añadido para forzar la no verificación también en TLS
         ];
 
         $this->mailer->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);

@@ -40,5 +40,6 @@ return array(
     'DI\\' => array($vendorDir . '/php-di/php-di/src'),
     'Composer\\Pcre\\' => array($vendorDir . '/composer/pcre/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
+    'CmdbNotification\\' => array($baseDir . '/../cmdb_notification/src'),
     'App\\' => array($baseDir . '/app'),
 );

@@ -32,16 +32,6 @@ return [
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
     ],
-//    'smtp' => [
-//        'host' => $_ENV['SMTP_HOST'] ?? 'localhost',
-//        'port' => (int) ($_ENV['SMTP_PORT'] ?? 587),
-//        'username' => $_ENV['SMTP_USERNAME'] ?? null,
-//        'password' => $_ENV['SMTP_PASSWORD'] ?? null,
-//        'auth_required' => filter_var($_ENV['SMTP_AUTH_REQUIRED'] ?? false, FILTER_VALIDATE_BOOLEAN),
-//        'encryption' => $_ENV['SMTP_ENCRYPTION'] ?? 'tls', // 'ssl', 'tls', or ''
-//        'from_email' => $_ENV['SMTP_FROM_EMAIL'] ?? 'no-reply@example.com',
-//        'from_name' => $_ENV['SMTP_FROM_NAME'] ?? 'CMDB App',
-//    ],
     'paths' => [
         'uploads' => $_ENV['UPLOADS_DIR'] ?? __DIR__ . '/../../storage/uploads',
         'logs' => $_ENV['LOGS_DIR'] ?? __DIR__ . '/../../storage/logs',

@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use PDO;
+use Psr\Log\LoggerInterface;
 use PDOException; // Asegúrate de que esta línea esté presente para manejar excepciones de base de datos
 
 /**
@@ -14,14 +15,16 @@ use PDOException; // Asegúrate de que esta línea esté presente para manejar e
 class Asset
 {
     private PDO $db; // Propiedad para almacenar la conexión a la base de datos PDO
+    private LoggerInterface $logger;
 
     /**
      * Constructor de la clase Asset.
      * @param PDO $db Instancia de la conexión a la base de datos PDO.
      */
-    public function __construct(PDO $db)
+    public function __construct(PDO $db, LoggerInterface $logger)
     {
         $this->db = $db;
+        $this->logger = $logger;
     }
 
     /**
@@ -376,29 +379,39 @@ class Asset
      * @param string $thresholdDate La fecha límite (formato 'YYYY-MM-DD').
      * @return array|false Un array de activos próximos a caducar, o false si ocurre un error.
      */
-    public function getExpiringAssets(string $thresholdDate)
+    public function getExpiringAssets(string $thresholdDate): array|false
     {
         try {
-            $stmt = $this->db->prepare("
+            $today = date('Y-m-d');
+            $sql = "
                 SELECT
                     a.id, a.nombre, a.numero_serie, ta.nombre AS tipo_activo_nombre,
-                    a.fecha_fin_garantia, a.fecha_fin_mantenimiento, a.fecha_fin_soporte_mainstream, a.fecha_fin_soporte_extended
-                FROM
-                    activos a
+                    a.fecha_fin_garantia, a.fecha_fin_mantenimiento, a.fecha_fin_soporte_mainstream, a.fecha_fin_soporte_extended, a.fecha_fin_vida
+                FROM activos a
                 JOIN tipos_activos ta ON a.id_tipo_activo = ta.id
                 WHERE
-                    (a.fecha_fin_garantia IS NOT NULL AND a.fecha_fin_garantia <= :thresholdDate1 AND a.fecha_fin_garantia >= CURDATE()) OR
-                    (a.fecha_fin_mantenimiento IS NOT NULL AND a.fecha_fin_mantenimiento <= :thresholdDate2 AND a.fecha_fin_mantenimiento >= CURDATE()) OR
-                    (a.fecha_fin_soporte_mainstream IS NOT NULL AND a.fecha_fin_soporte_mainstream <= :thresholdDate3 AND a.fecha_fin_soporte_mainstream >= CURDATE()) OR
-                    (a.fecha_fin_soporte_extended IS NOT NULL AND a.fecha_fin_soporte_extended <= :thresholdDate4 AND a.fecha_fin_soporte_extended >= CURDATE())
+                    (a.fecha_fin_garantia BETWEEN :today AND :threshold_date) OR
+                    (a.fecha_fin_mantenimiento BETWEEN :today AND :threshold_date) OR
+                    (a.fecha_fin_soporte_mainstream BETWEEN :today AND :threshold_date) OR
+                    (a.fecha_fin_soporte_extended BETWEEN :today AND :threshold_date) OR
+                    (a.fecha_fin_vida BETWEEN :today AND :threshold_date)
                 ORDER BY a.nombre ASC
-            ");
-            $stmt->bindParam(':thresholdDate1', $thresholdDate, PDO::PARAM_STR);
-            $stmt->bindParam(':thresholdDate2', $thresholdDate, PDO::PARAM_STR);
-            $stmt->bindParam(':thresholdDate3', $thresholdDate, PDO::PARAM_STR);
-            $stmt->bindParam(':thresholdDate4', $thresholdDate, PDO::PARAM_STR);
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+            $stmt->bindValue(':threshold_date', $thresholdDate, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // --- DEBUG: Log de la consulta ---
+            $debugQuery = $sql;
+            $debugQuery = str_replace(':today', "'$today'", $debugQuery);
+            $debugQuery = str_replace(':threshold_date', "'$thresholdDate'", $debugQuery);
+            $this->logger->debug('SQL Query Executed for Assets', ['query' => preg_replace('/\s+/', ' ', $debugQuery)]);
+            // --- FIN DEBUG ---
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->logger->debug('DB Results for Expiring Assets', ['count' => count($results)]);
+            return $results;
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage());
             return false;

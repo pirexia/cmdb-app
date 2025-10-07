@@ -208,22 +208,21 @@ class Contract
      * @param string $thresholdDate Fecha límite (YYYY-MM-DD)
      * @return array|false
      */
-    public function getExpiringContracts(string $thresholdDate)
+    public function getExpiringContracts(string $thresholdDate): array|false
     {
         try {
-            $stmt = $this->db->prepare("
+            $today = date('Y-m-d');
+            $sql = "
                 SELECT
                     c.id, c.numero_contrato, ct.nombre AS tipo_contrato_nombre, p.nombre AS proveedor_nombre, c.fecha_fin
-                FROM
-                    contratos c
+                FROM contratos c
                 LEFT JOIN tipos_contrato ct ON c.id_tipo_contrato = ct.id
                 LEFT JOIN proveedores p ON c.id_proveedor = p.id
-                WHERE
-                    c.fecha_fin IS NOT NULL AND c.fecha_fin <= :thresholdDate AND c.fecha_fin >= CURDATE()
+                WHERE c.fecha_fin BETWEEN :today AND :threshold_date
                 ORDER BY c.fecha_fin ASC
-            ");
-            $stmt->bindParam(':thresholdDate', $thresholdDate, PDO::PARAM_STR);
-            $stmt->execute();
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':today' => $today, ':threshold_date' => $thresholdDate]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage());

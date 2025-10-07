@@ -81,6 +81,7 @@ class ComposerStaticInit53b798348b8b2cec0af5c38e418ddc4c
         array (
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
+            'CmdbNotification\\' => 17,
         ),
         'A' => 
         array (
@@ -227,6 +228,10 @@ class ComposerStaticInit53b798348b8b2cec0af5c38e418ddc4c
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
+        'CmdbNotification\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/../cmdb_notification/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -251,9 +256,12 @@ class ComposerStaticInit53b798348b8b2cec0af5c38e418ddc4c
         'App\\Controllers\\ContractController' => __DIR__ . '/../..' . '/app/Controllers/ContractController.php',
         'App\\Controllers\\CustomFieldsController' => __DIR__ . '/../..' . '/app/Controllers/CustomFieldsController.php',
         'App\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Controllers/DashboardController.php',
+        'App\\Controllers\\ImportController' => __DIR__ . '/../..' . '/app/Controllers/ImportController.php',
         'App\\Controllers\\LanguageController' => __DIR__ . '/../..' . '/app/Controllers/LanguageController.php',
+        'App\\Controllers\\LogController' => __DIR__ . '/../..' . '/app/Controllers/LogController.php',
         'App\\Controllers\\MasterController' => __DIR__ . '/../..' . '/app/Controllers/MasterController.php',
         'App\\Controllers\\ModelController' => __DIR__ . '/../..' . '/app/Controllers/ModelController.php',
+        'App\\Controllers\\SmtpController' => __DIR__ . '/../..' . '/app/Controllers/SmtpController.php',
         'App\\Controllers\\SourceController' => __DIR__ . '/../..' . '/app/Controllers/SourceController.php',
         'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Controllers/UserController.php',
         'App\\Middlewares\\AuthMiddleware' => __DIR__ . '/../..' . '/app/Middlewares/AuthMiddleware.php',
@@ -278,16 +286,24 @@ class ComposerStaticInit53b798348b8b2cec0af5c38e418ddc4c
         'App\\Models\\PasswordResetToken' => __DIR__ . '/../..' . '/app/Models/PasswordResetToken.php',
         'App\\Models\\Provider' => __DIR__ . '/../..' . '/app/Models/Provider.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
+        'App\\Models\\SmtpConfig' => __DIR__ . '/../..' . '/app/Models/SmtpConfig.php',
         'App\\Models\\Source' => __DIR__ . '/../..' . '/app/Models/Source.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Services\\AuthService' => __DIR__ . '/../..' . '/app/Services/AuthService.php',
+        'App\\Services\\CsvImporterService' => __DIR__ . '/../..' . '/app/Services/CsvImporterService.php',
         'App\\Services\\CsvTemplateService' => __DIR__ . '/../..' . '/app/Services/CsvTemplateService.php',
         'App\\Services\\LdapService' => __DIR__ . '/../..' . '/app/Services/LdapService.php',
         'App\\Services\\LogService' => __DIR__ . '/../..' . '/app/Services/LogService.php',
         'App\\Services\\MailService' => __DIR__ . '/../..' . '/app/Services/MailService.php',
-        'App\\Services\\NotificationService' => __DIR__ . '/../..' . '/app/Services/NotificationService.php',
         'App\\Services\\SessionService' => __DIR__ . '/../..' . '/app/Services/SessionService.php',
+        'App\\Services\\SmtpService' => __DIR__ . '/../..' . '/app/Services/SmtpService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'CmdbNotification\\Checkers\\AssetExpirationChecker' => __DIR__ . '/../..' . '/../cmdb_notification/src/Checkers/AssetExpirationChecker.php',
+        'CmdbNotification\\Checkers\\ContractExpirationChecker' => __DIR__ . '/../..' . '/../cmdb_notification/src/Checkers/ContractExpirationChecker.php',
+        'CmdbNotification\\NotificationManager' => __DIR__ . '/../..' . '/../cmdb_notification/src/NotificationManager.php',
+        'CmdbNotification\\Services\\Config' => __DIR__ . '/../..' . '/../cmdb_notification/src/Services/Config.php',
+        'CmdbNotification\\Services\\Database' => __DIR__ . '/../..' . '/../cmdb_notification/src/Services/Database.php',
+        'CmdbNotification\\Services\\EmailService' => __DIR__ . '/../..' . '/../cmdb_notification/src/Services/EmailService.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',
         'Complex\\Functions' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Functions.php',

@@ -227,3 +227,73 @@
 [2025-08-13 01:00:01] CMDB_CLI_App.INFO: No se encontraron elementos próximos a caducar para notificar.  
 [2025-08-13 01:00:01] CMDB_CLI_App.INFO: Cron Job: Proceso de notificaciones finalizado.  
 [2025-08-13 15:30:22] CMDB_CLI_App.ERROR: Error al configurar PHPMailer en CLI: Invalid address:  (From):   
+[2025-10-07T07:43:17.637977+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos %s días a: andres.matias@dachser.com  
+[2025-10-07T07:43:17.638769+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T07:43:17.638814+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T08:10:42.949645+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T08:10:42.950260+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T08:10:42.950304+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T08:11:21.571104+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T08:11:21.571954+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T08:11:21.572044+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T08:17:06.045477+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T08:17:06.046194+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T08:17:06.046276+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T08:18:02.922072+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T08:18:02.922806+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T08:18:02.922901+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:31:01.644813+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:31:01.645747+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:31:01.645878+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:35:05.141909+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:35:05.142473+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:35:05.142525+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:37:54.299701+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:37:54.300383+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:37:54.300485+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:42:03.690075+00:00] CMDB App.CRITICAL: Cron Job: Error crítico en notificaciones: Too few arguments to function App\Models\Asset::__construct(), 1 passed in /var/www/html/cmdb_app/app/bootstrap.php on line 280 and exactly 2 expected - #0 /var/www/html/cmdb_app/app/bootstrap.php(280): App\Models\Asset->__construct()
+#1 [internal function]: {closure}()
+#2 /var/www/html/cmdb_app/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#3 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#4 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#5 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Container.php(354): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#6 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Container.php(136): DI\Container->resolveDefinition()
+#7 /var/www/html/cmdb_app/app/bootstrap.php(362): DI\Container->get()
+#8 [internal function]: {closure}()
+#9 /var/www/html/cmdb_app/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#10 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#11 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#12 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Container.php(354): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#13 /var/www/html/cmdb_app/vendor/php-di/php-di/src/Container.php(136): DI\Container->resolveDefinition()
+#14 /var/www/html/cmdb_app/run_notifications.php(42): DI\Container->get()
+#15 {main}  
+[2025-10-07T09:44:14.814204+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:44:14.814885+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:44:14.814937+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:45:49.491550+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:45:49.492142+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:45:49.492183+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T09:48:16.779861+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T09:48:16.780458+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T09:48:16.780505+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T10:58:43.943123+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T10:58:43.943872+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T10:58:43.943916+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:07:19.015848+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:07:19.016678+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:07:19.016766+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:09:02.960911+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:09:02.961734+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:09:02.961843+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:14:08.591274+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:14:08.591862+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:14:08.591910+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:16:31.048268+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:16:31.049210+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:16:31.049322+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:19:25.866353+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:19:25.867185+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:19:25.867296+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-07T11:21:04.231633+00:00] CMDB App.INFO: Cron Job: Iniciando envío de notificaciones de caducidad para los próximos 30 días a: andres.matias@dachser.com  
+[2025-10-07T11:21:04.232277+00:00] CMDB App.INFO: No se encontraron elementos próximos a caducar en los próximos 30 días.  
+[2025-10-07T11:21:04.232337+00:00] CMDB App.INFO: Cron Job: Proceso de notificaciones finalizado.  
