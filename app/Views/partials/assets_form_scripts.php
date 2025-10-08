@@ -1,7 +1,8 @@
 <?php
-// app/Views/partials/footer_scripts.php
-// Este archivo contiene código JavaScript que se inserta en la sección <body> de la plantilla base (layout/base.php).
-// Incluye lógica dinámica para formularios de activos y la funcionalidad de mensajes flash.
+// app/Views/partials/assets_form_scripts.php
+// Este archivo contiene la lógica JavaScript específica para el formulario de creación/edición de activos.
+// Gestiona los desplegables dependientes (Tipo -> Fabricante -> Modelo) y la carga de campos personalizados.
+// Las variables PHP ($t) se pasan desde layout/base.php.
 ?>
 
 $(document).ready(function() {
@@ -40,7 +41,7 @@ $(document).ready(function() {
         var modeloSelect = $('#id_modelo'); // Referencia al select de modelos.
         
         // Limpia las opciones actuales y añade una opción por defecto.
-        modeloSelect.empty().append('<option value="">Selecciona un Modelo</option>');
+        modeloSelect.empty().append('<option value=""><?= $t('select_a_model') ?></option>');
 
         console.log('Fabricante seleccionado ID:', fabricanteId); // Depuración en consola.
 
@@ -130,7 +131,7 @@ $(document).ready(function() {
 
 
     // Se activa cuando el valor del select con ID 'id_tipo_activo' cambia.
-    $('#id_tipo_activo').change(function() {
+    tipoActivoSelect.change(function() { // Usamos tipoActivoSelect que ya está definido
         var currentAssetTypeId = $(this).val(); // Obtiene el ID del tipo de activo seleccionado.
         customFieldsContainer.empty(); // Limpia los campos personalizados existentes en el contenedor.
 
@@ -225,7 +226,7 @@ $(document).ready(function() {
                         labelHtml = ''; // La etiqueta ya está dentro del div del checkbox.
                         break;
                     case 'lista':
-                        var optionsHtml = '<option value="">Selecciona una opción</option>';
+                        var optionsHtml = '<option value=""><?= $t('select_an_option') ?></option>'; // Opción por defecto traducida
                         if (def.opciones_lista) {
                             def.opciones_lista.split(',').forEach(function(option) {
                                 option = option.trim();
@@ -242,14 +243,14 @@ $(document).ready(function() {
             customFieldsContainer.html(htmlFields); // Inserta todos los campos generados en el contenedor.
         } else {
             // Si no hay definiciones de campos, muestra un mensaje informativo.
-            customFieldsContainer.html('<div class="alert alert-info" role="alert">No hay campos personalizados definidos para este tipo de activo.</div>');
+            customFieldsContainer.html('<div class="alert alert-info" role="alert"><?= $t('no_custom_fields_defined') ?></div>');
         }
     }
 
 
     // --- Ejecución inicial al cargar la página ---
     // Determina si el activo ya existe y tiene un tipo asignado (modo edición).
-    var initialAssetTypeId = $('#id_tipo_activo').val(); 
+    var initialAssetTypeId = tipoActivoSelect.val(); // Usamos tipoActivoSelect que ya está definido
     if (initialAssetTypeId) { 
         // Si es edición, llama a la API para cargar las DEFINICIONES de campos personalizados.
         $.ajax({
@@ -261,36 +262,21 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 console.error('Error al cargar campos personalizados iniciales (AJAX):', error);
-                $('#custom-fields-container').html('<div class="alert alert-danger" role="alert">Error al cargar campos personalizados iniciales.</div>');
+                $('#custom-fields-container').html('<div class="alert alert-danger" role="alert"><?= $t('error_loading_custom_fields') ?></div>');
             }
         });
     } else {
         // En modo creación, si no hay tipo seleccionado inicialmente, muestra el mensaje.
-        $('#custom-fields-container').html('<div class="alert alert-info" role="alert">Selecciona un tipo de activo para ver campos personalizados.</div>');
+        $('#custom-fields-container').html('<div class="alert alert-info" role="alert"><?= $t('select_asset_type_for_custom_fields') ?></div>');
     }
 
     // --- Ejecutar la carga inicial de modelos por fabricante ---
     // Esto solo ocurre si ya hay un fabricante seleccionado al cargar la página (en modo edición).
-    var initialFabricanteId = $('#id_fabricante').val();
+    var initialFabricanteId = fabricanteSelect.val(); // Usamos fabricanteSelect que ya está definido
     if (initialFabricanteId) {
-        $('#id_fabricante').trigger('change'); // Dispara el evento change para cargar los modelos iniciales.
+        fabricanteSelect.trigger('change'); // Dispara el evento change para cargar los modelos iniciales.
     }
 
-    // --- Lógica para que los mensajes flash desaparezcan automáticamente ---
-    // Selecciona todos los elementos con la clase 'flash-message'.
-    console.log('Buscando mensajes flash para timeout...'); // Depuración.
-    $('.flash-message').each(function(index) {
-        var $this = $(this);
-        console.log('Mensaje flash encontrado para timeout:', index, $this.text()); // Depuración.
-        // Desvanecer y eliminar el mensaje después de 3 segundos (3000 milisegundos).
-        setTimeout(function() {
-            console.log('Desvaneciendo mensaje flash:', index); // Depuración.
-            $this.fadeOut('slow', function() {
-                $(this).remove(); // Elimina el elemento del DOM una vez desvanecido.
-                console.log('Mensaje flash eliminado:', index); // Depuración.
-            });
-        }, 3000); // 3 segundos.
-    });
-    // --- Fin Lógica mensajes flash automáticos ---
-
+    // --- Inicializar el estado del formulario al cargar la página ---
+    initializeAssetFormState();
 });

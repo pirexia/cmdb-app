@@ -51,6 +51,7 @@ return [
     'password_reset_title' => 'Restablecer Contraseña',
     'enter_email_for_reset_link' => 'Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.',
     'send_reset_link' => 'Enviar Enlace de Restablecimiento',
+    'reset_password_link_sent' => 'Si tu correo electrónico está en nuestra base de datos, recibirás un enlace para restablecer tu contraseña en breve.',
     'back_to_login' => 'Volver al inicio de sesión',
     'reset_password_button' => 'Restablecer Contraseña',
     'new_password' => 'Nueva Contraseña',
@@ -65,6 +66,7 @@ return [
     'password_reset_error_invalid_expired' => 'El token de restablecimiento de contraseña no es válido o ha expirado. Por favor, solicita uno nuevo.',
     'all_fields_required' => 'Todos los campos son obligatorios.',
     'email_already_exists' => 'El email proporcionado ya está registrado.',
+    'password_reset_subject' => 'Recuperación de Contraseña para CMDB App',
     'username_already_exists' => 'El nombre de usuario ya existe.',
     'user_source' => 'Fuente de Usuario',
     'select_a_user_source' => 'Selecciona una Fuente de Usuario',
@@ -77,6 +79,7 @@ return [
     'users' => 'Usuarios',
     'cmdb_masters' => 'Maestros CMDB',
     'manufacturers' => 'Fabricantes',
+    'manufacturer' => 'Fabricante',
     'models' => 'Modelos',
     'asset_types' => 'Tipos de Activo',
     'asset_statuses' => 'Estados de Activo',
@@ -160,6 +163,7 @@ return [
     // --- Sección: Gestión de Modelos (Models Management) ---
     'error_loading_models' => 'Error al cargar los modelos.',
     'administer_models' => 'Administrar Modelos',
+    'new_model' => 'Nuevo Modelo',
     'model' => 'Modelo', // Ya existe
     'model_not_found' => 'Modelo no encontrado.',
     'error_loading_manufacturers_models' => 'Error al cargar fabricantes. No se pueden crear/editar modelos.',
@@ -317,6 +321,7 @@ return [
     'custom_field_deleted_successfully' => 'Definición de campo eliminada con éxito.',
     'list_options_required' => 'Las opciones de la lista son obligatorias para el tipo de dato "lista".',
     'no_custom_fields_defined_to_display' => 'No hay definiciones de campos personalizados para mostrar.',
+    'select_an_option' => 'Selecciona una opción',
 
 
     // --- Sección: DataTables ---

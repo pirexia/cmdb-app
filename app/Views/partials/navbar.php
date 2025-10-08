@@ -8,6 +8,9 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '/';
 $currentPath = parse_url($currentPath, PHP_URL_PATH);
 
 // La función $t ya estará disponible aquí por la inyección de PlatesPHP (desde bootstrap.php)
+
+// Obtenemos el AuthService desde el contenedor para romper la dependencia circular.
+$authService = $container->get(App\Services\AuthService::class);
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container-fluid">

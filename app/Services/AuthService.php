@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\PasswordResetToken;
 use App\Models\Role;
 use App\Models\Source;
-use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Log\LoggerInterface;
 use DateTime;
 use DateInterval;
@@ -18,31 +17,34 @@ class AuthService
     private PasswordResetToken $tokenModel;
     private Role $roleModel;
     private SessionService $sessionService;
-    private PHPMailer $mailer;
+    private MailService $mailService;
     private LoggerInterface $logger;
     private array $config;
     private LdapService $ldapService; // <--- ¡NUEVA PROPIEDAD!
+    private $translator;
     private Source $sourceModel;
 
     public function __construct(
         User $userModel,
         PasswordResetToken $tokenModel,
         Role $roleModel,
-        SessionService $sessionService,
-        PHPMailer $mailer,
+        SessionService $sessionService,        
+        MailService $mailService,
         LoggerInterface $logger,
         array $config,
         LdapService $ldapService, // <--- ¡NUEVO ARGUMENTO!
-        Source $sourceModel
+        Source $sourceModel,
+        callable $translator
     ) {
         $this->userModel = $userModel;
         $this->tokenModel = $tokenModel;
         $this->roleModel = $roleModel;
         $this->sessionService = $sessionService;
-        $this->mailer = $mailer;
+        $this->mailService = $mailService;
         $this->logger = $logger;
         $this->config = $config;
         $this->ldapService = $ldapService; // <--- ASIGNACIÓN
+        $this->translator = $translator;
         $this->sourceModel = $sourceModel;
 
         // Limpiar tokens expirados cada vez que se instancie el servicio
@@ -247,7 +249,7 @@ class AuthService
         }
 
         // --- Validar si la cuenta es local antes de permitir reset ---
-        $source = $this->userModel->getSourceById($user['id_fuente_usuario']); // Necesita un método getSourceById en userModel o inyectar Source.
+        $source = $this->sourceModel->getById($user['id_fuente_usuario']);
         if (!$source || $source['tipo_fuente'] !== 'local') {
              $this->logger->warning("Intento de recuperación de contraseña para usuario no local: {$user['nombre_usuario']}. Solo usuarios locales pueden resetear su contraseña.");
              return true; // Falso positivo
@@ -270,22 +272,19 @@ class AuthService
         
 
         // Enviar correo electrónico
-        try {
-            $resetLink = $this->config['app']['url'] . '/reset-password?token=' . $token;
-            $this->mailer->addAddress($user['email'], $user['nombre_usuario']);
-            $this->mailer->Subject = 'Recuperación de Contraseña para CMDB App';
-            $this->mailer->isHTML(true);
-            $this->mailer->Body = "Hola {$user['nombre_usuario']},<br><br>"
-                                 . "Has solicitado restablecer tu contraseña para la aplicación CMDB App.<br>"
-                                 . "Haz clic en el siguiente enlace para continuar: <a href=\"{$resetLink}\">{$resetLink}</a><br>"
-                                 . "Este enlace expirará en 1 hora.<br><br>"
-                                 . "Si no solicitaste esto, puedes ignorar este correo.";
+        $t = $this->translator;
+        $resetLink = $this->config['app']['url'] . '/reset-password?token=' . $token;
+        $subject = $t('password_reset_subject');
+        
+        $templateData = [
+            'username' => $user['nombre_usuario'],
+            'reset_link' => $resetLink
+        ];
 
-            $this->mailer->send();
-            $this->logger->info("Correo de recuperación de contraseña enviado a {$user['email']}");
-            return true;
-        } catch (MailerException $e) {
-            $this->logger->error("Error al enviar correo de recuperación a {$user['email']}: {$e->getMessage()}");
+        // Usar MailService para enviar el correo usando una plantilla
+        if ($this->mailService->sendEmail($user['email'], $subject, 'password_reset', $templateData)) {
+             return true;
+        } else {
             return false;
         }
     }

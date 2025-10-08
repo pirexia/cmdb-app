@@ -119,11 +119,12 @@ $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     // Añadir datos globales a todas las vistas de PlatesPHP.
     // Esto hace que servicios como authService, sessionService y la función t() estén
     // disponibles directamente en cualquier plantilla renderizada por Plates.
-    $engine->addData([
-        'authService' => $c->get(App\Services\AuthService::class),
+    $engine->addData([        
         'sessionService' => $c->get(App\Services\SessionService::class),
-        'config' => $config, // Pasar la configuración completa a las vistas
-        't' => $c->get('translator'), // La función de traducción 't()'
+        'config' => $config,
+        't' => $c->get('translator'),
+        // Inyectamos el contenedor para resolver AuthService de forma perezosa y romper la dependencia circular.
+        'container' => $c 
     ]);
 
     return $engine;
@@ -344,11 +345,12 @@ $container->set(App\Services\AuthService::class, function (ContainerInterface $c
         $c->get(App\Models\PasswordResetToken::class),
         $c->get(App\Models\Role::class),
         $c->get(App\Services\SessionService::class),
-        $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
-        $c->get(Psr\Log\LoggerInterface::class), // Usamos la interfaz
+        $c->get(App\Services\MailService::class),
+        $c->get(Psr\Log\LoggerInterface::class),
         $c->get('config'),
         $c->get(App\Services\LdapService::class), // La inyección de LdapService
-        $c->get(App\Models\Source::class)
+        $c->get(App\Models\Source::class),
+        $c->get('translator')
     );
 });
 

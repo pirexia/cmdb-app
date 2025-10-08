@@ -117,8 +117,10 @@
                 'assetsByStatus' => $assetsByStatus ?? [],
                 't' => $t
             ]);
-        } elseif (str_starts_with($currentPath, '/assets')) {
+        } elseif ($currentPath === '/assets' || $currentPath === '/assets/') {
             $this->insert('partials/datatables_assets');
+        } elseif (str_starts_with($currentPath, '/assets/create') || str_starts_with($currentPath, '/assets/edit/')) {
+            $this->insert('partials/assets_form_scripts');
         } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
             $this->insert('partials/datatables_models');
         } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {

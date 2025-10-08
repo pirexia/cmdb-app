@@ -51,6 +51,7 @@ return [
     'password_reset_title' => 'Reset Password',
     'enter_email_for_reset_link' => 'Enter your email address and we will send you a link to reset your password.',
     'send_reset_link' => 'Send Reset Link',
+    'reset_password_link_sent' => 'If your email address is in our database, you will receive a password reset link shortly.',
     'back_to_login' => 'Back to login',
     'reset_password_button' => 'Reset Password',
     'new_password' => 'New Password',
@@ -65,6 +66,7 @@ return [
     'password_reset_error_invalid_expired' => 'The password reset token is invalid or has expired. Please request a new one.',
     'all_fields_required' => 'All fields are required.',
     'email_already_exists' => 'The provided email is already registered.',
+    'password_reset_subject' => 'Password Recovery for CMDB App',
     'username_already_exists' => 'The username already exists.',
     'user_source' => 'User Source',
     'select_a_user_source' => 'Select a User Source',
@@ -77,6 +79,7 @@ return [
     'users' => 'Users',
     'cmdb_masters' => 'CMDB Masters',
     'manufacturers' => 'Manufacturers',
+    'manufacturer' => 'Manufacturer',
     'models' => 'Models',
     'asset_types' => 'Asset Types',
     'asset_statuses' => 'Asset Statuses',
@@ -159,6 +162,7 @@ return [
     // --- Sección: Gestión de Modelos (Models Management) ---
     'error_loading_models' => 'Error loading models.',
     'administer_models' => 'Administer Models',
+    'new_model' => 'New Model',
     'model' => 'Model',
     'model_not_found' => 'Model not found.',
     'error_loading_manufacturers_models' => 'Error loading manufacturers. Cannot create/edit models.',
@@ -315,6 +319,7 @@ return [
     'custom_field_deleted_successfully' => 'Custom field definition deleted successfully.',
     'list_options_required' => 'List options are required for "List" data type.',
     'no_custom_fields_defined_to_display' => 'No custom fields defined to display.',
+    'select_an_option' => 'Select an option',
 
 
     // --- Sección: DataTables ---
