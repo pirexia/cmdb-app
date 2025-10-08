@@ -14,18 +14,21 @@ use App\Models\Model as AssetModel;
 
 // Servicios
 use App\Services\LdapService;
+use App\Services\MailService;
 
 class ApiController
 {
     private ContainerInterface $container; // Mantener por si se necesita para otros servicios
     private LoggerInterface $logger; // <--- ¡NUEVA PROPIEDAD!
     private $translator; // <-- Se necesitará para el traductor
+    private MailService $mailService;
 
-    public function __construct(ContainerInterface $container, LoggerInterface $logger, callable $translator) // <--- ¡CAMBIO EN CONSTRUCTOR!
+    public function __construct(ContainerInterface $container, LoggerInterface $logger, callable $translator, MailService $mailService) // <--- ¡CAMBIO EN CONSTRUCTOR!
     {
         $this->container = $container;
         $this->logger = $logger; // <--- ASIGNACIÓN
         $this->translator = $translator; // <--- ASIGNACIÓN
+        $this->mailService = $mailService;
     }
 
     /**
@@ -109,6 +112,34 @@ class ApiController
             '%host%' => $data['host'] ?? 'N/A',
             '%result%' => $result['success'] ? 'Success' : 'Failure'
         ]));
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function sendTestEmail(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+
+        // --- Test de envío de correo independiente ---
+        // Se envía siempre a una dirección fija para probar el MailService.
+        $to = 'andres.matias@dachser.com';
+        $subject = $t('test_email_subject');
+        $template = 'test_email'; // Nombre de la plantilla de correo
+
+        // Datos simulados para la plantilla, para no depender de un usuario real.
+        $data = [
+            'user' => ['nombre_usuario' => 'Usuario de Prueba'],
+            'appName' => 'CMDB App'
+        ];
+
+        $success = $this->mailService->sendEmail($to, $subject, $template, $data);
+
+        if ($success) {
+            $result = ['success' => true, 'message' => $t('test_email_sent_successfully_to', ['%email%' => $to])];
+        } else {
+            $result = ['success' => false, 'message' => $t('test_email_failed_to_send_to', ['%email%' => $to])];
+        }
 
         $response->getBody()->write(json_encode($result));
         return $response->withHeader('Content-Type', 'application/json');

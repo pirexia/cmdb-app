@@ -380,7 +380,8 @@ $container->set(App\Controllers\ApiController::class, function (ContainerInterfa
     return new App\Controllers\ApiController(
         $c, // Pasamos el contenedor completo si el controlador necesita acceder a él directamente
         $c->get(Psr\Log\LoggerInterface::class),
-        $c->get('translator')
+        $c->get('translator'),
+        $c->get(App\Services\MailService::class)
     );
 });
 

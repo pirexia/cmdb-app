@@ -121,6 +121,7 @@ class AuthController
      */
     public function processForgotPassword(Request $request, Response $response): Response
     {
+        $this->logger->info('Procesando solicitud de olvido de contraseña.');
         $data = $request->getParsedBody();
         $email = filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL);
         $t = $this->translator; // Accede a la función de traducción
@@ -152,8 +153,10 @@ class AuthController
 
         $tokenData = $this->authService->getTokenData($token);
 
+        $this->logger->info("Validando token: {$token}. Datos encontrados: " . ($tokenData ? json_encode($tokenData) : 'Ninguno'));
+
         if (!$tokenData || $tokenData['usado'] || (new \DateTime() > new \DateTime($tokenData['fecha_expiracion']))) {
-            $this->sessionService->addFlashMessage('danger', $t('password_reset_error_invalid_expired'));
+            $this->sessionService->addFlashMessage('danger', $t('password_reset_error_invalid_expired')); // Mensaje de error
             return $response->withHeader('Location', '/forgot-password')->withStatus(302);
         }
 

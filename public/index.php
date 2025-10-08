@@ -1,4 +1,5 @@
 <?php
+file_put_contents('/var/www/html/cmdb_app/storage/logs/app.log', '['.date('Y-m-d H:i:s').'] Request: '.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI']."\n", FILE_APPEND);
 /**
  * public/index.php
  * Punto de entrada principal de la aplicación CMDB.

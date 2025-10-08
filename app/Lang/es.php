@@ -671,4 +671,8 @@ return [
     'smtp_test_unexpected_error_log' => 'Error inesperado durante la prueba de conexión SMTP: %message%',
     'smtp_test_unexpected_error' => 'Ocurrió un error inesperado durante la prueba de conexión.',
     'debug_api_test_smtp_connection_attempt' => 'API de prueba de conexión SMTP llamada para host: %host%. Resultado: %result%.',
+    'test_email_subject' => 'Correo de prueba desde CMDB App',
+    'test_email_sent_successfully_to' => 'Correo de prueba enviado con éxito a %email%.',
+    'test_email_failed_to_send_to' => 'Fallo al enviar correo de prueba a %email%.',
+    'user_not_authenticated' => 'Usuario no autenticado.',
 ];

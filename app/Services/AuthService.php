@@ -241,6 +241,7 @@ class AuthService
      */
     public function initiatePasswordReset(string $email): bool
     {
+        $this->logger->info("Inicio de proceso de reseteo de contraseña para: $email");
         $user = $this->userModel->getUserByEmail($email);
 
         if (!$user) {
@@ -257,19 +258,22 @@ class AuthService
 
         // Generar un token único y seguro
         $token = bin2hex(random_bytes(32)); // 64 caracteres hexadecimales
+        $hashedToken = hash('sha256', $token); // Hashear el token para la BBDD
         $expiration = new DateTime();
         $expiration->add(new DateInterval('PT1H')); // Token válido por 1 hora
 
+        // Limpiamos los tokens expirados justo antes de crear uno nuevo. Esto evita que la tabla crezca indefinidamente.
+        $this->tokenModel->cleanExpiredTokens();
+
         try {
-            if (!$this->tokenModel->createToken($user['id'], $token, $expiration->format('Y-m-d H:i:s'))) {
-                $this->logger->error("Error al crear token de recuperación para usuario {$user['id']}");
-                return false;
-            }
+            // Llamamos a createToken una sola vez.
+            // Si falla, lanzará una PDOException que será capturada por el bloque catch.
+            $this->logger->info("Creando token de recuperación para usuario ID: {$user['id']}");
+            $this->tokenModel->createToken($user['id'], $hashedToken, $expiration->format('Y-m-d H:i:s'));
         } catch (\PDOException $e) {
             $this->logger->error("PDOException al crear token de recuperación para usuario {$user['id']}: " . $e->getMessage());
             return false;
         }
-        
 
         // Enviar correo electrónico
         $t = $this->translator;
@@ -281,12 +285,26 @@ class AuthService
             'reset_link' => $resetLink
         ];
 
+        $this->logger->info("Enviando correo de reseteo a {$user['email']} con asunto '{$subject}' y plantilla 'password_reset'");
         // Usar MailService para enviar el correo usando una plantilla
         if ($this->mailService->sendEmail($user['email'], $subject, 'password_reset', $templateData)) {
              return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Obtiene los datos de un token de recuperación de contraseña.
+     * @param string $tokenValue
+     * @return array|false
+     */
+    public function getTokenData(string $tokenValue): array|false
+    {
+        // Hasheamos el token que viene de la URL antes de pasarlo al modelo.
+        // El modelo ahora espera recibir un token ya hasheado para buscarlo.
+        $hashedToken = hash('sha256', $tokenValue);
+        return $this->tokenModel->getToken($hashedToken);
     }
 
     /**
@@ -297,9 +315,11 @@ class AuthService
      */
     public function resetPassword(string $tokenValue, string $newPassword): bool
     {
-        $token = $this->tokenModel->getToken($tokenValue);
+        // Se utiliza el método local getTokenData que a su vez llama al modelo.
+        // Esto asegura que la lógica de hasheo y búsqueda es consistente.
+        $token = $this->getTokenData($tokenValue); 
 
-        if (!$token || $token['usado'] || new DateTime() > new DateTime($token['fecha_expiracion'])) {
+        if (!$token || $token['usado'] || new \DateTime('now', new \DateTimeZone('UTC')) > new \DateTime($token['fecha_expiracion'], new \DateTimeZone('UTC'))) {
             $this->logger->warning("Intento de uso de token de recuperación inválido, usado o expirado: $tokenValue");
             return false;
         }

@@ -104,6 +104,7 @@ class MailService
      */
     public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): bool
     {
+        $this->logger->info("Inicio de envío de correo a: " . (is_array($to) ? implode(', ', $to) : $to));
         try {
             // Configura el mailer con los datos más recientes de la BBDD. Si falla, no continúa.
             if (!$this->setupMailer()) {
@@ -134,6 +135,7 @@ class MailService
             return true;
         } catch (MailerException $e) {
             $this->logger->error("Error al enviar correo: {$e->getMessage()} - Destinatario: " . (is_array($to) ? implode(', ', $to) : $to) . " - Asunto: '{$subject}'");
+            $this->logger->error("Mailer Error: " . $this->mailer->ErrorInfo);
             return false;
         }
     }

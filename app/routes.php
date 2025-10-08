@@ -188,6 +188,7 @@ $app->group('/api', function (RouteCollectorProxy $apiGroup) use ($app) {
     $apiGroup->get('/models/byManufacturer/{manufacturer_id}', App\Controllers\ApiController::class . ':getModelsByManufacturer');
     $apiGroup->post('/sources/test-connection', App\Controllers\ApiController::class . ':testSourceConnection');
     $apiGroup->post('/smtp/test-connection', App\Controllers\ApiController::class . ':testSmtpConnection');
+    $apiGroup->get('/test-email', App\Controllers\ApiController::class . ':sendTestEmail');
 
 })->add(AuthMiddleware::class);
 
