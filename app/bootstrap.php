@@ -24,6 +24,9 @@ use PHPMailer\PHPMailer\PHPMailer;        // Clase principal de PHPMailer para e
 use PHPMailer\PHPMailer\SMTP;             // Clase para constantes SMTP de PHPMailer (ej. ENCRYPTION_STARTTLS)
 use League\Csv\Writer;                    // Clase para la importación de CSVs
 
+// Middleware de la Aplicación
+use App\Middlewares\RequestLogMiddleware;
+
 // Clases de la Aplicación (App\)
 // Controladores
 use App\Controllers\AdminController;
@@ -166,7 +169,7 @@ $container->set('logger', function (ContainerInterface $c) {
 
     $logger = new Logger($app_name); // Crea una instancia de Monolog Logger
     $formatter = new LineFormatter(
-        "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\\n", // Formato de la línea de log
+        '[%datetime%] %channel%.%level_name%: %message% %context% %extra%' . PHP_EOL, // Formato de la línea de log
         "Y-m-d H:i:s", // Formato de la fecha/hora
         true,          // Incluir stack traces para excepciones
         true           // Permitir saltos de línea dentro del mensaje
@@ -257,6 +260,16 @@ $container->set(App\Services\LdapService::class, function (ContainerInterface $c
         $c->get('translator')
     );
 });
+
+// --- 6. Definiciones de Middleware ---
+// Se registran los middleware en el contenedor para que puedan ser añadidos a la aplicación.
+
+$container->set(RequestLogMiddleware::class, function (ContainerInterface $c) {
+    return new RequestLogMiddleware(
+        $c->get(LoggerInterface::class) // Inyecta el logger configurado.
+    );
+});
+
 
 // 2.9. Servicio de Logs (LogService)
 $container->set(App\Services\LogService::class, function (ContainerInterface $c) {

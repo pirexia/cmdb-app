@@ -424,7 +424,7 @@ class AuthService
                         return false;
                     }
                 }
-                $this->logger->info("Usuario administrador por defecto '{$defaultUsername}' ya existe y está configurado correctamente.");
+                $this->logger->debug("Usuario administrador por defecto '{$defaultUsername}' ya existe y está configurado correctamente.");
                 return true;
             }
         } catch (\PDOException $e) {

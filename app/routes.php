@@ -31,11 +31,15 @@ use App\Middlewares\AuthMiddleware;
 use App\Middlewares\RoleMiddleware;
 use App\Services\AuthService;
 use App\Services\SessionService;
+use App\Middlewares\RequestLogMiddleware;
 
 // Importar modelos si es necesario dentro de las closures de las rutas API
 use App\Models\CustomFieldDefinition;
 use App\Models\Model as AssetModel;
 
+// --- REGISTRO DE MIDDLEWARE GLOBAL ---
+// Este middleware se añade aquí para que se ejecute en cada petición.
+$app->add(RequestLogMiddleware::class);
 
 // --- RUTAS PÚBLICAS (Accesibles sin autenticación) ---
 

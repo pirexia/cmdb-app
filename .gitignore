@@ -1,3 +1,6 @@
 *.save
-*.example
+.env
 run_notifications.php_202508131737
+*.log
+*.cache
+*.tmp
