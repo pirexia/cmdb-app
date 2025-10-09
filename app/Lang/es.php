@@ -468,6 +468,8 @@ return [
     'no_assets_expiring' => 'No hay activos próximos a caducar.',
     'no_contracts_expiring' => 'No hay contratos próximos a caducar.',
 
+    'expiring_assets_count' => 'Activos a Expirar',
+    'expiring_contracts_count' => 'Contratos a Expirar',
     // --- Sección: Importación CSV ---
     'asset_name' => 'Nombre del Activo', // Ya existe
     'serial_number' => 'Número de Serie', // Ya existe

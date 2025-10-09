@@ -54,7 +54,7 @@
     <div class="col">
         <div class="card h-100 bg-warning-subtle border-warning rounded-3 overflow-hidden">
             <div class="card-body">
-                <h5 class="card-title text-warning-emphasis"><?= $t('expiring_assets_contracts') ?></h5>
+                <h5 class="card-title text-warning-emphasis"><?= $t('expiring_assets_count') ?></h5>
                 <p class="card-text fs-1 fw-bold text-warning-emphasis"><?= count($expiringAssets) ?></p>
             </div>
         </div>
@@ -63,7 +63,7 @@
     <div class="col">
         <div class="card h-100 bg-info-subtle border-info rounded-3 overflow-hidden">
             <div class="card-body">
-                <h5 class="card-title text-info-emphasis"><?= $t('expiring_contracts_count') ?? 'Contratos a expirar' ?></h5>
+                <h5 class="card-title text-info-emphasis"><?= $t('expiring_contracts_count') ?></h5>
                 <p class="card-text fs-1 fw-bold text-info-emphasis"><?= count($expiringContracts) ?></p>
             </div>
         </div>

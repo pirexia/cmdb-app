@@ -466,6 +466,8 @@ return [
     'no_assets_expiring' => 'No assets expiring.',
     'no_contracts_expiring' => 'No contracts expiring.',
 
+    'expiring_assets_count' => 'Expiring Assets',
+    'expiring_contracts_count' => 'Expiring Contracts',
     // --- Section: CSV Import ---
     'asset_name' => 'Asset Name',
     'serial_number' => 'Serial Number',
