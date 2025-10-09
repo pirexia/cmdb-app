@@ -17,6 +17,8 @@ use Psr\Log\LoggerInterface;
 use App\Services\CsvTemplateService;  // Servicio para generar plantillas CSV
 use App\Services\CsvImporterService; // Servicio para procesar la importación CSV
 use App\Models\AssetType;             // Modelo para obtener tipos de activo
+use App\Models\Manufacturer;          // Modelo para obtener fabricantes
+use App\Models\Model as ModelAsset;   // Modelo para crear nuevos modelos de activos
 use App\Models\CustomFieldDefinition; // Modelo para obtener definiciones de campos personalizados
 use Exception;                        // Para manejar excepciones generales
 use PDOException;                     // Para capturar errores específicos de la base de datos
@@ -35,6 +37,8 @@ class ImportController
     private CsvTemplateService $csvTemplateService;
     private CsvImporterService $csvImporterService;
     private AssetType $assetTypeModel;
+    private Manufacturer $manufacturerModel;
+    private ModelAsset $modelAssetModel;
     private $translator;
 
     /**
@@ -48,7 +52,9 @@ class ImportController
         CsvTemplateService $csvTemplateService,
         callable $translator,
         AssetType $assetTypeModel,
-        CsvImporterService $csvImporterService
+        CsvImporterService $csvImporterService,
+        Manufacturer $manufacturerModel,
+        ModelAsset $modelAssetModel
     ) {
         $this->view = $view;
         $this->sessionService = $sessionService;
@@ -57,6 +63,8 @@ class ImportController
         $this->translator = $translator;
         $this->assetTypeModel = $assetTypeModel;
         $this->csvImporterService = $csvImporterService;
+        $this->manufacturerModel = $manufacturerModel;
+        $this->modelAssetModel = $modelAssetModel;
     }
 
     /**
@@ -200,12 +208,27 @@ class ImportController
             $data = $request->getParsedBody();
             $assetTypeId = (int)($data['asset_type_id'] ?? 0) ?: null;
 
-            $importSummary = $this->csvImporterService->importCsv($tempFilePath, $entityType, $assetTypeId);
-            
-            if (file_exists($tempFilePath)) {
-                unlink($tempFilePath);
+            // --- FASE 1: ANÁLISIS ---
+            $analysisResult = $this->csvImporterService->importCsv($tempFilePath, $entityType, $assetTypeId);
+
+            // Si se requiere confirmación del usuario para crear modelos
+            if (isset($analysisResult['status']) && $analysisResult['status'] === 'requires_confirmation') {
+                $this->sessionService->set('import_confirmation_data', [
+                    'temp_file_path' => $tempFilePath,
+                    'entity_type' => $entityType,
+                    'asset_type_id' => $assetTypeId,
+                    'new_models' => $analysisResult['new_models'],
+                ]);
+                return $response->withHeader('Location', '/admin/import/confirm-models')->withStatus(302);
             }
-            
+
+            // Si no se requiere confirmación, el resultado es el resumen final.
+            $importSummary = $analysisResult;
+
+            // Eliminar el archivo temporal solo después de una importación completa y exitosa.
+            // En el caso de confirmación, se mantiene para la segunda fase.
+            if (file_exists($tempFilePath)) { unlink($tempFilePath); }
+
             // --- GENERACIÓN DEL LOG DE IMPORTACIÓN DESCARGABLE ---
             $logWriter = Writer::createFromString('');
             $logWriter->setDelimiter(';');
@@ -229,6 +252,87 @@ class ImportController
             $this->sessionService->addFlashMessage('danger', $t('import_unexpected_error_flash', ['%message%' => $e->getMessage()]));
             return $response->withHeader('Location', '/admin/import')->withStatus(302);
         }
+
+        return $response->withHeader('Location', '/admin/import/results')->withStatus(302);
+    }
+
+    /**
+     * Muestra la página para confirmar la creación de nuevos modelos.
+     */
+    public function showConfirmModels(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $confirmationData = $this->sessionService->get('import_confirmation_data');
+
+        if (!$confirmationData || empty($confirmationData['new_models'])) {
+            $this->sessionService->addFlashMessage('warning', $t('import_no_confirmation_needed'));
+            return $response->withHeader('Location', '/admin/import')->withStatus(302);
+        }
+
+        $html = $this->view->render('admin/import/confirm_models', [
+            'pageTitle' => $t('import_confirm_new_models_title'),
+            'newModels' => $confirmationData['new_models'],
+            'entityType' => $confirmationData['entity_type'],
+            'flashMessages' => $this->sessionService->getFlashMessages(),
+        ]);
+
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    /**
+     * Procesa la importación final después de que el usuario ha confirmado la creación de nuevos modelos.
+     */
+    public function processConfirmedImport(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $confirmationData = $this->sessionService->get('import_confirmation_data');
+
+        if (!$confirmationData) {
+            $this->sessionService->addFlashMessage('danger', $t('import_session_data_lost'));
+            return $response->withHeader('Location', '/admin/import')->withStatus(302);
+        }
+
+        // --- FASE 2: CREACIÓN DE NUEVOS MODELOS ---
+        try {
+            foreach ($confirmationData['new_models'] as $modelInfo) {
+                $manufacturer = $this->manufacturerModel->getByName($modelInfo['manufacturer_name']);
+                if ($manufacturer) {
+                    $this->modelAssetModel->create($manufacturer['id'], $modelInfo['model_name']);
+                    $this->logger->info($t('import_model_created_on_confirm', ['%model_name%' => $modelInfo['model_name'], '%manufacturer_name%' => $modelInfo['manufacturer_name']]));
+                }
+            }
+        } catch (Exception $e) {
+            $this->logger->error($t('import_error_creating_models_on_confirm', ['%message%' => $e->getMessage()]));
+            $this->sessionService->addFlashMessage('danger', $t('import_error_creating_models_on_confirm_flash', ['%message%' => $e->getMessage()]));
+            if (file_exists($confirmationData['temp_file_path'])) { unlink($confirmationData['temp_file_path']); }
+            $this->sessionService->remove('import_confirmation_data');
+            return $response->withHeader('Location', '/admin/import')->withStatus(302);
+        }
+
+        // --- FASE 3: IMPORTACIÓN FINAL ---
+        $importSummary = $this->csvImporterService->importCsv(
+            $confirmationData['temp_file_path'],
+            $confirmationData['entity_type'],
+            $confirmationData['asset_type_id']
+        );
+
+        if (file_exists($confirmationData['temp_file_path'])) { unlink($confirmationData['temp_file_path']); }
+        $this->sessionService->remove('import_confirmation_data');
+
+        // Generar log y mostrar resultados (código duplicado de processUpload, se podría refactorizar)
+        $logWriter = Writer::createFromString('');
+        $logWriter->setDelimiter(';');
+        $logWriter->setOutputBOM(Writer::BOM_UTF8);
+        $logWriter->insertOne(['row', 'status', 'message', 'data']);
+        foreach ($importSummary['results'] as $result) {
+            $logWriter->insertOne([$result['row'], $result['status'], $result['message'], json_encode($result['data'], JSON_UNESCAPED_UNICODE)]);
+        }
+        $tempLogPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('import_log_') . '.csv';
+        file_put_contents($tempLogPath, $logWriter->toString());
+
+        $this->sessionService->set('import_summary', $importSummary);
+        $this->sessionService->set('import_log_path', $tempLogPath);
 
         return $response->withHeader('Location', '/admin/import/results')->withStatus(302);
     }

@@ -83,11 +83,59 @@ class Asset
         }
     }
 
-    public function getBySerialNumber(string $serialNumber)
+    /**
+     * Obtiene un activo por su nombre.
+     * @param string $name
+     * @return array|false
+     */
+    public function getByName(string $name)
     {
         try {
-            $stmt = $this->db->prepare("SELECT id, nombre, numero_serie FROM activos WHERE numero_serie = :numero_serie");
+            // Búsqueda insensible a mayúsculas/minúsculas y espacios
+            $stmt = $this->db->prepare("SELECT * FROM activos WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(:nombre))");
+            $stmt->bindParam(':nombre', $name, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene un activo por su nombre Y su tipo de activo.
+     * @param string $name
+     * @param int $assetTypeId
+     * @return array|false
+     */
+    public function getByNameAndAssetType(string $name, int $assetTypeId)
+    {
+        try {
+            // Búsqueda por la combinación de nombre y tipo de activo
+            $stmt = $this->db->prepare("SELECT * FROM activos WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(:nombre)) AND id_tipo_activo = :id_tipo_activo");
+            $stmt->bindParam(':nombre', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':id_tipo_activo', $assetTypeId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene un activo por su número de serie Y su tipo de activo.
+     * @param string $serialNumber
+     * @param int $assetTypeId
+     * @return array|false
+     */
+    public function getBySerialNumberAndAssetType(string $serialNumber, int $assetTypeId)
+    {
+        try {
+            // Búsqueda por la clave única compuesta
+            $stmt = $this->db->prepare("SELECT * FROM activos WHERE numero_serie = :numero_serie AND id_tipo_activo = :id_tipo_activo");
             $stmt->bindParam(':numero_serie', $serialNumber, PDO::PARAM_STR);
+            $stmt->bindParam(':id_tipo_activo', $assetTypeId, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

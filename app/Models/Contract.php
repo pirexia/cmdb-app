@@ -45,10 +45,17 @@ class Contract
         }
     }
 
-    public function getByContractNumber(string $contractNumber)
+    /**
+     * Obtiene un contrato por su número.
+     * La búsqueda es insensible a mayúsculas/minúsculas y espacios en blanco.
+     * @param string $contractNumber El número de contrato a buscar (se recomienda pasarlo en minúsculas y sin espacios extra).
+     * @return array|false
+     */
+    public function getByContractNumber(string $contractNumber): array|false
     {
         try {
-            $stmt = $this->db->prepare("SELECT id, numero_contrato, id_tipo_contrato FROM contratos WHERE numero_contrato = :numero_contrato");
+            // Usamos LOWER() y TRIM() para hacer la búsqueda flexible
+            $stmt = $this->db->prepare("SELECT * FROM contratos WHERE LOWER(TRIM(numero_contrato)) = :numero_contrato");
             $stmt->bindParam(':numero_contrato', $contractNumber, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);

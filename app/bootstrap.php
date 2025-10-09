@@ -64,6 +64,7 @@ use App\Models\PasswordResetToken;
 use App\Models\Provider;
 use App\Models\Role;
 use App\Models\Source; // Para la nueva gestión de fuentes de usuario
+use App\Models\Sequence; // NUEVO: Para secuencias
 use App\Models\User;
 use App\Models\LogActivo;
 use App\Models\SmtpConfig;
@@ -313,6 +314,7 @@ $container->set(App\Models\PasswordResetToken::class, function (ContainerInterfa
 $container->set(App\Models\Provider::class, function (ContainerInterface $c) { return new App\Models\Provider($c->get(PDO::class)); });
 $container->set(App\Models\Role::class, function (ContainerInterface $c) { return new App\Models\Role($c->get(PDO::class)); });
 $container->set(App\Models\Source::class, function (ContainerInterface $c) { return new App\Models\Source($c->get(PDO::class)); });
+$container->set(App\Models\Sequence::class, function (ContainerInterface $c) { return new App\Models\Sequence($c->get(PDO::class)); }); // NUEVO
 $container->set(App\Models\User::class, function (ContainerInterface $c) { return new App\Models\User($c->get(PDO::class)); });
 $container->set(App\Models\LogActivo::class, function (ContainerInterface $c) { return new App\Models\LogActivo($c->get(PDO::class)); });
 $container->set(App\Models\SmtpConfig::class, function (ContainerInterface $c) { return new App\Models\SmtpConfig($c->get(PDO::class)); });
@@ -348,7 +350,12 @@ $container->set(App\Services\CsvImporterService::class, function (ContainerInter
         $c->get(App\Models\Location::class),
         $c->get(App\Models\Department::class),
         $c->get(App\Models\AcquisitionFormat::class),
-        $c->get(App\Models\Model::class)
+        $c->get(App\Models\Model::class),
+        $c->get(App\Models\CustomFieldValue::class),
+        $c->get(App\Models\CustomFieldDefinition::class),
+        $c->get(App\Models\Sequence::class),
+        $c->get(App\Services\LogService::class), // Inyectar LogService
+        $c->get(App\Services\SessionService::class) // Inyectar SessionService
     );
 });
 
@@ -524,7 +531,9 @@ $container->set(App\Controllers\ImportController::class, function (ContainerInte
         $c->get(App\Services\CsvTemplateService::class),
         $c->get('translator'),
         $c->get(App\Models\AssetType::class),
-        $c->get(App\Services\CsvImporterService::class)
+        $c->get(App\Services\CsvImporterService::class),
+        $c->get(App\Models\Manufacturer::class), // Añadido para crear modelos
+        $c->get(App\Models\Model::class)          // Añadido para crear modelos
     );
 });
 

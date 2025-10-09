@@ -32,13 +32,15 @@ class ContractType
 
     /**
      * Obtiene un tipo de contrato por su nombre.
-     * @param string $name El nombre del fabricante a buscar.
-     * @return array|false Un array asociativo con los datos del fabricante, o false si no se encuentra o ocurre un error.
+     * La búsqueda es insensible a mayúsculas/minúsculas y espacios en blanco.
+     * @param string $name El nombre del tipo de contrato a buscar (se recomienda pasarlo en minúsculas y sin espacios extra).
+     * @return array|false Un array asociativo con los datos del tipo de contrato, o false si no se encuentra.
      */
     public function getByName(string $name)
     {
         try {
-            $stmt = $this->db->prepare("SELECT id, nombre, descripcion FROM tipos_contratos WHERE nombre = :nombre");
+            // Usamos LOWER() y TRIM() para hacer la búsqueda flexible y corregimos el nombre de la tabla
+            $stmt = $this->db->prepare("SELECT id, nombre, descripcion FROM tipos_contrato WHERE LOWER(TRIM(nombre)) = :nombre");
             $stmt->bindParam(':nombre', $name, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);

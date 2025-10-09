@@ -90,13 +90,13 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
         $adminGroup->group('/import', function (RouteCollectorProxy $importGroup) {
             $importGroup->get('', App\Controllers\ImportController::class . ':showImportOptions');
             $importGroup->get('/', App\Controllers\ImportController::class . ':showImportOptions');
+            $importGroup->get('/template/{entity_type}[/{asset_type_id}]', App\Controllers\ImportController::class . ':downloadTemplate');
+            $importGroup->get('/{entity_type}/upload', App\Controllers\ImportController::class . ':showUploadForm');
+            $importGroup->post('/{entity_type}/process', App\Controllers\ImportController::class . ':processUpload');
             $importGroup->get('/confirm-models', App\Controllers\ImportController::class . ':showConfirmModels');
             $importGroup->post('/process-confirmed-import', App\Controllers\ImportController::class . ':processConfirmedImport');
             $importGroup->get('/results', App\Controllers\ImportController::class . ':showImportResults');
             $importGroup->get('/download-log', App\Controllers\ImportController::class . ':downloadImportLog');
-            $importGroup->get('/template/{entity_type}[/{asset_type_id}]', App\Controllers\ImportController::class . ':downloadTemplate');
-            $importGroup->get('/{entity_type}/upload', App\Controllers\ImportController::class . ':showUploadForm');
-            $importGroup->post('/{entity_type}/process', App\Controllers\ImportController::class . ':processUpload');
         });
 
         // --- RUTAS PARA GESTIÓN DE USUARIOS (UserController) ---
