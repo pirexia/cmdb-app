@@ -123,7 +123,7 @@ class CsvImporterService
 
         foreach ($records as $offset => $record) {
             $rowData = $record;
-            $rowNumber = $offset + 2; // Fila actual en el fichero (1-indexed, +1 por cabecera, +1 por 0-indexed)
+            $rowNumber = $offset + 1; // El offset es 0-indexed, la primera fila de datos es la 2.
 
             // --- FASE DE ANÁLISIS: Detectar nuevos modelos sin lanzar excepción ---
             if ($entityType === 'assets') {
@@ -150,7 +150,7 @@ class CsvImporterService
         $records = $reader->getRecords();
         foreach ($records as $offset => $record) {
             $rowData = $record;
-            $rowNumber = $offset + 2;
+            $rowNumber = $offset + 1;
             $totalRows++; // Incrementar el contador total de filas procesadas
              try {
                 $result = $this->processRow($entityType, $rowData, $rowNumber, $assetTypeId);

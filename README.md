@@ -59,9 +59,11 @@ Asegúrate de que las reglas de reescritura de URL (mod_rewrite) estén habilita
 
 Ajustar permisos:
 
-Concede permisos de escritura al servidor web (apache) para los directorios storage/.
+Concede permisos de escritura al servidor web para el directorio `storage/`. El usuario del servidor web suele ser `www-data` (en Debian/Ubuntu) o `apache` (en CentOS/RHEL).
 
-sudo chown -R apache:apache storage/
+```bash
+sudo chown -R $USER:$USER storage/ # Reemplaza $USER con el usuario de tu servidor web
+```
 
 Uso
 Una vez instalado y configurado, puedes acceder a la aplicación desde la URL que hayas definido. La primera vez que accedas, el usuario administrador por defecto se creará automáticamente si está habilitado en el archivo .env.

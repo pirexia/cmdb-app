@@ -850,3 +850,139 @@
 [2025-10-09 17:29:41] CMDB App.ERROR: Error de lógica en la fila 33 para assets: Fila 33: Ya existe un activo con el nombre "ex8-sw-roceb0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
 [2025-10-09 17:29:41] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
 [2025-10-09 17:29:41] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/results  
+[2025-10-09 20:23:09] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
+[2025-10-09 20:23:09] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-09 20:23:14] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:14] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import  
+[2025-10-09 20:23:20] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/assets/upload  
+[2025-10-09 20:23:25] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:25] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/import/assets/process  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 3: Activo "2419XVJ00X" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 4: Activo "2419XVJ010" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 5: Activo "2419XVJ00F" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 6: Activo "2419XVJ02X" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 7: Activo "2419XVJ034" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 8: Activo "FLM264407GJ" actualizado.  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 9 para assets: Fila 9: Ya existe un activo con el nombre "ex10-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 10 para assets: Fila 10: Ya existe un activo con el nombre "ex10-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 11: Activo "FLM270201EX" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 12: Activo "FLM27010KS4" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 13: Activo "1442NM500K" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 14: Activo "1443NM506A" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 15: Activo "1443NM504M" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 16: Activo "1449NM501U" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 17: Activo "1443NML08D" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 18: Activo "1443NML0AP" actualizado.  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 19 para assets: Fila 19: Ya existe un activo con el nombre "ex4-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 20 para assets: Fila 20: Ya existe un activo con el nombre "ex4-sw-iba01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 21 para assets: Fila 21: Ya existe un activo con el nombre "ex4-sw-ibb01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 22 para assets: Fila 22: Ya existe un activo con el nombre "ex4-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 23 para assets: Fila 23: Ya existe un activo con el nombre "ex4-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 24: Activo "2015XLA0Fzzzz" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 25: Activo "2015XLA0FV" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 26: Activo "2015XLA0GK" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 27: Activo "2015XLB01T" actualizado.  
+[2025-10-09 20:23:25] CMDB App.INFO: Fila 28: Activo "2015XLB05D" actualizado.  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 29 para assets: Fila 29: Ya existe un activo con el nombre "ex8-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 30 para assets: Fila 30: Ya existe un activo con el nombre "ex8-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 31 para assets: Fila 31: Ya existe un activo con el nombre "ex8-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 32 para assets: Fila 32: Ya existe un activo con el nombre "ex8-sw-rocea0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.ERROR: Error de lógica en la fila 33 para assets: Fila 33: Ya existe un activo con el nombre "ex8-sw-roceb0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:23:25] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:23:25] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/results  
+[2025-10-09 20:24:15] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import  
+[2025-10-09 20:24:16] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:16] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/assets/upload  
+[2025-10-09 20:24:24] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:24] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/import/assets/process  
+[2025-10-09 20:24:24] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:24] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/confirm-models  
+[2025-10-09 20:24:32] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:32] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/import/process-confirmed-import  
+[2025-10-09 20:24:32] CMDB App.INFO: import_model_created_on_confirm  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 3: Activo "2419XVJ00X" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 4: Activo "2419XVJ010" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 5: Activo "2419XVJ00F" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 6: Activo "2419XVJ02X" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 7: Activo "2419XVJ034" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 8: Activo "FLM264407GJ" actualizado.  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 9 para assets: Fila 9: Ya existe un activo con el nombre "ex10-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 10 para assets: Fila 10: Ya existe un activo con el nombre "ex10-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 11: Activo "FLM270201EX" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 12: Activo "FLM27010KS4" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 13: Activo "1442NM500K" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 14: Activo "1443NM506A" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 15: Activo "1443NM504M" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 16: Activo "1449NM501U" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 17: Activo "1443NML08D" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 18: Activo "1443NML0AP" actualizado.  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 19 para assets: Fila 19: Ya existe un activo con el nombre "ex4-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 20 para assets: Fila 20: Ya existe un activo con el nombre "ex4-sw-iba01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 21 para assets: Fila 21: Ya existe un activo con el nombre "ex4-sw-ibb01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 22 para assets: Fila 22: Ya existe un activo con el nombre "ex4-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 23 para assets: Fila 23: Ya existe un activo con el nombre "ex4-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 24: Activo "2015XLA0Fzzzz2" creado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 25: Activo "2015XLA0FV" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 26: Activo "2015XLA0GK" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 27: Activo "2015XLB01T" actualizado.  
+[2025-10-09 20:24:32] CMDB App.INFO: Fila 28: Activo "2015XLB05D" actualizado.  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 29 para assets: Fila 29: Ya existe un activo con el nombre "ex8-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 30 para assets: Fila 30: Ya existe un activo con el nombre "ex8-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 31 para assets: Fila 31: Ya existe un activo con el nombre "ex8-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 32 para assets: Fila 32: Ya existe un activo con el nombre "ex8-sw-rocea0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.ERROR: Error de lógica en la fila 33 para assets: Fila 33: Ya existe un activo con el nombre "ex8-sw-roceb0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:24:32] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:24:32] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/results  
+[2025-10-09 20:27:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:27:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import  
+[2025-10-09 20:27:20] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:27:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/assets/upload  
+[2025-10-09 20:27:26] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:27:26] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/import/assets/process  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 2: Activo "2419XVJ00X" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 3: Activo "2419XVJ010" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 4: Activo "2419XVJ00F" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 5: Activo "2419XVJ02X" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 6: Activo "2419XVJ034" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 7: Activo "FLM264407GJ" actualizado.  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 8 para assets: Fila 8: Ya existe un activo con el nombre "ex10-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 9 para assets: Fila 9: Ya existe un activo con el nombre "ex10-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 10: Activo "FLM270201EX" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 11: Activo "FLM27010KS4" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 12: Activo "1442NM500K" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 13: Activo "1443NM506A" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 14: Activo "1443NM504M" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 15: Activo "1449NM501U" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 16: Activo "1443NML08D" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 17: Activo "1443NML0AP" actualizado.  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 18 para assets: Fila 18: Ya existe un activo con el nombre "ex4-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 19 para assets: Fila 19: Ya existe un activo con el nombre "ex4-sw-iba01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 20 para assets: Fila 20: Ya existe un activo con el nombre "ex4-sw-ibb01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 21 para assets: Fila 21: Ya existe un activo con el nombre "ex4-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 22 para assets: Fila 22: Ya existe un activo con el nombre "ex4-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 23: Activo "2015XLA0Fzzzz2" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 24: Activo "2015XLA0FV" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 25: Activo "2015XLA0GK" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 26: Activo "2015XLB01T" actualizado.  
+[2025-10-09 20:27:26] CMDB App.INFO: Fila 27: Activo "2015XLB05D" actualizado.  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 28 para assets: Fila 28: Ya existe un activo con el nombre "ex8-sw-adm01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 29 para assets: Fila 29: Ya existe un activo con el nombre "ex8-sw-pdua01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 30 para assets: Fila 30: Ya existe un activo con el nombre "ex8-sw-pdub01" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 31 para assets: Fila 31: Ya existe un activo con el nombre "ex8-sw-rocea0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.ERROR: Error de lógica en la fila 32 para assets: Fila 32: Ya existe un activo con el nombre "ex8-sw-roceb0" para este tipo. No se puede modificar sin proporcionar un número de serie..  
+[2025-10-09 20:27:26] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-09 20:27:26] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/import/results  
