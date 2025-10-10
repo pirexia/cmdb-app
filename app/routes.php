@@ -27,6 +27,7 @@ use App\Controllers\SourceController;
 use App\Controllers\ImportController;
 use App\Controllers\LogController;
 use App\Controllers\SmtpController;
+use App\Controllers\ProfileController;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\RoleMiddleware;
 use App\Services\AuthService;
@@ -71,6 +72,10 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
 
     // Ruta de logout (cerrar sesión)
     $authenticatedGroup->get('/logout', AuthController::class . ':logout');
+
+    // Rutas para el Perfil de Usuario
+    $authenticatedGroup->get('/profile', ProfileController::class . ':showProfile');
+    $authenticatedGroup->post('/profile', ProfileController::class . ':updateProfile');
 
     // Grupo de rutas para la gestión de Activos (CRUD)
     $authenticatedGroup->group('/assets', function (RouteCollectorProxy $assetGroup) {

@@ -38,3 +38,28 @@ body {
 .navbar.mb-4 {
     margin-bottom: 0 !important;
 }
+
+/* Estilos para los interruptores (switches) de la página de perfil */
+.custom-switch-lg .custom-control-label {
+    padding-left: 2.25rem;
+    padding-top: 0.25rem;
+}
+
+.custom-switch-lg .custom-control-label::before {
+    height: 1.5rem;
+    width: 3rem;
+    border-radius: 1.5rem;
+    left: -3.25rem;
+}
+
+.custom-switch-lg .custom-control-label::after {
+    top: calc(0.25rem + 2px);
+    left: calc(-3.25rem + 2px);
+    width: calc(1.5rem - 4px);
+    height: calc(1.5rem - 4px);
+    border-radius: 1.5rem;
+}
+
+.custom-switch-lg .custom-control-input:checked ~ .custom-control-label::after {
+    transform: translateX(1.5rem);
+}

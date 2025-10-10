@@ -709,4 +709,26 @@ return [
     'test_email_sent_successfully_to' => 'Test email sent successfully to %email%.',
     'test_email_failed_to_send_to' => 'Failed to send test email to %email%.',
     'user_not_authenticated' => 'User not authenticated.',
+
+    // --- Section: User Profile ---
+    'profile_title' => 'My Profile',
+    'profile_subtitle' => 'Manage your personal information and preferences.',
+    'profile_image' => 'Profile Picture',
+    'upload_new_photo' => 'Upload new photo',
+    'upload_photo_hint' => 'Upload a square image for best results (JPG, PNG).',
+    'remove_photo' => 'Remove Photo',
+    'user_information' => 'User Information',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'title_salutation' => 'Title (Mr./Ms.)',
+    'remote_user_data_note' => 'Your first name, last name, and title are managed by the external authentication system and cannot be changed here.',
+    'notification_preferences' => 'Notification Preferences',
+    'notification_preferences_intro' => 'Choose which emails you want to receive from the application.',
+    'save_changes' => 'Save Changes',
+    'profile_updated_successfully' => 'Profile updated successfully.',
+    'profile_update_failed' => 'Failed to update profile.',
+
+    // Keys for notification types
+    'notification_expiring_assets' => 'Expiring Assets',
+    'notification_expiring_contracts' => 'Expiring Contracts',
 ];

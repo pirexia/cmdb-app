@@ -32,9 +32,12 @@ class LanguageController
         $availableLangs = array_keys($this->config['lang']);
 
         if (in_array($langCode, $availableLangs)) {
+            // Primero, traducimos el mensaje con el idioma actual.
+            $message = $this->translate('language_changed_successfully', ['%lang%' => strtoupper($langCode)]);
+            // Luego, establecemos el nuevo idioma en la sesión.
             $this->sessionService->setUserLanguage($langCode);
-            // Mensaje flash traducible
-            $this->sessionService->addFlashMessage('success', $this->translate('language_changed_successfully', ['%lang%' => strtoupper($langCode)]));
+            // Finalmente, añadimos el mensaje ya traducido al flash.
+            $this->sessionService->addFlashMessage('success', $message);
         } else {
             $this->sessionService->addFlashMessage('danger', $this->translate('invalid_language'));
         }

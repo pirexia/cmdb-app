@@ -41,7 +41,12 @@ class User
     public function getUserById(int $id)
     {
         try {
-            $stmt = $this->db->prepare("SELECT id, nombre_usuario, email, id_rol, activo, id_fuente_usuario, fuente_login_nombre FROM usuarios WHERE id = :id"); // Añadir nuevas columnas
+            $stmt = $this->db->prepare("
+                SELECT id, nombre_usuario, email, id_rol, activo, id_fuente_usuario, 
+                       fuente_login_nombre, nombre, apellidos, titulo, profile_image_path 
+                FROM usuarios 
+                WHERE id = :id
+            ");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -232,6 +237,44 @@ class User
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
             return false;
+        }
+    }
+
+    /**
+     * Actualiza los datos del perfil de un usuario.
+     * @param int $id El ID del usuario a actualizar.
+     * @param array $data Un array asociativo con los datos a actualizar (ej. ['email' => 'new@email.com']).
+     * @return bool True si la actualización fue exitosa, false en caso contrario.
+     * @throws PDOException Si ocurre un error en la base de datos.
+     */
+    public function updateProfileData(int $id, array $data): bool
+    {
+        if (empty($data)) {
+            return true; // No hay nada que actualizar.
+        }
+
+        $allowedColumns = ['email', 'nombre', 'apellidos', 'titulo', 'profile_image_path'];
+        $setClauses = [];
+        $params = ['id' => $id];
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowedColumns)) {
+                $setClauses[] = "`$key` = :$key";
+                $params[$key] = $value;
+            }
+        }
+
+        if (empty($setClauses)) {
+            return false; // No hay campos válidos para actualizar.
+        }
+
+        try {
+            $sql = "UPDATE usuarios SET " . implode(', ', $setClauses) . " WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
+            throw $e; // Relanzar la excepción para que el controlador la maneje.
         }
     }
 }

@@ -99,8 +99,12 @@ class AuthService
                     }
                     $defaultRoleId = $defaultRole['id'];
 
+                    // Extraer datos del usuario desde LDAP/AD
                     $email = $ldapAuthResult['user_data']['email'] ?? null;
-                    $fullName = $ldapAuthResult['user_data']['full_name'] ?? $username;
+                    $nombre = $ldapAuthResult['user_data']['given_name'] ?? null;
+                    $apellidos = $ldapAuthResult['user_data']['surname'] ?? null;
+                    // El título (Sr./Sra.) no suele venir de AD, se deja null por defecto.
+                    $titulo = null; 
 
                     $newUserId = $this->userModel->createUser(
                         $username, 
@@ -108,8 +112,11 @@ class AuthService
                         $email,
                         $defaultRoleId,
                         true,
-                        $sourceId,
-                        $source['nombre_friendly']
+                        $sourceId, // id de la fuente
+                        $source['nombre_friendly'], // nombre de la fuente
+                        $nombre, // nuevo campo
+                        $apellidos, // nuevo campo
+                        $titulo // nuevo campo
                     );
 
                     if ($newUserId) {
@@ -152,6 +159,20 @@ class AuthService
                 return false;
             }
             $this->logger->info("Usuario externo '{$user['nombre_usuario']}' autenticado correctamente via {$source['nombre_friendly']}.");
+
+            // Opcional: Actualizar datos del usuario desde LDAP/AD en cada login
+            $ldapData = $this->ldapService->getUserData($source, $username);
+            if ($ldapData) {
+                $updateData = [
+                    'email' => $ldapData['email'] ?? $user['email'],
+                    'nombre' => $ldapData['given_name'] ?? $user['nombre'],
+                    'apellidos' => $ldapData['surname'] ?? $user['apellidos'],
+                ];
+                // Solo actualiza si hay cambios para evitar escrituras innecesarias
+                if ($updateData['email'] !== $user['email'] || $updateData['nombre'] !== $user['nombre'] || $updateData['apellidos'] !== $user['apellidos']) {
+                    $this->userModel->updateProfileData($user['id'], $updateData);
+                }
+            }
         }
         
         // Autenticación exitosa, establecer sesión
@@ -388,7 +409,10 @@ class AuthService
                     $adminRoleId,
                     true,
                     $localSourceId, // <--- Pasar el ID de la fuente local
-                    $localSourceName // <--- Pasar el nombre de la fuente local
+                    $localSourceName, // <--- Pasar el nombre de la fuente local
+                    'Admin', // Nombre por defecto
+                    'User', // Apellido por defecto
+                    null // Título por defecto
                 );
                 if ($userId) {
                     $this->logger->info("Usuario administrador por defecto '{$defaultUsername}' creado.");

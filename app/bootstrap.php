@@ -39,6 +39,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LanguageController;
 use App\Controllers\MasterController;
 use App\Controllers\ModelController;
+use App\Controllers\ProfileController;
 use App\Controllers\SmtpController;
 use App\Controllers\UserController;
 use App\Controllers\ImportController;
@@ -113,6 +114,7 @@ $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     $engine->addFolder('admin', $viewsPath . '/admin');
     $engine->addFolder('masters', $viewsPath . '/masters');
     $engine->addFolder('partials', $viewsPath . '/partials');
+    $engine->addFolder('profile', $viewsPath . '/profile'); // <-- AÑADIR ESTA LÍNEA
     $engine->addFolder('emails', $viewsPath . '/emails'); // Para plantillas de correo
 
     // Registrar una función 'asset' para generar URLs de assets estáticos (CSS, JS, imágenes)
@@ -509,6 +511,20 @@ $container->set(App\Controllers\ModelController::class, function (ContainerInter
         $c->get('translator')
     );
 });
+
+$container->set(App\Controllers\ProfileController::class, function (ContainerInterface $c) {
+    return new App\Controllers\ProfileController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get('translator'),
+        $c->get(App\Models\User::class),
+        $c->get(App\Models\Source::class),
+        $c->get(PDO::class),
+        $c->get('config')
+    );
+});
+
 
 $container->set(App\Controllers\UserController::class, function (ContainerInterface $c) {
     return new App\Controllers\UserController(

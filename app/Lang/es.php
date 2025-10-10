@@ -713,4 +713,26 @@ return [
     'test_email_sent_successfully_to' => 'Correo de prueba enviado con éxito a %email%.',
     'test_email_failed_to_send_to' => 'Fallo al enviar correo de prueba a %email%.',
     'user_not_authenticated' => 'Usuario no autenticado.',
+
+    // --- Sección: Perfil de Usuario ---
+    'profile_title' => 'Mi Perfil',
+    'profile_subtitle' => 'Gestiona tu información personal y preferencias.',
+    'profile_image' => 'Foto de Perfil',
+    'upload_new_photo' => 'Subir nueva foto',
+    'upload_photo_hint' => 'Sube una imagen cuadrada para mejores resultados (JPG, PNG).',
+    'remove_photo' => 'Eliminar Foto',
+    'user_information' => 'Información del Usuario',
+    'first_name' => 'Nombre',
+    'last_name' => 'Apellidos',
+    'title_salutation' => 'Título (Sr./Sra.)',
+    'remote_user_data_note' => 'Tu nombre, apellidos y título son gestionados por el sistema de autenticación externo y no se pueden modificar aquí.',
+    'notification_preferences' => 'Preferencias de Notificación',
+    'notification_preferences_intro' => 'Elige qué correos electrónicos deseas recibir de la aplicación.',
+    'save_changes' => 'Guardar Cambios',
+    'profile_updated_successfully' => 'Perfil actualizado con éxito.',
+    'profile_update_failed' => 'Error al actualizar el perfil.',
+
+    // Claves para los tipos de notificación
+    'notification_expiring_assets' => 'Activos Próximos a Caducar',
+    'notification_expiring_contracts' => 'Contratos Próximos a Caducar',
 ];

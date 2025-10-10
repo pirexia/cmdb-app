@@ -59,10 +59,14 @@ Asegúrate de que las reglas de reescritura de URL (mod_rewrite) estén habilita
 
 Ajustar permisos:
 
-Concede permisos de escritura al servidor web para el directorio `storage/`. El usuario del servidor web suele ser `www-data` (en Debian/Ubuntu) o `apache` (en CentOS/RHEL).
+Concede permisos de escritura al servidor web para el directorio `storage/`. El usuario del servidor web varía según el sistema operativo:
+- **Debian/Ubuntu:** `www-data`
+- **Red Hat/CentOS/Fedora:** `apache`
+
+Ejecuta el comando correspondiente a tu sistema. Por ejemplo, para un sistema basado en Red Hat/CentOS:
 
 ```bash
-sudo chown -R $USER:$USER storage/ # Reemplaza $USER con el usuario de tu servidor web
+sudo chown -R apache:apache storage/
 ```
 
 Uso
