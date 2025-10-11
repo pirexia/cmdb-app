@@ -175,18 +175,26 @@ class AuthService
             }
         }
         
-        // Autenticación exitosa, establecer sesión
-        $this->sessionService->startSession();
-        $this->sessionService->set('user_id', $user['id']);
-        $this->sessionService->set('username', $user['nombre_usuario']);
-        $this->sessionService->set('role_id', $user['id_rol']);
-        $this->sessionService->set('id_fuente_usuario', $user['id_fuente_usuario']);
-        $this->sessionService->set('fuente_login_nombre', $user['fuente_login_nombre']);
-
-        $role = $this->roleModel->getRoleById($user['id_rol']);
-        $this->sessionService->set('role_name', $role['nombre'] ?? 'Desconocido');
-
-        $this->userModel->updateLastLogin($user['id']);
+        // Contraseña correcta. Ahora, comprobar si MFA está habilitado.
+        if ($user['mfa_enabled']) {
+            // No iniciar la sesión completa todavía. Guardar un estado temporal.
+            $this->sessionService->startSession();
+            $this->sessionService->set('mfa_user_id', $user['id']); // Guardar ID de usuario para verificar
+            $this->sessionService->set('mfa_required', true);
+            // No se establece la sesión completa hasta que se verifique el código MFA.
+            return true; // Indicar éxito parcial para que el controlador redirija a la verificación MFA.
+        } else {
+            // MFA no está habilitado, iniciar sesión completa.
+            $this->sessionService->startSession();
+            $this->sessionService->set('user_id', $user['id']);
+            $this->sessionService->set('username', $user['nombre_usuario']);
+            $this->sessionService->set('role_id', $user['id_rol']);
+            $this->sessionService->set('id_fuente_usuario', $user['id_fuente_usuario']);
+            $this->sessionService->set('fuente_login_nombre', $user['fuente_login_nombre']);
+            $role = $this->roleModel->getRoleById($user['id_rol']);
+            $this->sessionService->set('role_name', $role['nombre'] ?? 'Desconocido');
+            $this->userModel->updateLastLogin($user['id']);
+        }
         
         return true;
     }

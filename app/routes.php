@@ -28,6 +28,7 @@ use App\Controllers\ImportController;
 use App\Controllers\LogController;
 use App\Controllers\SmtpController;
 use App\Controllers\ProfileController;
+use App\Controllers\MfaController;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\RoleMiddleware;
 use App\Services\AuthService;
@@ -62,6 +63,10 @@ $app->group('', function (RouteCollectorProxy $group) {
 // Ruta para cambiar el idioma (accesible públicamente)
 $app->get('/set-language/{lang_code}', App\Controllers\LanguageController::class . ':setLanguage');
 
+// Rutas para la verificación de MFA durante el login
+$app->get('/mfa/verify-login', MfaController::class . ':showVerifyLoginForm');
+$app->post('/mfa/verify-login', MfaController::class . ':processVerifyLogin');
+
 
 // --- RUTAS PROTEGIDAS (Requieren autenticación) ---
 // Estas rutas están envueltas en el middleware de autenticación.
@@ -76,6 +81,11 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
     // Rutas para el Perfil de Usuario
     $authenticatedGroup->get('/profile', ProfileController::class . ':showProfile');
     $authenticatedGroup->post('/profile', ProfileController::class . ':updateProfile');
+
+    // Rutas para la configuración de MFA
+    $authenticatedGroup->get('/mfa/setup', MfaController::class . ':showMfaSetup');
+    $authenticatedGroup->post('/mfa/verify-setup', MfaController::class . ':verifyMfaSetup');
+    $authenticatedGroup->get('/mfa/disable', MfaController::class . ':disableMfa');
 
     // Grupo de rutas para la gestión de Activos (CRUD)
     $authenticatedGroup->group('/assets', function (RouteCollectorProxy $assetGroup) {

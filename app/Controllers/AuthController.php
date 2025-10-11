@@ -80,8 +80,13 @@ class AuthController
         $t = $this->translator; // Accede a la función de traducción
 
         if ($this->authService->authenticate($username, $password, $sourceId)) {
-            $this->sessionService->addFlashMessage('success', $t('welcome_back') ?? '¡Bienvenido de nuevo!');
-            return $response->withHeader('Location', '/dashboard')->withStatus(302);
+            // Comprobar si ahora se requiere MFA
+            if ($this->sessionService->get('mfa_required')) {
+                return $response->withHeader('Location', '/mfa/verify-login')->withStatus(302);
+            } else {
+                $this->sessionService->addFlashMessage('success', $t('welcome_back') ?? '¡Bienvenido de nuevo!');
+                return $response->withHeader('Location', '/dashboard')->withStatus(302);
+            }
         } else {
             $this->sessionService->addFlashMessage('danger', $t('incorrect_credentials'));
             return $response->withHeader('Location', '/login')->withStatus(302);

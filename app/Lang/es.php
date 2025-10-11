@@ -735,4 +735,25 @@ return [
     // Claves para los tipos de notificación
     'notification_expiring_assets' => 'Activos Próximos a Caducar',
     'notification_expiring_contracts' => 'Contratos Próximos a Caducar',
+
+    // --- Sección: Autenticación de Múltiples Factores (MFA) ---
+    'mfa_title' => 'Autenticación de Múltiples Factores (MFA)',
+    'mfa_intro' => 'Añade una capa extra de seguridad a tu cuenta requiriendo un código de verificación al iniciar sesión.',
+    'mfa_is_enabled' => 'La autenticación de múltiples factores está habilitada para tu cuenta.',
+    'mfa_is_disabled' => 'La autenticación de múltiples factores está deshabilitada. Se recomienda encarecidamente habilitarla.',
+    'mfa_enable_button' => 'Habilitar MFA',
+    'mfa_disable_button' => 'Deshabilitar MFA',
+    'mfa_setup_title' => 'Configurar Autenticación de Múltiples Factores',
+    'mfa_setup_instructions' => 'Escanea este código QR con tu aplicación de autenticación (ej. Microsoft Authenticator, Google Authenticator).',
+    'mfa_setup_manual_key' => 'O introduce manualmente la siguiente clave:',
+    'mfa_setup_verify_step' => 'Para finalizar, introduce el código de 6 dígitos generado por tu aplicación para verificar la configuración.',
+    'mfa_code_label' => 'Código de Verificación de 6 dígitos',
+    'mfa_verify_and_enable' => 'Verificar y Habilitar',
+    'mfa_enabled_successfully' => 'MFA habilitado con éxito.',
+    'mfa_disabled_successfully' => 'MFA deshabilitado con éxito.',
+    'mfa_invalid_code' => 'El código de verificación no es válido. Por favor, inténtalo de nuevo.',
+    'mfa_verify_login_title' => 'Verificación de Dos Pasos',
+    'mfa_verify_login_intro' => 'Introduce el código de 6 dígitos de tu aplicación de autenticación.',
+    'mfa_verify_button' => 'Verificar',
+    'cancel_and_logout' => 'Cancelar y cerrar sesión',
 ];

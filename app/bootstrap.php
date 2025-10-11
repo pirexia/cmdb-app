@@ -39,6 +39,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LanguageController;
 use App\Controllers\MasterController;
 use App\Controllers\ModelController;
+use App\Controllers\MfaController;
 use App\Controllers\ProfileController;
 use App\Controllers\SmtpController;
 use App\Controllers\UserController;
@@ -73,6 +74,7 @@ use App\Models\SmtpConfig;
 // Servicios
 use App\Services\AuthService;
 use App\Services\LdapService; // Para la nueva autenticación LDAP/AD
+use App\Services\MfaService;
 use App\Services\LogService;
 use App\Services\MailService;
 use App\Services\NotificationService;
@@ -114,6 +116,7 @@ $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     $engine->addFolder('admin', $viewsPath . '/admin');
     $engine->addFolder('masters', $viewsPath . '/masters');
     $engine->addFolder('partials', $viewsPath . '/partials');
+    $engine->addFolder('mfa', $viewsPath . '/mfa');
     $engine->addFolder('profile', $viewsPath . '/profile'); // <-- AÑADIR ESTA LÍNEA
     $engine->addFolder('emails', $viewsPath . '/emails'); // Para plantillas de correo
 
@@ -289,6 +292,14 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
         $c->get(LoggerInterface::class),
         $c->get('translator'),
         $c->get(PDO::class)
+    );
+});
+
+// 2.11. Servicio MFA (MfaService)
+$container->set(App\Services\MfaService::class, function (ContainerInterface $c) {
+    return new App\Services\MfaService(
+        $c->get(App\Models\User::class),
+        $c->get('config')
     );
 });
 
@@ -489,6 +500,18 @@ $container->set(App\Controllers\LanguageController::class, function (ContainerIn
         $c->get('config')
     );
 });
+
+$container->set(App\Controllers\MfaController::class, function (ContainerInterface $c) {
+    return new App\Controllers\MfaController(
+        $c->get(PlatesEngine::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(App\Services\MfaService::class),
+        $c->get(App\Models\User::class),
+        $c->get(App\Models\Role::class),
+        $c->get('translator')
+    );
+});
+
 
 $container->set(App\Controllers\MasterController::class, function (ContainerInterface $c) {
     return new App\Controllers\MasterController(

@@ -104,6 +104,24 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                             <?php endif; ?>
                         </div>
 
+                        <!-- Sección de Autenticación de Múltiples Factores (MFA) -->
+                        <div class="mt-5">
+                            <h5><?= $t('mfa_title') ?></h5>
+                            <p class="text-muted"><?= $t('mfa_intro') ?></p>
+                            <hr>
+                            <?php if ($user['mfa_enabled']): ?>
+                                <div class="alert alert-success" role="alert">
+                                    <i class="bi bi-shield-check-fill me-2"></i><?= $t('mfa_is_enabled') ?>
+                                </div>
+                                <a href="/mfa/disable" class="btn btn-warning"><?= $t('mfa_disable_button') ?></a>
+                            <?php else: ?>
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="bi bi-shield-exclamation me-2"></i><?= $t('mfa_is_disabled') ?>
+                                </div>
+                                <a href="/mfa/setup" class="btn btn-success"><?= $t('mfa_enable_button') ?></a>
+                            <?php endif; ?>
+                        </div>
+
                         <div class="mt-5 text-end border-top pt-3">
                             <a href="/dashboard" class="btn btn-secondary"><?= $this->e($t('cancel')) ?></a>
                             <button type="submit" class="btn btn-primary"><?= $this->e($t('save_changes')) ?></button>
