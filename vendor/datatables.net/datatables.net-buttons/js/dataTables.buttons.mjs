@@ -1,4 +1,4 @@
-/*! Buttons for DataTables 3.2.3
+/*! Buttons for DataTables 3.2.4
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -2003,8 +2003,7 @@ Buttons.stripData = function (str, config) {
 
 	// Prevent Excel from running a formula
 	if (!config || config.escapeExcelFormula) {
-		if (str.match(/^[=+\-@\t\r]/)) {
-			console.log('matching and updateing');
+		if (str.match(/^[=@\t\r]/)) {
 			str = "'" + str;
 		}
 	}
@@ -2127,7 +2126,7 @@ Buttons.defaults = {
  * @type {string}
  * @static
  */
-Buttons.version = '3.2.3';
+Buttons.version = '3.2.4';
 
 $.extend(_dtButtons, {
 	collection: {

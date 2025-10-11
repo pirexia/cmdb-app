@@ -44,10 +44,10 @@ class MfaController
         $secret = $this->mfaService->generateSecretKey();
         $this->session->set('mfa_temp_secret', $secret);
 
-        $qrCodeUrl = $this->mfaService->getQrCodeUrl($user['nombre_usuario'], $secret);
+        $qrCodeInline = $this->mfaService->getQrCodeInline($user['nombre_usuario'], $secret);
 
         $html = $this->view->render('mfa/setup', [
-            'qrCodeUrl' => $qrCodeUrl,
+            'qrCodeInline' => $qrCodeInline,
             'secret' => $secret,
             'flashMessages' => $this->session->getFlashMessages()
         ]);

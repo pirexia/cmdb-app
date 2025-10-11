@@ -1308,3 +1308,153 @@
 [2025-10-10 14:56:15] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile  
 [2025-10-10 14:56:15] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
 [2025-10-10 14:56:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 20:55:55] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 20:55:55] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-11 20:56:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 20:56:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 20:58:04] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 20:58:04] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 20:58:12] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 20:58:12] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 20:59:30] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 20:59:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:02:20] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:02:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:02:22] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:02:22] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:06:06] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:06:06] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:06:28] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:06:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:10:28] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:10:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:10:30] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:10:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:19:28] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:19:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:19:34] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:19:34] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:19:38] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:19:38] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:21:12] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:21:12] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:23:35] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:23:35] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:23:55] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:23:55] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:23:57] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:23:57] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:28:17] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:28:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:28:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:28:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:28:19] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:28:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:28:19] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:28:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:32:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:32:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:36:22] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:36:22] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:36:23] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:36:23] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:36:23] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:36:23] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:46:17] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:46:26] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:26] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:46:38] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:38] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile  
+[2025-10-11 21:46:38] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:38] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 21:46:41] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:46:41] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:52:58] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:52:58] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:52:59] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:52:59] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:53:00] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:53:00] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 21:53:00] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 21:53:00] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:02:10] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:02:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:04:36] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:04:36] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:09:09] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:09:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:12:05] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:12:05] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:13:25] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:13:25] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 22:13:27] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:13:27] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:22:13] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:22:13] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:27:51] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:27:51] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:30:54] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:30:54] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 22:30:55] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:30:55] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:31:15] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:31:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:34:35] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:34:35] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:37:03] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:37:03] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:39:19] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:39:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:39:19] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:39:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-11 22:44:28] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:44:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-11 22:45:04] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:45:04] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-setup  
+[2025-10-11 22:45:04] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:45:04] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 22:45:17] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:45:17] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile  
+[2025-10-11 22:45:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:45:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-11 22:45:20] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:45:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-11 22:47:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/logout  
+[2025-10-11 22:47:18] CMDB App.INFO: Usuario 'admin_default' ha cerrado sesión.  
+[2025-10-11 22:47:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-11 22:47:36] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:36] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/login  
+[2025-10-11 22:47:36] CMDB App.INFO: Usuario local 'admin_default' ha iniciado sesión correctamente.  
+[2025-10-11 22:47:36] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:36] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:47:51] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:51] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:47:51] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:51] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-11 22:47:57] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:57] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/logout  
+[2025-10-11 22:47:57] CMDB App.INFO: Usuario 'admin_default' ha cerrado sesión.  
+[2025-10-11 22:47:57] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:47:57] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-11 22:48:05] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:05] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/login  
+[2025-10-11 22:48:05] CMDB App.INFO: Usuario local 'admin_default' ha iniciado sesión correctamente.  
+[2025-10-11 22:48:06] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:06] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:48:11] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:11] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:48:12] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:12] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:48:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:18] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-11 22:48:18] CMDB App.DEBUG: Usuario administrador por defecto 'admin_default' ya existe y está configurado correctamente.  
+[2025-10-11 22:48:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  

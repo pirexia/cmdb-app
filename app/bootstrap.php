@@ -116,7 +116,11 @@ $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     $engine->addFolder('admin', $viewsPath . '/admin');
     $engine->addFolder('masters', $viewsPath . '/masters');
     $engine->addFolder('partials', $viewsPath . '/partials');
+    
+    $mfaViewsPath = $viewsPath . '/mfa';
+    if (!is_dir($mfaViewsPath)) { mkdir($mfaViewsPath, 0755, true); }
     $engine->addFolder('mfa', $viewsPath . '/mfa');
+
     $engine->addFolder('profile', $viewsPath . '/profile'); // <-- AÑADIR ESTA LÍNEA
     $engine->addFolder('emails', $viewsPath . '/emails'); // Para plantillas de correo
 

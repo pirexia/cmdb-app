@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use PragmaRX\Google2FAQRCode\Google2FA as Google2FAQRCode;
+
 use PragmaRX\Google2FA\Google2FA;
 use App\Models\User;
 use Exception;
@@ -14,7 +16,10 @@ class MfaService
 
     public function __construct(User $userModel, array $config)
     {
-        $this->google2fa = new Google2FA();
+        // Para la v9 de google2fa, la clase principal se instancia de forma simple.
+        // El generador de QR se utiliza a través de la clase Google2FAQRCode.
+        $this->google2fa = new Google2FA(); 
+
         $this->userModel = $userModel;
         $this->config = $config;
     }
@@ -29,16 +34,19 @@ class MfaService
     }
 
     /**
-     * Genera la URL de un código QR para configurar la app de autenticación.
+     * Genera un código QR como una imagen base64 (data URI) para configurar la app de autenticación.
      * @param string $username El nombre de usuario.
      * @param string $secret El secreto MFA.
-     * @return string La URL de la imagen del código QR.
+     * @return string La imagen del código QR en formato data URI.
      */
-    public function getQrCodeUrl(string $username, string $secret): string
+    public function getQrCodeInline(string $username, string $secret): string
     {
         $appName = $this->config['app']['name'] ?? 'CMDB App';
-        $qrCodeUrl = $this->google2fa->getQRCodeUrl($appName, $username, $secret);
-        return $qrCodeUrl;
+
+        // La clase Google2FAQRCode ya extiende la principal y tiene el método que necesitamos.
+        $google2fa_qrcode = new Google2FAQRCode();
+
+        return $google2fa_qrcode->getQRCodeInline($appName, $username, $secret);
     }
 
     /**
