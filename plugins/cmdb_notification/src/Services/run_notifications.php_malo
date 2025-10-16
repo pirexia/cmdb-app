@@ -1,0 +1,120 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * run_notifications.php
+ * Script de línea de comandos para enviar todas las notificaciones de la CMDB.
+ * Uso: php /var/www/html/cmdb_notification/run_notifications.php
+ */
+
+require __DIR__ . '/../cmdb_app/vendor/autoload.php';
+
+use DI\Container;
+use Psr\Container\ContainerInterface;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
+use League\Plates\Engine as PlatesEngine;
+use PHPMailer\PHPMailer\PHPMailer;
+
+$container = new Container();
+
+// --- 1. Configuración ---
+$container->set('config', function () {
+    if (!isset($_ENV['APP_ENV'])) {
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../cmdb_app');
+        $dotenv->load();
+    }
+    return require __DIR__ . '/../cmdb_app/app/Config/config.php';
+});
+
+// --- 2. Logger ---
+$container->set('logger', function (ContainerInterface $c) {
+    $config = $c->get('config');
+    $logPath = $config['paths']['logs'] . '/notification.log';
+    $logger = new Logger('CMDB_Notification');
+    $formatter = new LineFormatter("[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n", "Y-m-d H:i:s", true, true);
+    $handler = new StreamHandler($logPath, Logger::DEBUG);
+    $handler->setFormatter($formatter);
+    $logger->pushHandler($handler);
+    return $logger;
+});
+
+// --- 3. Base de Datos (PDO) ---
+$container->set('db', function (ContainerInterface $c) {
+    $dbConfig = $c->get('config')['db'];
+    $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['name']};charset={$dbConfig['charset']}";
+    return new PDO($dsn, $dbConfig['user'], $dbConfig['pass'], [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+});
+
+// --- 4. Traductor ---
+$container->set('translator', function (ContainerInterface $c) {
+    $langConfig = $c->get('config')['lang'];
+    $defaultLang = $c->get('config')['app']['default_language'] ?? 'es';
+    return function (string $key, array $replacements = []) use ($langConfig, $defaultLang) {
+        $langFilePath = $langConfig[$defaultLang] ?? null;
+        $translations = file_exists($langFilePath) ? require $langFilePath : [];
+        $text = $translations[$key] ?? $key;
+        foreach ($replacements as $placeholder => $value) {
+            $text = str_replace($placeholder, $value, $text);
+        }
+        return $text;
+    };
+});
+
+// --- 5. Motor de Plantillas (Plates) ---
+$container->set(PlatesEngine::class, function (ContainerInterface $c) {
+    $config = $c->get('config');
+    $engine = new PlatesEngine($config['paths']['views']);
+    $engine->addFolder('emails', $config['paths']['views'] . '/emails');
+    return $engine;
+});
+
+// --- 6. PHPMailer ---
+$container->set(PHPMailer::class, function (ContainerInterface $c) {
+    $smtpConfigModel = new \App\Models\SmtpConfig($c->get('db'));
+    $smtpConfig = $smtpConfigModel->getConfig() ?: [];
+    $mailer = new PHPMailer(true);
+    if (!empty($smtpConfig['host'])) {
+        $mailer->isSMTP();
+        $mailer->Host = $smtpConfig['host'];
+        $mailer->Port = (int)$smtpConfig['port'];
+        $mailer->SMTPAuth = (bool)$smtpConfig['auth_required'];
+        if ($mailer->SMTPAuth) {
+            $mailer->Username = $smtpConfig['username'];
+            $mailer->Password = $smtpConfig['password'];
+        }
+        if (!empty($smtpConfig['encryption'])) {
+            $mailer->SMTPSecure = $smtpConfig['encryption'];
+        }
+        $mailer->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
+    }
+    return $mailer;
+});
+
+// --- 7. Servicios y Gestor Principal ---
+$container->set(CmdbNotification\Services\EmailService::class, function (ContainerInterface $c) {
+    return new CmdbNotification\Services\EmailService($c->get('logger'), $c->get('translator'), $c->get(PlatesEngine::class), $c->get(PHPMailer::class));
+});
+
+$container->set(CmdbNotification\NotificationManager::class, function (ContainerInterface $c) {
+    $manager = new CmdbNotification\NotificationManager($c->get('db'), $c->get('logger'), $c->get('translator'), $c->get(CmdbNotification\Services\EmailService::class), new CmdbNotification\Services\Config(__DIR__ . '/../cmdb_app'));
+    $manager->addChecker(new CmdbNotification\Checkers\AssetExpirationChecker($c->get('db'), $c->get('logger'), $c->get('translator')));
+    $manager->addChecker(new CmdbNotification\Checkers\ContractExpirationChecker($c->get('db'), $c->get('logger'), $c->get('translator')));
+    return $manager;
+});
+
+// --- Ejecución ---
+try {
+    $logger = $container->get('logger');
+    $logger->info("Iniciando script de notificaciones...");
+    $manager = $container->get(CmdbNotification\NotificationManager::class);
+    $manager->sendNotifications();
+} catch (\Exception $e) {
+    $logger->critical("Error fatal en el script de notificaciones: " . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+    exit(1);
+}

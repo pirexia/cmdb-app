@@ -1,0 +1,235 @@
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Iniciando proceso de notificaciones...  
+[2025-10-07 14:32:42] CMDB_Notification.INFO: ConfiguraciÃ³n cargada: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-07 14:32:42] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para las notificaciones.  
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Checker de activos ejecutado. {"found":1} 
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Checker de contratos ejecutado. {"found":0} 
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Enviando correo a: andres.matias@dachser.com  
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Correo de notificaciÃ³n enviado con Ã©xito.  
+[2025-10-07 14:32:42] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Procesando activos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-07 14:42:40] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de activos.  
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Checker de activos ejecutado. {"found":1} 
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Enviando correo de activos a: andres.matias@dachser.com  
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Correo de notificaciÃ³n de activos enviado con Ã©xito.  
+[2025-10-07 14:42:40] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-08 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-08 06:05:01] CMDB_Notification.INFO: Procesando activos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-08 06:05:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de activos.  
+[2025-10-08 06:05:01] CMDB_Notification.INFO: Checker de activos ejecutado. {"found":1} 
+[2025-10-08 06:05:01] CMDB_Notification.INFO: Enviando correo de activos a: andres.matias@dachser.com  
+[2025-10-08 06:05:03] CMDB_Notification.INFO: Correo de notificaciÃ³n de activos enviado con Ã©xito.  
+[2025-10-08 06:05:03] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-08 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-08 06:10:01] CMDB_Notification.INFO: Procesando contratos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-08 06:10:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de contratos.  
+[2025-10-08 06:10:01] CMDB_Notification.INFO: Checker de contratos ejecutado. {"found":0} 
+[2025-10-08 06:10:01] CMDB_Notification.INFO: No se encontraron contratos prÃ³ximos a caducar.  
+[2025-10-08 06:10:01] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-09 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-09 06:05:01] CMDB_Notification.INFO: Procesando activos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-09 06:05:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de activos.  
+[2025-10-09 06:05:01] CMDB_Notification.INFO: Checker de activos ejecutado. {"found":1} 
+[2025-10-09 06:05:01] CMDB_Notification.INFO: Enviando correo de activos a: andres.matias@dachser.com  
+[2025-10-09 06:05:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de activos enviado con Ã©xito.  
+[2025-10-09 06:05:02] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-09 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-09 06:10:01] CMDB_Notification.INFO: Procesando contratos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-09 06:10:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de contratos.  
+[2025-10-09 06:10:01] CMDB_Notification.INFO: Checker de contratos ejecutado. {"found":0} 
+[2025-10-09 06:10:01] CMDB_Notification.INFO: No se encontraron contratos prÃ³ximos a caducar.  
+[2025-10-09 06:10:01] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-10 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 06:05:01] CMDB_Notification.INFO: Procesando activos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-10 06:05:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de activos.  
+[2025-10-10 06:05:01] CMDB_Notification.INFO: Checker de activos ejecutado. {"found":1} 
+[2025-10-10 06:05:01] CMDB_Notification.INFO: Enviando correo de activos a: andres.matias@dachser.com  
+[2025-10-10 06:05:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de activos enviado con Ã©xito.  
+[2025-10-10 06:05:02] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-10 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 06:10:01] CMDB_Notification.INFO: Procesando contratos. ConfiguraciÃ³n: 30 dÃ­as de antelaciÃ³n, 1 destinatarios.  
+[2025-10-10 06:10:01] CMDB_Notification.DEBUG: Calculando fecha lÃ­mite para notificaciones de contratos.  
+[2025-10-10 06:10:01] CMDB_Notification.INFO: Checker de contratos ejecutado. {"found":0} 
+[2025-10-10 06:10:01] CMDB_Notification.INFO: No se encontraron contratos prÃ³ximos a caducar.  
+[2025-10-10 06:10:01] CMDB_Notification.INFO: Proceso de notificaciones finalizado.  
+[2025-10-10 11:32:24] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 11:34:41] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 12:04:51] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-10 14:29:29] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-10 14:29:29] CMDB_Notification.CRITICAL: Error fatal en el script de notificaciones: The template "emails/notification_layout" could not be found at "/var/www/html/cmdb_app/app/Config/../Views/emails/notification_layout.php". {"trace":"#0 /var/www/html/cmdb_app/vendor/league/plates/src/Template/Template.php(161): League\\Plates\\Template\\ResolveTemplatePath\\NameAndFolderResolveTemplatePath->__invoke()
+#1 /var/www/html/cmdb_app/vendor/league/plates/src/Engine.php(304): League\\Plates\\Template\\Template->render()
+#2 /var/www/html/cmdb_notification/src/Services/EmailService.php(52): League\\Plates\\Engine->render()
+#3 /var/www/html/cmdb_notification/src/NotificationManager.php(67): CmdbNotification\\Services\\EmailService->sendBulkEmails()
+#4 /var/www/html/cmdb_notification/run_notifications.php(137): CmdbNotification\\NotificationManager->sendNotifications()
+#5 {main}"} 
+[2025-10-10 14:43:43] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-10 14:43:43] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-10 14:46:44] CMDB_Notification.ERROR: Error en envÃ­o masivo: SMTP Error: Could not connect to SMTP host. Connection failed. stream_socket_enable_crypto(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000086:SSL routines::certificate verify failed  
+[2025-10-10 14:46:44] CMDB_Notification.ERROR: Mailer Error: SMTP Error: Could not connect to SMTP host. Connection failed. stream_socket_enable_crypto(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000086:SSL routines::certificate verify failed SMTP server error: QUIT command failed Detail: ¸rÈþÀ]\!8«Ò‡œ»ª×c$0>e"®qâÂ•Ž:?±¸?•éJI·"ßõ˜@EDÎ*ûÔîƒÑ\ZCÇä 0È¤àêûÙ0Aö³@ä“!Ø%çsE¨«!À:~ûÂ|%"¥ýæ¤D”ÒyÒ~ÙÅÕæMÁóÎ5õµÌŠ<â%Ä|Î^xº†z½	W8ÍJÂq¤ŽæÜ“¨Èþ0É»7l#dë)þÐQ?t¥û"CçÊ~È`§#j©Ÿ·{q‚]`ßÇ+"PŽ@s3G¥]ü-
+5·H'Á“ÐÔ*Üµ^^þ6*%PŠ+Ï‡"IE»ûÈ ¯Ø%äJ‹t=œ
+:U²|HÒ¢@gl…æŸìÓ2ÏÓ“ÈOS•Ä3&	ýýr7Ä¸÷Þü»(ùešO²NùEòÇ10Øx2û„ˆ8Kw”@Œ”\„®õ*Â5ëîÏÕJò6£Ü_& *V&@èBhDåü£ ‹¼€ÎPée4é‚7.‡±˜††.4kL:8~üäi„^‰YÜC]Öäþ×3¼YŸ’”¡,Õ:NL,#-oùaä~Ÿfž/ë·^°q(–º3»7Y4jcA6,,ÞCùø”!”³é~Õ$.³i¨âhù-p¢vs`Û°ô‹FÀ`$jÕQ½Ìß…”­¡la\q:ì^¬Vù‡LíZ EÝ6SfH»æQl|ÆÙ‚èäã«ÓîiœY uùq²uGv„c“qÒf¸Ÿ9rb	‰­gHýðÄ‘ÄL¤ žtŽ°¥454 TLS not available due to a temporary reason
+221 mailscan.dach041.dachser.com
+  
+[2025-10-10 14:46:44] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-10 14:50:22] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-10 14:50:23] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser.com.  
+[2025-10-10 14:50:23] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_contracts'. Saltando.  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: No se encontraron elementos prÃ³ximos a caducar en los prÃ³ximos 30 dÃ­as.  
+[2025-10-10 14:55:25] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_contracts'. Saltando.  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: No se encontraron elementos prÃ³ximos a caducar en los prÃ³ximos 30 dÃ­as.  
+[2025-10-10 14:55:40] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser.com.  
+[2025-10-10 14:56:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser.com.  
+[2025-10-11 06:05:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-11 06:10:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser.com  
+[2025-10-11 06:10:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser.com.  
+[2025-10-11 06:10:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-12 06:05:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-12 06:10:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-13 06:05:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-13 06:10:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-14 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-14 06:05:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-14 06:05:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: No hay usuarios suscritos para 'expiring_assets'. Saltando.  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 1 usuarios.  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com.  
+[2025-10-14 06:10:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 2 usuarios.  
+[2025-10-15 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com, andres.matias@dachser.com  
+[2025-10-15 06:05:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com, andres.matias@dachser.com.  
+[2025-10-15 06:05:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 2 usuarios.  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com, andres.matias@dachser.com  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com, andres.matias@dachser.com.  
+[2025-10-15 06:10:01] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 2 usuarios.  
+[2025-10-16 06:05:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com, andres.matias@dachser.com  
+[2025-10-16 06:05:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com, andres.matias@dachser.com.  
+[2025-10-16 06:05:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: Iniciando script de notificaciones...  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: EmailService construido correctamente.  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_assets  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: No hay elementos que expiren para 'expiring_assets'. No se enviarÃ¡n correos.  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: Procesando notificaciones para: expiring_contracts  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: 1 elementos encontrados para 'expiring_contracts'. Preparando envÃ­o a 2 usuarios.  
+[2025-10-16 06:10:01] CMDB_Notification.INFO: Inicio de envÃ­o masivo a: andres.matias@dachser2.com, andres.matias@dachser.com  
+[2025-10-16 06:10:02] CMDB_Notification.INFO: Correo de notificaciÃ³n de caducidad enviado con Ã©xito a andres.matias@dachser2.com, andres.matias@dachser.com.  
+[2025-10-16 06:10:02] CMDB_Notification.INFO: Cron Job: Proceso de notificaciones finalizado.  
