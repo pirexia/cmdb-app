@@ -28,6 +28,9 @@ $app = \Slim\Factory\AppFactory::createFromContainer($container);
 // Esto permite que $request->getParsedBody() funcione para JSON.
 $app->addBodyParsingMiddleware();
 
+// Añade el middleware de idioma
+$app->add(\App\Middlewares\LanguageMiddleware::class);
+
 // Añade el middleware de enrutamiento
 $app->addRoutingMiddleware();
 

@@ -34,6 +34,7 @@ use App\Middlewares\RoleMiddleware;
 use App\Services\AuthService;
 use App\Services\SessionService;
 use App\Middlewares\RequestLogMiddleware;
+use App\Middlewares\LanguageMiddleware; // <-- ¡NUEVO! Importar el middleware de idioma.
 
 // Importar modelos si es necesario dentro de las closures de las rutas API
 use App\Models\CustomFieldDefinition;
@@ -42,6 +43,7 @@ use App\Models\Model as AssetModel;
 // --- REGISTRO DE MIDDLEWARE GLOBAL ---
 // Este middleware se añade aquí para que se ejecute en cada petición.
 $app->add(RequestLogMiddleware::class);
+$app->add(LanguageMiddleware::class); // <-- ¡NUEVO! Aplicar el middleware de idioma globalmente.
 
 // --- RUTAS PÚBLICAS (Accesibles sin autenticación) ---
 
@@ -183,6 +185,7 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
             $masterGroup->post('/{master_name:' . $masterNamesRegex . '}/create', MasterController::class . ':processCreate');
             $masterGroup->get('/{master_name:' . $masterNamesRegex . '}/edit/{id}', MasterController::class . ':showEditForm');
             $masterGroup->post('/{master_name:' . $masterNamesRegex . '}/update/{id}', MasterController::class . ':processUpdate');
+            $masterGroup->post('/{master_name:language}/toggle-status/{id}', MasterController::class . ':processToggleStatus'); // <-- NUEVA RUTA
             $masterGroup->post('/{master_name:' . $masterNamesRegex . '}/delete/{id}', MasterController::class . ':processDelete');
         });
 

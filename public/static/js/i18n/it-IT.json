@@ -1,0 +1,132 @@
+{
+    "emptyTable": "Nessun dato disponibile nella tabella",
+    "info": "Mostra da _START_ a _END_ di _TOTAL_ elementi",
+    "infoEmpty": "Mostra da 0 a 0 di 0 elementi",
+    "infoFiltered": "(filtrati da _MAX_ elementi totali)",
+    "infoThousands": ".",
+    "lengthMenu": "Mostra _MENU_ elementi",
+    "loadingRecords": "Caricamento...",
+    "processing": "Elaborazione...",
+    "search": "Cerca:",
+    "zeroRecords": "Nessun elemento corrispondente trovato",
+    "paginate": {
+        "first": "Inizio",
+        "last": "Fine",
+        "next": "Successivo",
+        "previous": "Precedente"
+    },
+    "aria": {
+        "sortAscending": ": attiva per ordinare la colonna in ordine crescente",
+        "sortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    },
+    "autoFill": {
+        "cancel": "Annulla",
+        "fill": "Riempi tutte le celle con <i>%d<\/i>",
+        "fillHorizontal": "Riempi celle orizzontalmente",
+        "fillVertical": "Riempi celle verticalmente"
+    },
+    "buttons": {
+        "collection": "Collezione <span class=\"ui-button-icon-primary ui-icon ui-icon-triangle-1-s\"><\/span>",
+        "colvis": "Visibilità colonne",
+        "colvisRestore": "Ripristina visibilità",
+        "copy": "Copia",
+        "copyKeys": "Premi ctrl o u2318 + C per copiare i dati della tabella nella clipboard di sistema. Per annullare, clicca questo messaggio o premi ESC.",
+        "copySuccess": {
+            "1": "Copiata 1 riga nella clipboard",
+            "_": "Copiate %d righe nella clipboard"
+        },
+        "copyTitle": "Copia nella clipboard",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostra tutte le righe",
+            "_": "Mostra %d righe"
+        },
+        "pdf": "PDF",
+        "print": "Stampa"
+    },
+    "searchBuilder": {
+        "add": "Aggiungi Condizione",
+        "button": {
+            "0": "Generatore di Ricerca",
+            "_": "Generatore di Ricerca (%d)"
+        },
+        "clearAll": "Pulisci Tutto",
+        "condition": "Condizione",
+        "conditions": {
+            "date": {
+                "after": "Dopo",
+                "before": "Prima",
+                "between": "Tra",
+                "empty": "Vuoto",
+                "equals": "Uguale a",
+                "not": "Diverso da",
+                "notBetween": "Non tra",
+                "notEmpty": "Non vuoto"
+            },
+            "number": {
+                "between": "Tra",
+                "empty": "Vuoto",
+                "equals": "Uguale a",
+                "gt": "Maggiore di",
+                "gte": "Maggiore o uguale a",
+                "lt": "Minore di",
+                "lte": "Minore o uguale a",
+                "not": "Diverso da",
+                "notBetween": "Non tra",
+                "notEmpty": "Non vuoto"
+            },
+            "string": {
+                "contains": "Contiene",
+                "empty": "Vuoto",
+                "endsWith": "Finisce con",
+                "equals": "Uguale a",
+                "not": "Diverso da",
+                "notEmpty": "Non vuoto",
+                "startsWith": "Inizia con"
+            },
+            "array": {
+                "equals": "Uguale a",
+                "empty": "Vuoto",
+                "contains": "Contiene",
+                "not": "Diverso da",
+                "notEmpty": "Non vuoto",
+                "without": "Senza"
+            }
+        },
+        "data": "Dati",
+        "deleteTitle": "Elimina regola di filtro",
+        "leftTitle": "Criteri di Riduzione Rientro",
+        "logicAnd": "E",
+        "logicOr": "O",
+        "rightTitle": "Criteri di Aumento Rientro",
+        "title": {
+            "0": "Generatore di Ricerca",
+            "_": "Generatore di Ricerca (%d)"
+        },
+        "value": "Valore"
+    },
+    "searchPanes": {
+        "clearMessage": "Pulisci Tutto",
+        "collapse": {
+            "0": "Pannelli di Ricerca",
+            "_": "Pannelli di Ricerca (%d)"
+        },
+        "count": "{total}",
+        "countFiltered": "{shown} ({total})",
+        "emptyPanes": "Nessun Pannello di Ricerca",
+        "loadMessage": "Caricamento Pannelli di Ricerca...",
+        "title": "Filtri Attivi - %d"
+    },
+    "select": {
+        "cells": {
+            "1": "1 cella selezionata",
+            "_": "%d celle selezionate"
+        },
+        "columns": {
+            "1": "1 colonna selezionata",
+            "_": "%d colonne selezionate"
+        }
+    },
+    "thousands": "."
+}

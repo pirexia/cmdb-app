@@ -1,0 +1,222 @@
+{
+    "emptyTable": "Keine Daten in der Tabelle vorhanden",
+    "info": "_START_ bis _END_ von _TOTAL_ Einträgen",
+    "infoEmpty": "Keine Einträge vorhanden",
+    "infoFiltered": "(gefiltert von _MAX_ Einträgen)",
+    "infoThousands": ".",
+    "lengthMenu": "_MENU_ Einträge anzeigen",
+    "loadingRecords": "Wird geladen...",
+    "processing": "Bitte warten...",
+    "search": "Suchen:",
+    "zeroRecords": "Keine passenden Einträge gefunden",
+    "paginate": {
+        "first": "Erste",
+        "last": "Letzte",
+        "next": "Nächste",
+        "previous": "Zurück"
+    },
+    "aria": {
+        "sortAscending": ": aktivieren, um Spalte aufsteigend zu sortieren",
+        "sortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+    },
+    "select": {
+        "rows": {
+            "_": "%d Zeilen ausgewählt",
+            "0": "",
+            "1": "1 Zeile ausgewählt"
+        }
+    },
+    "buttons": {
+        "print": "Drucken",
+        "colvis": "Sichtbarkeit",
+        "copy": "Kopieren",
+        "copyTitle": "In Zwischenablage kopieren",
+        "copyKeys": "Drücken Sie <i>ctrl</i> oder <i>\u2318</i> + <i>C</i>, um die Tabellendaten in die Zwischenablage zu kopieren.<br><br>Um abzubrechen, klicken Sie auf diese Nachricht oder drücken Sie Esc.",
+        "copySuccess": {
+            "_": "%d Zeilen kopiert",
+            "1": "1 Zeile kopiert"
+        },
+        "csv": "CSV",
+        "excel": "Excel",
+        "pdf": "PDF",
+        "pageLength": {
+            "-1": "Alle Zeilen anzeigen",
+            "_": "%d Zeilen anzeigen"
+        },
+        "createState": "Status erstellen",
+        "removeAllStates": "Alle Stati entfernen",
+        "removeState": "Entfernen",
+        "renameState": "Umbenennen",
+        "savedStates": "Gespeicherte Stati",
+        "stateRestore": "Status %d",
+        "updateState": "Aktualisieren"
+    },
+    "searchBuilder": {
+        "add": "Bedingung hinzufügen",
+        "button": {
+            "0": "Such-Builder",
+            "_": "Such-Builder (%d)"
+        },
+        "clearAll": "Alle löschen",
+        "condition": "Bedingung",
+        "conditions": {
+            "date": {
+                "after": "Nach",
+                "before": "Vor",
+                "between": "Zwischen",
+                "empty": "Leer",
+                "equals": "Gleich",
+                "not": "Nicht",
+                "notBetween": "Nicht zwischen",
+                "notEmpty": "Nicht leer"
+            },
+            "number": {
+                "between": "Zwischen",
+                "empty": "Leer",
+                "equals": "Gleich",
+                "gt": "Größer als",
+                "gte": "Größer als oder gleich",
+                "lt": "Kleiner als",
+                "lte": "Kleiner als oder gleich",
+                "not": "Nicht",
+                "notBetween": "Nicht zwischen",
+                "notEmpty": "Nicht leer"
+            },
+            "string": {
+                "contains": "Enthält",
+                "empty": "Leer",
+                "endsWith": "Endet mit",
+                "equals": "Gleich",
+                "not": "Nicht",
+                "notEmpty": "Nicht leer",
+                "startsWith": "Beginnt mit"
+            },
+            "array": {
+                "without": "Ohne",
+                "notEmpty": "Nicht leer",
+                "not": "Nicht",
+                "contains": "Enthält",
+                "empty": "Leer",
+                "equals": "Gleich"
+            }
+        },
+        "data": "Daten",
+        "deleteTitle": "Filterregel löschen",
+        "leftTitle": "Äußere Kriterien",
+        "logicAnd": "und",
+        "logicOr": "oder",
+        "rightTitle": "Innere Kriterien",
+        "title": {
+            "0": "Such-Builder",
+            "_": "Such-Builder (%d)"
+        },
+        "value": "Wert"
+    },
+    "searchPanes": {
+        "clearMessage": "Alle löschen",
+        "collapse": {
+            "0": "Suchbereiche",
+            "_": "Suchbereiche (%d)"
+        },
+        "count": "{total}",
+        "countFiltered": "{shown} ({total})",
+        "emptyPanes": "Keine Suchbereiche",
+        "loadMessage": "Lade Suchbereiche...",
+        "title": "Aktive Filter - %d"
+    },
+    "stateRestore": {
+        "creationModal": {
+            "button": "Erstellen",
+            "columns": {
+                "search": "Spaltensuche",
+                "visible": "Spaltensichtbarkeit"
+            },
+            "name": "Name:",
+            "order": "Sortierung",
+            "paging": "Paginierung",
+            "scroller": "Scroll-Position",
+            "search": "Suche",
+            "searchBuilder": "Such-Builder",
+            "select": "Auswahl",
+            "title": "Neuen Status erstellen",
+            "toggleLabel": "Enthält:"
+        },
+        "duplicateError": "Ein Status mit diesem Namen existiert bereits.",
+        "emptyError": "Name darf nicht leer sein.",
+        "emptyStates": "Keine gespeicherten Stati",
+        "removeConfirm": "Sind Sie sicher, dass Sie %s entfernen möchten?",
+        "removeError": "Fehler beim Entfernen des Status.",
+        "removeJoiner": " und ",
+        "removeSubmit": "Entfernen",
+        "removeTitle": "Status entfernen",
+        "renameButton": "Umbenennen",
+        "renameLabel": "Neuer Name für %s:",
+        "renameTitle": "Status umbenennen"
+    },
+    "datetime": {
+        "previous": "Zurück",
+        "next": "Weiter",
+        "hours": "Stunden",
+        "minutes": "Minuten",
+        "seconds": "Sekunden",
+        "unknown": "-",
+        "amPm": [
+            "vorm.",
+            "nachm."
+        ],
+        "weekdays": [
+            "So",
+            "Mo",
+            "Di",
+            "Mi",
+            "Do",
+            "Fr",
+            "Sa"
+        ],
+        "months": [
+            "Januar",
+            "Februar",
+            "März",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Dezember"
+        ]
+    },
+    "editor": {
+        "close": "Schließen",
+        "create": {
+            "button": "Neu",
+            "title": "Neuen Eintrag erstellen",
+            "submit": "Erstellen"
+        },
+        "edit": {
+            "button": "Bearbeiten",
+            "title": "Eintrag bearbeiten",
+            "submit": "Aktualisieren"
+        },
+        "remove": {
+            "button": "Löschen",
+            "title": "Löschen",
+            "submit": "Löschen",
+            "confirm": {
+                "_": "Sind Sie sicher, dass Sie %d Zeilen löschen möchten?",
+                "1": "Sind Sie sicher, dass Sie 1 Zeile löschen möchten?"
+            }
+        },
+        "error": {
+            "system": "Ein Systemfehler ist aufgetreten (<a target=\"\\\" rel=\"nofollow\" href=\"\\\">Weitere Informationen</a>)."
+        },
+        "multi": {
+            "title": "Mehrere Werte",
+            "info": "Die ausgewählten Elemente enthalten unterschiedliche Werte für diesen Eingang. Um alle Elemente für diesen Eingang auf den gleichen Wert zu bearbeiten und zu setzen, klicken oder tippen Sie hier, andernfalls behalten sie ihre individuellen Werte.",
+            "restore": "Änderungen rückgängig machen",
+            "noMulti": "Dieser Eingang kann einzeln bearbeitet werden, aber nicht als Teil einer Gruppe."
+        }
+    }
+}

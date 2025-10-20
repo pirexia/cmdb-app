@@ -111,14 +111,19 @@ class MasterController
 
         $flashMessages = $this->sessionService->getFlashMessages();
 
-        // Convertir para el título de la página
-        $pageTitleSuffix = ucwords(str_replace('-', ' ', $masterNameKebabCase));
+        // Construir el título de la página usando una clave de traducción dinámica.
+        // ej. para 'asset-type', busca la clave 'master_plural_asset_type'.
+        $pageTitleSuffix = $t('master_plural_' . str_replace('-', '_', $masterNameKebabCase));
 
-        $html = $this->view->render('masters/list', [
-            'pageTitle' => $t('administer') . ' ' . $pageTitleSuffix, // Traducir "Administrar"
+        // Determinar qué vista renderizar
+        $viewToRender = ($masterNameKebabCase === 'language') ? 'admin/language/list' : 'masters/list';
+
+        $html = $this->view->render($viewToRender, [
+            'pageTitle' => $t('administer') . ' ' . $pageTitleSuffix,
             'masterName' => $masterNameKebabCase,
             'items' => $items,
-            'flashMessages' => $flashMessages
+            'flashMessages' => $flashMessages,
+            't' => $t // Pasar el traductor a la vista
         ]);
 
         $response->getBody()->write($html);
@@ -145,11 +150,15 @@ class MasterController
 
         $flashMessages = $this->sessionService->getFlashMessages();
 
-        $html = $this->view->render('masters/form', [
+        // Determinar qué vista renderizar
+        $viewToRender = ($masterName === 'language') ? 'admin/language/form' : 'masters/form';
+
+        $html = $this->view->render($viewToRender, [
             'pageTitle' => $t('create') . ' ' . ucwords(str_replace('-', ' ', $masterName)), // Traducir "Crear"
             'masterName' => $masterName,
             'item' => null, // Indica que es un formulario de creación
-            'flashMessages' => $flashMessages
+            'flashMessages' => $flashMessages,
+            'isCreateMode' => true // Variable para el formulario
         ]);
 
         $response->getBody()->write($html);
@@ -166,15 +175,8 @@ class MasterController
     public function processCreate(Request $request, Response $response, array $args): Response
     {
         $masterName = $args['master_name'];
+        $t = $this->translator;
         $data = $request->getParsedBody();
-        $nombre = trim($data['nombre'] ?? '');
-        $descripcion = trim($data['descripcion'] ?? null);
-        $t = $this->translator; // Accede a la función de traducción
-
-        if (empty($nombre)) {
-            $this->sessionService->addFlashMessage('danger', $t('name_is_required')); // Traducir
-            return $response->withHeader('Location', "/admin/masters/{$masterName}/create")->withStatus(302);
-        }
 
         $model = null;
         try {
@@ -184,13 +186,54 @@ class MasterController
             return $response->withHeader('Location', '/dashboard')->withStatus(302);
         }
 
-        if ($model->create($nombre, $descripcion)) {
-            $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('created_successfully')); // Traducir
-            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
-        } else {
-            $this->sessionService->addFlashMessage('danger', $t('error_creating_master_item', ['%master_name%' => ucwords(str_replace('-', ' ', $masterName))])); // Traducir
+        // Preparar los datos para el modelo.
+        $modelData = [];
+
+        if ($masterName === 'language') {
+            $modelData['nombre'] = trim($data['nombre'] ?? '');
+            $modelData['codigo_iso'] = trim($data['codigo_iso'] ?? '');
+            $modelData['nombre_fichero'] = trim($data['nombre_fichero'] ?? '');
+            $modelData['activo'] = isset($data['activo']) ? 1 : 0;
+
+            // --- Lógica para la subida del fichero de idioma ---
+            $uploadedFiles = $request->getUploadedFiles();
+            $languageFile = $uploadedFiles['language_file'] ?? null;
+
+            if ($languageFile && $languageFile->getError() === UPLOAD_ERR_OK) {
+                if ($languageFile->getClientFilename() !== $modelData['nombre_fichero']) {
+                    $this->sessionService->addFlashMessage('error', 'El nombre del fichero subido no coincide con el campo "Nombre Fichero".');
+                    return $response->withHeader('Location', "/admin/masters/language/create")->withStatus(302);
+                }
+                if (pathinfo($modelData['nombre_fichero'], PATHINFO_EXTENSION) !== 'php') {
+                    $this->sessionService->addFlashMessage('error', 'El fichero debe tener la extensión .php');
+                    return $response->withHeader('Location', "/admin/masters/language/create")->withStatus(302);
+                }
+                $targetPath = __DIR__ . '/../Lang/' . $modelData['nombre_fichero'];
+                $languageFile->moveTo($targetPath);
+            } else {
+                $this->sessionService->addFlashMessage('error', 'Es obligatorio subir el fichero de idioma al crear.');
+                return $response->withHeader('Location', "/admin/masters/language/create")->withStatus(302);
+            }
+        } else { // Lógica genérica para otros maestros
+            $modelData['nombre'] = trim($data['nombre'] ?? '');
+            $modelData['descripcion'] = trim($data['descripcion'] ?? null);
+        }
+
+        // Validación común para el nombre
+        if (empty($modelData['nombre'])) {
+            $this->sessionService->addFlashMessage('danger', $t('name_is_required'));
             return $response->withHeader('Location', "/admin/masters/{$masterName}/create")->withStatus(302);
         }
+
+        // Llamada unificada al método create del modelo
+        if ($model->create($modelData)) {
+            $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('created_successfully'));
+            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+        }
+
+        // Si llega aquí, algo falló
+        $this->sessionService->addFlashMessage('danger', $t('error_creating_master_item', ['%master_name%' => ucwords(str_replace('-', ' ', $masterName))]));
+        return $response->withHeader('Location', "/admin/masters/{$masterName}/create")->withStatus(302);
     }
 
     /**
@@ -222,11 +265,15 @@ class MasterController
 
         $flashMessages = $this->sessionService->getFlashMessages();
 
-        $html = $this->view->render('masters/form', [
+        // Determinar qué vista renderizar y corregir el bug
+        $viewToRender = ($masterName === 'language') ? 'admin/language/form' : 'masters/form';
+
+        $html = $this->view->render($viewToRender, [
             'pageTitle' => $t('edit') . ' ' . ucwords(str_replace('-', ' ', $masterName)), // Traducir "Editar"
             'masterName' => $masterName,
             'item' => $item,
-            'flashMessages' => $flashMessages
+            'flashMessages' => $flashMessages,
+            'isCreateMode' => false // Indicar que no es modo creación
         ]);
 
         $response->getBody()->write($html);
@@ -244,15 +291,8 @@ class MasterController
     {
         $masterName = $args['master_name'];
         $id = (int)$args['id'];
+        $t = $this->translator;
         $data = $request->getParsedBody();
-        $nombre = trim($data['nombre'] ?? '');
-        $descripcion = trim($data['descripcion'] ?? null);
-        $t = $this->translator; // Accede a la función de traducción
-
-        if (empty($nombre)) {
-            $this->sessionService->addFlashMessage('danger', $t('name_is_required')); // Traducir
-            return $response->withHeader('Location', "/admin/masters/{$masterName}/edit/{$id}")->withStatus(302);
-        }
 
         $model = null;
         try {
@@ -262,13 +302,34 @@ class MasterController
             return $response->withHeader('Location', '/dashboard')->withStatus(302);
         }
 
-        if ($model->update($id, $nombre, $descripcion)) {
-            $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('updated_successfully')); // Traducir
-            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
-        } else {
-            $this->sessionService->addFlashMessage('danger', $t('error_updating_master_item', ['%master_name%' => ucwords(str_replace('-', ' ', $masterName))])); // Traducir
+        // Preparar los datos para el modelo.
+        $modelData = [];
+
+        if ($masterName === 'language') {
+            $modelData['nombre'] = trim($data['nombre'] ?? '');
+            $modelData['codigo_iso'] = trim($data['codigo_iso'] ?? '');
+            $modelData['nombre_fichero'] = trim($data['nombre_fichero'] ?? '');
+            $modelData['activo'] = isset($data['activo']) ? 1 : 0;
+        } else { // Lógica genérica para otros maestros
+            $modelData['nombre'] = trim($data['nombre'] ?? '');
+            $modelData['descripcion'] = trim($data['descripcion'] ?? null);
+        }
+
+        // Validación común para el nombre
+        if (empty($modelData['nombre'])) {
+            $this->sessionService->addFlashMessage('danger', $t('name_is_required'));
             return $response->withHeader('Location', "/admin/masters/{$masterName}/edit/{$id}")->withStatus(302);
         }
+
+        // Llamada unificada al método update del modelo
+        if ($model->update($id, $modelData)) {
+            $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('updated_successfully'));
+            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+        }
+
+        // Si llega aquí, algo falló
+        $this->sessionService->addFlashMessage('danger', $t('error_updating_master_item', ['%master_name%' => ucwords(str_replace('-', ' ', $masterName))]));
+        return $response->withHeader('Location', "/admin/masters/{$masterName}/edit/{$id}")->withStatus(302);
     }
 
     /**
@@ -313,11 +374,60 @@ class MasterController
                 // Otro tipo de error de DB
                 $this->sessionService->addFlashMessage('danger', $t('database_error_deleting_master_item', ['%master_name%' => ucwords(str_replace('-', ' ', $masterName)), '%message%' => $originalExceptionMessage]) ?? 'Error de base de datos al eliminar el elemento: ' . $originalExceptionMessage); // Nueva clave
             }
-        } catch (Exception $e) { // <-- Captura cualquier otra excepción general
+        } catch (\Exception $e) { // <-- Captura cualquier otra excepción general
             $this->logger->error("Excepción general en MasterController::processDelete: " . $e->getMessage() . " File: " . $e->getFile() . " Line: " . $e->getLine());
             $this->sessionService->addFlashMessage('danger', $t('unexpected_error_deleting_master_item') ?? 'Ocurrió un error inesperado al eliminar el elemento.'); // Nueva clave
         }
         
+        return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+    }
+
+    /**
+     * Procesa el cambio de estado (activo/inactivo) para un idioma.
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function processToggleStatus(Request $request, Response $response, array $args): Response
+    {
+        $masterName = $args['master_name'];
+        $id = (int)$args['id'];
+        $t = $this->translator;
+
+        // Este método solo debe funcionar para el maestro de idiomas
+        if ($masterName !== 'language') {
+            $this->sessionService->addFlashMessage('danger', 'Operación no válida para este maestro.');
+            return $response->withHeader('Location', '/dashboard')->withStatus(302);
+        }
+
+        $model = $this->getMasterModel($masterName);
+
+        // Obtener el idioma antes de cambiar el estado
+        $language = $model->getById($id);
+        if (!$language) {
+            $this->sessionService->addFlashMessage('danger', $t('not_found'));
+            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+        }
+
+        // No permitir desactivar el idioma inglés (código 'en')
+        if ($language['codigo_iso'] === 'en' && $language['activo'] == 1) {
+            $this->sessionService->addFlashMessage('danger', $t('cannot_disable_english'));
+            return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+        }
+
+        if ($model->toggleStatus($id)) {
+            $this->sessionService->addFlashMessage('success', $t('status_changed_successfully'));
+
+            // Si el idioma desactivado es el que el usuario está usando, cambiar a inglés
+            if ($language['activo'] == 1 && $language['codigo_iso'] === $this->sessionService->get('lang')) {
+                $this->sessionService->set('lang', 'en');
+                $this->sessionService->addFlashMessage('info', $t('language_disabled_switched_to_english'));
+            }
+        } else {
+            $this->sessionService->addFlashMessage('danger', $t('error_changing_status'));
+        }
+
         return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
     }
 }

@@ -71,11 +71,13 @@ $authService = $container->get(App\Services\AuthService::class);
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-translate me-1"></i> <?= strtoupper($sessionService->getUserLanguage()) ?>
+                        <i class="bi bi-translate me-1"></i> <?= strtoupper($currentLanguage ?? 'es') ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
-                        <li><a class="dropdown-item" href="/set-language/es">Español</a></li>
-                        <li><a class="dropdown-item" href="/set-language/en">English</a></li>
+                        <?php foreach ($activeLanguages as $lang): ?>
+                            <li><a class="dropdown-item <?= ($currentLanguage === $lang['codigo_iso']) ? 'active' : '' ?>" 
+                                   href="/set-language/<?= $this->e($lang['codigo_iso']) ?>"><?= $this->e($lang['nombre']) ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
             </ul>

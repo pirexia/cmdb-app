@@ -32,6 +32,7 @@ return [
     'sincerely' => 'Sincerely', // For email footer
     'operation_successful' => 'Operation successful.', // Generic messages
     'operation_failed' => 'An error occurred during the operation.', // Generic messages
+    'language_changed_successfully' => 'Language changed successfully.',
     'confirm_delete_master_item' => 'Are you sure you want to delete this item? This action cannot be undone.',
     'confirm_delete_asset' => 'Are you sure you want to delete this asset? This action cannot be undone and will remove its attachments and logs.',
     'confirm_delete_model' => 'Are you sure you want to delete this model? This action will also delete the associated image and may affect assets.',
@@ -90,7 +91,10 @@ return [
     'providers' => 'Providers',
     'acquisition_formats' => 'Acquisition Formats',
     'languages' => 'Languages',
+    'language' => 'Language',
     'app_settings' => 'App Settings',
+    'cannot_disable_english' => 'The English language cannot be disabled as it is the fallback language.',
+    'language_disabled_switched_to_english' => 'You have disabled your current language. Switched to English by default.',
     'smtp_settings' => 'SMTP Settings',
     'custom_fields' => 'Custom Fields',
     'assets' => 'Assets',
@@ -157,9 +161,17 @@ return [
     'mapped_model_class_not_found' => 'Mapped model class not found: %class% for master %master_name%.',
     'internal_error_model_not_found' => 'Internal error: Class "%class%" for master "%master_name%" not found.',
     'error_loading_master_data' => 'Error loading master data for %master_name%.',
+    'master_plural_language' => 'Languages',
+    'status_changed_successfully' => 'Status changed successfully.',
+    'error_changing_status' => 'Error changing status.',
 
 
     // --- Sección: Gestión de Modelos (Models Management) ---
+    'language_iso_code' => 'ISO Code',
+    'language_file_name' => 'File Name',
+    'language_upload_file' => 'Upload Language File (.php)',
+    'language_upload_hint' => 'The name of this file must match the "File Name" above.',
+
     'error_loading_models' => 'Error loading models.',
     'administer_models' => 'Administer Models',
     'new_model' => 'New Model',
@@ -454,6 +466,7 @@ return [
     'ldap_user_filter_required' => 'User filter is required.',
 
     // Claves para el Dashboard
+    // --- Section: Dashboard ---
     'view_assets' => 'View Assets',
     'total_assets' => 'Total Assets',
     'total_contracts' => 'Total Contracts',
@@ -465,7 +478,6 @@ return [
     'close' => 'Close',
     'no_assets_expiring' => 'No assets expiring.',
     'no_contracts_expiring' => 'No contracts expiring.',
-
     'expiring_assets_count' => 'Expiring Assets',
     'expiring_contracts_count' => 'Expiring Contracts',
     // --- Section: CSV Import ---
@@ -525,8 +537,8 @@ return [
     'import_unexpected_error' => 'Unexpected error during import of %entity_type%: %message%.',
     'import_unexpected_error_flash' => 'An unexpected error occurred during import: %message%.',
     'import_model_not_found_for_manufacturer_row' => 'Row %row%: Model "%model_name%" not found for manufacturer "%manufacturer_name%".',
-
-    // Claves para plantillas dinámicas de Activos
+    
+    // --- Section: Dynamic Asset Templates (CSV) ---
     'asset_type_name' => 'Asset Type Name',
     'manufacturer_name' => 'Manufacturer Name',
     'model_name' => 'Model Name',
@@ -545,8 +557,8 @@ return [
     'error_loading_custom_field_definitions_for_template' => 'Error loading custom field definitions for template (Asset Type ID: %type_id%).',
     'invalid_import_entity_type' => 'Invalid import entity type "%entity_type%".',
 
-    // Claves para CsvImporterService
-    'import_row_unexpected_error' => 'Error inesperado al procesar la fila %row%: %message%.',
+    // --- Section: CsvImporterService ---
+    'import_row_unexpected_error' => 'Unexpected error processing row %row%: %message%.',
     'import_row_processing_error_log' => 'Error al procesar fila %row% para %entity_type%: %message%.',
     'import_unsupported_entity_type' => 'Tipo de entidad "%entity_type%" no soportado para importación.',
     'import_unsupported_entity_type_flash' => 'Tipo de entidad no soportado para importación.',
@@ -557,8 +569,8 @@ return [
     'import_generic_db_error_row' => 'Fila %row%: Error de base de datos genérico. %message%.',
     'import_logic_error_row' => 'Error de lógica en la fila %row% para %entity_type%: %message%.',
     'import_validation_error_row' => 'Fila %row%: Error de validación. %message%.',
-    'import_asset_type_name_required_row' => 'Fila %row%: El nombre del Tipo de Activo es obligatorio.',
-    'import_asset_type_not_found_row' => 'Fila %row%: Tipo de Activo "%name%" no encontrado.',
+    'import_asset_type_name_required_row' => 'Row %row%: Asset Type Name is required.',
+    'import_asset_type_not_found_row' => 'Row %row%: Asset Type "%name%" not found.',
     'import_manufacturer_not_found_row' => 'Row %row%: Manufacturer "%name%" not found.',
     'import_status_not_found_row' => 'Row %row%: Status "%name%" not found.',
     'import_location_not_found_row' => 'Row %row%: Location "%name%" not found.',
@@ -568,10 +580,10 @@ return [
     'import_asset_exists_no_serial_row' => 'Row %row%: An asset with the name "%name%" already exists for this type. It cannot be updated without providing a serial number.',
     'import_asset_type_id_required_row' => 'Row %row%: Asset Type is required.',
     'import_status_id_required_row' => 'Row %row%: Status is required.',
-    'import_asset_name_required_row' => 'Fila %row%: El nombre del Activo es obligatorio.',
-    'import_asset_updated_log' => 'Row %row%: Asset "%serial%" updated.',
-    'import_asset_created_log' => 'Fila %row%: Activo "%serial%" creado.',
-    'import_asset_success_row' => 'Fila %row%: Activo importado con éxito.',
+    'import_asset_name_required_row' => 'Row %row%: Asset Name is required.',
+    'import_asset_updated_log' => 'Row %row%: Asset "%identifier%" updated.',
+    'import_asset_created_log' => 'Row %row%: Asset "%identifier%" created.',
+    'import_asset_success_row' => 'Row %row%: Asset imported successfully.',
     'import_name_required_row' => 'Fila %row%: El nombre es obligatorio.',
     'import_manufacturer_updated_log' => 'Fila %row%: Fabricante "%name%" actualizado.',
     'import_manufacturer_created_log' => 'Fila %row%: Fabricante "%name%" creado.',
@@ -579,13 +591,13 @@ return [
     'import_provider_updated_log' => 'Fila %row%: Proveedor "%name%" actualizado.',
     'import_provider_created_log' => 'Fila %row%: Proveedor "%name%" creado.',
     'import_provider_success_row' => 'Fila %row%: Proveedor importado con éxito.',
-    'import_invalid_email_format_row' => 'Fila %row%: Formato de email inválido.',
-    'import_contract_required_fields_row' => 'Fila %row%: Número de Contrato, Tipo, Fecha Inicio y Fecha Fin son obligatorios.',
-    'import_contract_type_not_found_row' => 'Fila %row%: Tipo de Contrato "%name%" no encontrado.',
-    'import_provider_not_found_row' => 'Fila %row%: Proveedor "%name%" no encontrado.',
-    'import_contract_updated_log' => 'Fila %row%: Contrato "%number%" actualizado.',
-    'import_contract_created_log' => 'Fila %row%: Contrato "%number%" creado.',
-    'import_contract_success_row' => 'Fila %row%: Contrato importado con éxito.',
+    'import_invalid_email_format_row' => 'Row %row%: Invalid email format.',
+    'import_contract_required_fields_row' => 'Row %row%: Contract Number, Type, Start Date, and End Date are required.',
+    'import_contract_type_not_found_row' => 'Row %row%: Contract Type "%name%" not found.',
+    'import_provider_not_found_row' => 'Row %row%: Provider "%name%" not found.',
+    'import_contract_updated_log' => 'Row %row%: Contract "%number%" updated.',
+    'import_contract_created_log' => 'Row %row%: Contract "%number%" created.',
+    'import_contract_success_row' => 'Row %row%: Contract imported successfully.',
     'import_unsupported_generic_master' => 'Tipo de maestro genérico "%entity_type%" no soportado para importación.',
     'import_generic_master_updated_log' => 'Fila %row%: Maestro genérico "%entity_type%" "%name%" actualizado.',
     'import_generic_master_created_log' => 'Fila %row%: Maestro genérico "%entity_type%" "%name%" creado.',
@@ -593,10 +605,9 @@ return [
     'import_custom_field_required_row' => 'Fila %row%: El campo personalizado "%field_name%" es obligatorio.',
     'import_completed_with_errors' => 'Importación de %entity_type% completada con %successful% éxitos y %failed% fallos.',
     'row_error_detail' => 'Fila %row%: %message%',
-    'upload_csv_for_entity' => 'Upload CSV for %entity_type%',
     'import_successful_count' => '%successful% successful records imported/updated.',
     'import_failed_count' => '%failed% records failed.',
-    'download_import_log' => 'Download import log',
+    'upload_csv_for_entity' => 'Upload CSV for %entity_type%',
     'import_log_file_not_found' => 'The import log file was not found.',
     'row_error_detail' => 'Row %row%: %message%',
     'import_db_error_row' => 'Database error on row %row%: %message% (Code: %code%).',
@@ -609,7 +620,7 @@ return [
     'import_unsupported_entity_type' => 'Entity type "%entity_type%" not supported for import.',
     'import_unsupported_entity_type_flash' => 'Entity type not supported for import.',
 
-    // Keys for model creation confirmation
+    // --- Section: CSV Model Creation Confirmation ---
     'import_confirm_new_models_title' => 'Confirm New Model Creation',
     'import_confirm_new_models_intro' => 'The following models were detected in the CSV file but do not exist in the database. Do you want to create them and continue with the import?',
     'import_accept_and_continue' => 'Accept and Continue Import',
@@ -633,36 +644,23 @@ return [
     'import_proceed_with_import' => 'Proceed with Import',
     'import_cancelled_by_user' => 'Import cancelled by user.',
 
-    // Claves para el resumen de importación
+    // --- Section: CSV Import Summary ---
     'import_summary_intro' => 'Summary of the import operation.',
     'total_records' => 'Total Records',
     'successful_records' => 'Successful',
     'failed_records' => 'Failed',
     'detailed_results' => 'Detailed Results',
     'row_number' => 'Row',
-    'status' => 'Status',
     'message' => 'Message',
     'download_import_log_button' => 'Download Full Log',
     'go_back' => 'Go Back',
     'no_import_results_found' => 'No import results were found.',
-    'import_successful_count' => '%successful% successful records imported/updated.',
-    'import_failed_count' => '%failed% records failed.',
     'download_import_log' => 'Download import log',
     'import_results' => 'Import Results',
-    'import_summary_intro' => 'Summary of the import operation.',
-    'total_records' => 'Total Records',
-    'successful_records' => 'Successful',
-    'failed_records' => 'Failed',
-    'detailed_results' => 'Detailed Results',
-    'row_number' => 'Row',
-    'status' => 'Status',
-    'message' => 'Message',
-    'download_import_log_button' => 'Download Full Log',
-    'go_back' => 'Go Back',
-    'no_import_results_found' => 'No import results were found.',
     'import_updated_success_row' => 'Record updated successfully.',
     'import_new_success_row' => 'Record created successfully.',
-    // Claves de estado de importación
+
+    // --- Section: Import Status Keys ---
     'import_status_new' => 'Created',
     'import_status_updated' => 'Updated',
     'import_status_error' => 'Error',
@@ -671,14 +669,12 @@ return [
     'audit_log_title' => 'Audit Log',
     'log_id' => 'Log ID',
     'log_date' => 'Date',
-    'action' => 'Action',
-    'asset_name' => 'Asset',
-    'username' => 'User',
+    'action' => 'Action', // Already exists
+    'asset_name' => 'Asset', // Already exists
+    'username' => 'User', // Already exists
     'details' => 'Details',
     'no_logs_to_display' => 'No audit logs to display.',
-    'view_details' => 'View Details',
     'log_details' => 'Log Details',
-    'close' => 'Close',
     'error_loading_logs' => 'Error loading audit logs.',
 
     // --- Section: SMTP Configuration ---
@@ -724,11 +720,12 @@ return [
     'remote_user_data_note' => 'Your first name, last name, and title are managed by the external authentication system and cannot be changed here.',
     'notification_preferences' => 'Notification Preferences',
     'notification_preferences_intro' => 'Choose which emails you want to receive from the application.',
+    'preferred_language' => 'Preferred Language',
     'save_changes' => 'Save Changes',
     'profile_updated_successfully' => 'Profile updated successfully.',
     'profile_update_failed' => 'Failed to update profile.',
 
-    // Keys for notification types
+    // --- Section: Notification Types ---
     'notification_expiring_assets' => 'Expiring Assets',
     'notification_expiring_contracts' => 'Expiring Contracts',
 

@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use League\Plates\Engine as PlatesEngine;
 use App\Services\SessionService;
 use Psr\Log\LoggerInterface;
+use App\Services\LanguageService; // <-- ¡NUEVO!
 use App\Models\User;
 use App\Models\Source;
 use PDO;
@@ -23,6 +24,7 @@ class ProfileController
     private User $userModel;
     private Source $sourceModel;
     private PDO $db;
+    private LanguageService $languageService; // <-- ¡NUEVO!
     private array $config;
 
     public function __construct(
@@ -33,6 +35,7 @@ class ProfileController
         User $userModel,
         Source $sourceModel,
         PDO $db,
+        LanguageService $languageService, // <-- ¡NUEVO!
         array $config
     ) {
         $this->view = $view;
@@ -42,6 +45,7 @@ class ProfileController
         $this->userModel = $userModel;
         $this->sourceModel = $sourceModel;
         $this->db = $db;
+        $this->languageService = $languageService; // <-- ¡NUEVO!
         $this->config = $config;
     }
 
@@ -53,6 +57,7 @@ class ProfileController
         $t = $this->translator;
         $notificationTypes = [];
         $user = [];
+        $activeLanguages = []; // <-- ¡NUEVO!
         $isLocalUser = false;
 
         try {
@@ -60,6 +65,9 @@ class ProfileController
             $user = $this->userModel->getUserById($userId);
             $source = $this->sourceModel->getById($user['id_fuente_usuario']);
             $isLocalUser = ($source && $source['tipo_fuente'] === 'local');
+
+            // <-- ¡NUEVO! Obtener idiomas activos
+            $activeLanguages = $this->languageService->getActiveLanguages();
 
             // Obtener tipos de notificación
             $stmt = $this->db->query("SELECT id, clave, nombre_visible FROM tipos_notificacion ORDER BY id");
@@ -87,6 +95,7 @@ class ProfileController
             'user' => $user,
             'isLocalUser' => $isLocalUser,
             'notificationTypes' => $notificationTypes,
+            'activeLanguages' => $activeLanguages, // <-- ¡NUEVO!
             'flashMessages' => $flashMessages
         ]);
         $response->getBody()->write($html);
@@ -115,6 +124,7 @@ class ProfileController
             $updateData['titulo'] = htmlspecialchars(trim($data['titulo'] ?? ''), ENT_QUOTES, 'UTF-8');
             $updateData['nombre'] = htmlspecialchars(trim($data['nombre'] ?? ''), ENT_QUOTES, 'UTF-8');
             $updateData['apellidos'] = htmlspecialchars(trim($data['apellidos'] ?? ''), ENT_QUOTES, 'UTF-8');
+            $updateData['preferred_language_code'] = trim($data['preferred_language'] ?? null); // <-- ¡NUEVO!
         }
 
         // Lógica para subir la foto de perfil
@@ -169,6 +179,20 @@ class ProfileController
             $this->logger->error("Error al actualizar las preferencias de notificación: " . $e->getMessage());
             $this->session->addFlashMessage('error', $t('profile_update_failed'));
             return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // --- ¡NUEVO! Lógica para la cookie y la sesión de idioma ---
+        if (isset($updateData['preferred_language_code']) && !empty($updateData['preferred_language_code'])) {
+            $langCode = $updateData['preferred_language_code'];
+
+            // 1. Actualizar la sesión actual para un cambio inmediato
+            $this->session->set('lang', $langCode);
+
+            // 2. Crear/Actualizar la cookie
+            $cookieName = 'user_lang_pref';
+            $expiry = time() + (86400 * 365); // Expira en 1 año
+            $path = "/";
+            setcookie($cookieName, $langCode, $expiry, $path);
         }
 
         $this->session->addFlashMessage('success', $t('profile_updated_successfully'));

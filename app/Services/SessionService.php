@@ -154,8 +154,19 @@ class SessionService
     public function getUserLanguage(): string
     {
         $this->startSession();
-        // Aseguramos que $this->config['app']['default_language'] siempre sea una cadena
-        return $this->get('user_language', $this->config['app']['default_language'] ?? 'es'); // <-- AÑADE '?? 'es'' como fallback final
+
+        // 1. Prioridad: Sesión actual (cambio explícito del usuario)
+        if ($this->has('lang')) {
+            return $this->get('lang');
+        }
+
+        // 2. Segunda prioridad: Cookie de preferencia de usuario
+        if (isset($_COOKIE['user_lang_pref'])) {
+            return $_COOKIE['user_lang_pref'];
+        }
+
+        // 3. Fallback: Idioma por defecto de la aplicación
+        return $this->config['app']['default_language'] ?? 'es';
 
     }
 

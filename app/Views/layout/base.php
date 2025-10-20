@@ -55,8 +55,9 @@
                     // Determina la clase CSS del mensaje (success, danger, info, etc.).
                     $alertClass = 'alert-' . ($message['type'] ?? 'info');
                     // Renderiza un div con las clases de alerta de Bootstrap y una clase de identificación para JavaScript.
+                    // --- CORRECCIÓN: Usar la función de traducción $t() para el mensaje ---
                     echo "<div class='alert {$alertClass} alert-dismissible fade show flash-message' role='alert'>";
-                    echo htmlspecialchars($message['message']); // Muestra el mensaje con HTML escapado.
+                    echo htmlspecialchars($t($message['message'])); // Traduce la clave del mensaje y escapa el HTML.
                     echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
                     echo "</div>";
                 }
@@ -111,34 +112,38 @@
     <script>
     $(document).ready(function() {
     <?php
-        if ($currentPath === '/dashboard') {
+        // Lógica de inclusión de scripts dinámicos
+        if (str_starts_with($currentPath, '/admin/masters/language')) {
+            $this->insert('partials/datatables_init', ['tableId' => 'languages-table', 'options' => ['order' => [[0, 'asc']]]]);
+        } elseif (preg_match('/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format)/', $currentPath)) {
+            $this->insert('partials/datatables_init', ['tableId' => 'masterTable', 'options' => ['order' => [[1, 'asc']]]]);
+        } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
+            $this->insert('partials/datatables_init', ['tableId' => 'modelTable', 'options' => ['order' => [[2, 'asc']]]]);
+        } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {
+            $this->insert('partials/datatables_init', ['tableId' => 'contractsTable', 'options' => ['order' => [[1, 'asc']]]]);
+        } elseif (str_starts_with($currentPath, '/admin/users')) {
+            $this->insert('partials/datatables_init', ['tableId' => 'usersTable', 'options' => ['order' => [[1, 'asc']]]]);
+            if (str_starts_with($currentPath, '/admin/users/create') || str_starts_with($currentPath, '/admin/users/edit/')) {
+                $this->insert('partials/users_form_scripts');
+            }
+        } elseif (str_starts_with($currentPath, '/assets')) {
+            $this->insert('partials/datatables_init', ['tableId' => 'assetsTable', 'options' => ['order' => [[1, 'asc']]]]);
+            if (str_starts_with($currentPath, '/assets/create') || str_starts_with($currentPath, '/assets/edit/')) {
+                $this->insert('partials/assets_form_scripts');
+            }
+        } elseif ($currentPath === '/dashboard') {
             $this->insert('partials/dashboard_scripts', [
                 'assetsByType' => $assetsByType ?? [],
                 'assetsByStatus' => $assetsByStatus ?? [],
                 't' => $t
             ]);
-        } elseif ($currentPath === '/assets' || $currentPath === '/assets/') {
-            $this->insert('partials/datatables_assets');
-        } elseif (str_starts_with($currentPath, '/assets/create') || str_starts_with($currentPath, '/assets/edit/')) {
-            $this->insert('partials/assets_form_scripts');
-        } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
-            $this->insert('partials/datatables_models');
-        } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {
-            $this->insert('partials/datatables_contracts');
-        } elseif (preg_match('/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format|language)/', $currentPath)) {
-            $this->insert('partials/datatables_masters');
         } elseif (str_starts_with($currentPath, '/admin/custom-fields')) {
-            $this->insert('partials/datatables_custom_fields');
+            $this->insert('partials/datatables_init', ['tableId' => 'customFieldsTable', 'options' => ['order' => [[1, 'asc']]]]);
             if (str_starts_with($currentPath, '/admin/custom-fields/create') || str_starts_with($currentPath, '/admin/custom-fields/edit/')) {
                 $this->insert('partials/custom_fields_form_scripts');
             }
-        } elseif (str_starts_with($currentPath, '/admin/users')) {
-            $this->insert('partials/datatables_users');
-            if (str_starts_with($currentPath, '/admin/users/create') || str_starts_with($currentPath, '/admin/users/edit/')) {
-                $this->insert('partials/users_form_scripts');
-            }
         } elseif (str_starts_with($currentPath, '/admin/sources')) {
-            $this->insert('partials/datatables_sources');
+            $this->insert('partials/datatables_init', ['tableId' => 'sourcesTable', 'options' => ['order' => [[1, 'asc']]]]);
             if (str_starts_with($currentPath, '/admin/sources/create') || str_starts_with($currentPath, '/admin/sources/edit/')) {
                 $this->insert('partials/sources_form_scripts');
             }
@@ -147,7 +152,7 @@
                 $this->insert('partials/import_index_scripts');
             }
         } elseif (str_starts_with($currentPath, '/admin/logs')) {
-            $this->insert('partials/datatables_logs');
+            $this->insert('partials/datatables_init', ['tableId' => 'logsTable', 'options' => ['order' => [[0, 'desc']]]]);
         } elseif (str_starts_with($currentPath, '/admin/smtp')) {
             $this->insert('partials/smtp_script');
         }

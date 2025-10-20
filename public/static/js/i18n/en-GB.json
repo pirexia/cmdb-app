@@ -1,0 +1,191 @@
+{
+    "processing": "Processing...",
+    "lengthMenu": "Show _MENU_ entries",
+    "zeroRecords": "No matching records found",
+    "emptyTable": "No data available in table",
+    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+    "infoEmpty": "Showing 0 to 0 of 0 entries",
+    "infoFiltered": "(filtered from _MAX_ total entries)",
+    "search": "Search:",
+    "loadingRecords": "Loading...",
+    "paginate": {
+        "first": "First",
+        "last": "Last",
+        "next": "Next",
+        "previous": "Previous"
+    },
+    "aria": {
+        "sortAscending": ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    },
+    "buttons": {
+        "copy": "Copy",
+        "colvis": "Column visibility",
+        "collection": "Collection",
+        "colvisRestore": "Restore visibility",
+        "copyKeys": "Press ctrl or u2318 + C to copy the table data to your system clipboard. <br \/> <br \/> To cancel, click this message or press escape.",
+        "copySuccess": {
+            "1": "Copied 1 row to clipboard",
+            "_": "Copied %d rows to clipboard"
+        },
+        "copyTitle": "Copy to Clipboard",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Show all rows",
+            "_": "Show %d rows"
+        },
+        "pdf": "PDF",
+        "print": "Print",
+        "renameState": "Rename",
+        "updateState": "Update",
+        "createState": "Create State",
+        "removeAllStates": "Remove All States",
+        "removeState": "Remove",
+        "savedStates": "Saved States",
+        "stateRestore": "State %d"
+    },
+    "autoFill": {
+        "cancel": "Cancel",
+        "fill": "Fill all cells with <i>%d<\/i>",
+        "fillHorizontal": "Fill cells horizontally",
+        "fillVertical": "Fill cells vertically"
+    },
+    "decimal": ".",
+    "searchBuilder": {
+        "add": "Add Condition",
+        "button": {
+            "0": "Search Builder",
+            "_": "Search Builder (%d)"
+        },
+        "clearAll": "Clear All",
+        "condition": "Condition",
+        "conditions": {
+            "date": {
+                "before": "Before",
+                "between": "Between",
+                "empty": "Empty",
+                "equals": "Equals",
+                "notBetween": "Not between",
+                "not": "Not",
+                "after": "After",
+                "notEmpty": "Not empty"
+            },
+            "number": {
+                "between": "Between",
+                "equals": "Equals",
+                "gt": "Greater than",
+                "gte": "Greater than or equal to",
+                "lt": "Less than",
+                "lte": "Less than or equal to",
+                "notBetween": "Not between",
+                "notEmpty": "Not empty",
+                "not": "Not",
+                "empty": "Empty"
+            },
+            "string": {
+                "contains": "Contains",
+                "empty": "Empty",
+                "endsWith": "Ends with",
+                "equals": "Equals",
+                "startsWith": "Starts with",
+                "not": "Not",
+                "notContains": "Does not contain",
+                "notStartsWith": "Does not start with",
+                "notEndsWith": "Does not end with",
+                "notEmpty": "Not empty"
+            },
+            "array": {
+                "not": "Not",
+                "equals": "Equals",
+                "empty": "Empty",
+                "contains": "Contains",
+                "notEmpty": "Not empty",
+                "without": "Without"
+            }
+        },
+        "data": "Data",
+        "deleteTitle": "Delete filtering rule",
+        "leftTitle": "Outdent criteria",
+        "logicAnd": "And",
+        "logicOr": "Or",
+        "rightTitle": "Indent criteria",
+        "title": {
+            "0": "Search Builder",
+            "_": "Search Builder (%d)"
+        },
+        "value": "Value"
+    },
+    "searchPanes": {
+        "clearMessage": "Clear All",
+        "collapse": {
+            "0": "Search Panes",
+            "_": "Search Panes (%d)"
+        },
+        "count": "{total}",
+        "countFiltered": "{shown} ({total})",
+        "emptyPanes": "No Search Panes",
+        "loadMessage": "Loading Search Panes",
+        "title": "Active Filters - %d",
+        "showMessage": "Show All",
+        "collapseMessage": "Collapse All"
+    },
+    "select": {
+        "cells": {
+            "1": "1 cell selected",
+            "_": "%d cells selected"
+        },
+        "columns": {
+            "1": "1 column selected",
+            "_": "%d columns selected"
+        },
+        "rows": {
+            "1": "1 row selected",
+            "_": "%d rows selected"
+        }
+    },
+    "thousands": ",",
+    "datetime": {
+        "previous": "Previous",
+        "next": "Next",
+        "hours": "Hour",
+        "minutes": "Minute",
+        "seconds": "Second",
+        "unknown": "-",
+        "amPm": ["am", "pm"],
+        "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    },
+    "editor": {
+        "close": "Close",
+        "create": {
+            "button": "New",
+            "title": "Create new entry",
+            "submit": "Create"
+        },
+        "edit": {
+            "button": "Edit",
+            "title": "Edit entry",
+            "submit": "Update"
+        },
+        "remove": {
+            "button": "Delete",
+            "title": "Delete",
+            "submit": "Delete",
+            "confirm": {
+                "_": "Are you sure you want to delete %d rows?",
+                "1": "Are you sure you want to delete 1 row?"
+            }
+        },
+        "error": {
+            "system": "A system error has occurred (<a target=\"\\\" rel=\"nofollow\" href=\"\\\">More information<\/a>)."
+        },
+        "multi": {
+            "title": "Multiple Values",
+            "info": "The selected items contain different values for this input. To edit and set all items for this input to the same value, click or tap here, otherwise they will retain their individual values.",
+            "restore": "Undo Changes",
+            "noMulti": "This input can be edited individually, but not as part of a group."
+        }
+    },
+    "infoThousands": ","
+}

@@ -6,14 +6,20 @@ namespace App\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\SessionService;
+use App\Services\LanguageService; // <-- 1. Importar LanguageService
 
 class LanguageController
 {
     private SessionService $sessionService;
     private array $config;
+    private LanguageService $languageService; // <-- 2. Añadir propiedad
 
-    public function __construct(SessionService $sessionService, array $config)
-    {
+    public function __construct(
+        SessionService $sessionService,
+        LanguageService $languageService, // <-- 3. Inyectar en el constructor
+        array $config
+    ) {
+        $this->languageService = $languageService; // <-- 4. Asignar
         $this->sessionService = $sessionService;
         $this->config = $config;
     }
@@ -28,16 +34,16 @@ class LanguageController
     public function setLanguage(Request $request, Response $response, array $args): Response
     {
         $langCode = $args['lang_code'];
-        // Obtener los códigos de idioma disponibles de la configuración
-        $availableLangs = array_keys($this->config['lang']);
 
-        if (in_array($langCode, $availableLangs)) {
-            // Primero, traducimos el mensaje con el idioma actual.
-            $message = $this->translate('language_changed_successfully', ['%lang%' => strtoupper($langCode)]);
-            // Luego, establecemos el nuevo idioma en la sesión.
-            $this->sessionService->setUserLanguage($langCode);
-            // Finalmente, añadimos el mensaje ya traducido al flash.
-            $this->sessionService->addFlashMessage('success', $message);
+        // 5. Usar LanguageService para validar si el idioma está activo en la BBDD
+        $activeLanguages = $this->languageService->getActiveLanguages();
+        $availableLangCodes = array_column($activeLanguages, 'codigo_iso');
+
+        if (in_array($langCode, $availableLangCodes)) {
+            $this->sessionService->set('lang', $langCode);
+            // El mensaje flash se mostrará en el nuevo idioma en la siguiente carga de página.
+            // La clave 'language_changed_successfully' será traducida por el middleware.
+            $this->sessionService->addFlashMessage('success', 'language_changed_successfully');
         } else {
             $this->sessionService->addFlashMessage('danger', $this->translate('invalid_language'));
         }
@@ -60,7 +66,7 @@ class LanguageController
     private function translate(string $key, array $replacements = [], ?string $langCode = null): string
     {
         $langConfig = $this->config['lang'];
-        $defaultLang = $this->config['app']['default_language'];
+        $defaultLang = $this->config['app']['default_language'] ?? 'es';
         $currentLang = $langCode ?? $this->sessionService->getUserLanguage() ?? $defaultLang;
         $translations = [];
 
@@ -75,7 +81,7 @@ class LanguageController
 
         $text = $translations[$key] ?? $key;
         foreach ($replacements as $placeholder => $value) {
-            $text = str_replace($placeholder, $value, $text);
+            $text = str_replace("%{$placeholder}%", (string) $value, $text);
         }
         return $text;
     }

@@ -76,6 +76,21 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                                         <input type="text" class="form-control" id="apellidos" name="apellidos" value="<?= $this->e($user['apellidos'] ?? '') ?>" <?= !$isLocalUser ? 'readonly' : '' ?>>
                                     </div>
                                 </div>
+
+                                <!-- ¡NUEVO! Campo de Idioma Preferido (solo para usuarios locales) -->
+                                <?php if ($isLocalUser): ?>
+                                <div class="mb-3">
+                                    <label for="preferred_language" class="form-label"><?= $this->e($t('preferred_language')) ?></label>
+                                    <select class="form-select" id="preferred_language" name="preferred_language">
+                                        <?php foreach ($activeLanguages as $lang): ?>
+                                            <option value="<?= $this->e($lang['codigo_iso']) ?>" <?= ($user['preferred_language_code'] ?? '') === $lang['codigo_iso'] ? 'selected' : '' ?>>
+                                                <?= $this->e($lang['nombre']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <?php endif; ?>
+                                
                             </div>
                         </div>
 

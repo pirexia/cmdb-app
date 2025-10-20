@@ -32,6 +32,7 @@ return [
     'sincerely' => 'Atentamente', // Para pie de email
     'operation_successful' => 'Operación realizada con éxito.', // Mensajes genéricos
     'operation_failed' => 'Ocurrió un error en la operación.', // Mensajes genéricos
+    'language_changed_successfully' => 'Idioma cambiado con éxito.',
     'confirm_delete_master_item' => '¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.',
     'confirm_delete_asset' => '¿Estás seguro de que quieres eliminar este activo? Esta acción no se puede deshacer y eliminará sus archivos adjuntos y logs.',
     'confirm_delete_model' => '¿Estás seguro de que quieres eliminar este modelo? Esta acción eliminará también la imagen asociada y puede afectar a activos.',
@@ -90,7 +91,10 @@ return [
     'providers' => 'Proveedores',
     'acquisition_formats' => 'Formatos Adquisición',
     'languages' => 'Idiomas',
+    'language' => 'Idioma',
     'app_settings' => 'Configuración App',
+    'cannot_disable_english' => 'El idioma inglés no puede ser deshabilitado, ya que es el idioma de respaldo.',
+    'language_disabled_switched_to_english' => 'Has deshabilitado tu idioma actual. Se ha cambiado al inglés por defecto.',
     'smtp_settings' => 'Configuración SMTP',
     'custom_fields' => 'Campos Personalizados',
     'assets' => 'Activos',
@@ -140,8 +144,7 @@ return [
 
     // --- Sección: Maestros Genéricos (Generic Masters) ---
     'administer' => 'Administrar', // Ya existe
-    'create' => 'Crear', // Ya existe
-    'edit' => 'Editar', // Ya existe
+    'create' => 'Crear',
     'name_is_required' => 'El nombre es obligatorio.',
     'created_successfully' => 'creado con éxito.', // Se concatena (ej. "Fabricante creado con éxito.")
     'error_creating_master_item' => 'Error al crear %master_name%. Puede que el nombre ya exista.',
@@ -158,13 +161,14 @@ return [
     'mapped_model_class_not_found' => 'Clase de modelo mapeada no encontrada: %class% para el maestro %master_name%.',
     'internal_error_model_not_found' => 'Error interno: La clase "%class%" para el maestro "%master_name%" no se encontró.',
     'error_loading_master_data' => 'Error al cargar los datos del maestro %master_name%.',
+    'master_plural_language' => 'Idiomas',
 
 
     // --- Sección: Gestión de Modelos (Models Management) ---
     'error_loading_models' => 'Error al cargar los modelos.',
     'administer_models' => 'Administrar Modelos',
     'new_model' => 'Nuevo Modelo',
-    'model' => 'Modelo', // Ya existe
+    'model' => 'Modelo',
     'model_not_found' => 'Modelo no encontrado.',
     'error_loading_manufacturers_models' => 'Error al cargar fabricantes. No se pueden crear/editar modelos.',
     'manufacturer_and_name_required' => 'Fabricante y Nombre son obligatorios.',
@@ -193,12 +197,12 @@ return [
     'new_asset' => 'Nuevo Activo',
     'edit_asset' => 'Editar Activo',
     'asset_name' => 'Nombre del Activo',
-    'serial_number' => 'Número de Serie',
-    'asset_type' => 'Tipo de Activo', // Ya existe
-    'status' => 'Estado', // Ya existe
-    'location' => 'Ubicación', // Ya existe
-    'department' => 'Departamento', // Ya existe
-    'acquisition_format' => 'Formato de Adquisición', // Ya existe
+    'serial_number' => 'Número de Serie', // Ya existe
+    'asset_type' => 'Tipo de Activo',
+    'status' => 'Estado',
+    'location' => 'Ubicación',
+    'department' => 'Departamento',
+    'acquisition_format' => 'Formato de Adquisición',
     'acquisition_provider' => 'Proveedor de Adquisición',
     'purchase_date' => 'Fecha de Compra',
     'purchase_price' => 'Precio de Compra',
@@ -219,7 +223,7 @@ return [
     'error_saving_asset' => 'Error al guardar el activo. Verifique los datos o consulte los logs.',
     'serial_number_exists' => 'Error: El número de serie proporcionado ya existe para otro activo. Por favor, ingrese uno diferente.',
     'duplicate_data_error' => 'Error de duplicidad de datos. Puede que algún campo único ya exista.',
-    'unexpected_error' => 'Ocurrió un error inesperado al guardar el activo.', // Ya existe
+    'unexpected_error' => 'Ocurrió un error inesperado al guardar el activo.',
     'asset_deleted_successfully' => 'Activo eliminado con éxito.',
     'error_deleting_asset' => 'Error al eliminar el activo. Asegúrate de que no tenga elementos asociados (contratos, etc.).',
     'asset_not_found' => 'Activo no encontrado.',
@@ -236,14 +240,14 @@ return [
     'contract_associations_deleted_log' => 'Asociaciones de contratos eliminadas para activo ID %asset_id%.',
     'error_contract_associations_deleted_log' => 'Error al eliminar asociaciones de contratos para activo ID %asset_id%.',
     'error_deleting_asset_general' => 'Error al eliminar el activo. Asegúrate de que no tenga elementos asociados (contratos, etc.).',
-    'select_a_type' => 'Selecciona un Tipo', // Ya existe
-    'select_a_manufacturer' => 'Selecciona un Fabricante', // Ya existe
-    'select_a_model' => 'Selecciona un Modelo', // Ya existe
-    'select_a_status' => 'Selecciona un Estado', // Ya existe
-    'select_a_location' => 'Selecciona una Ubicación', // Ya existe
-    'select_a_department' => 'Selecciona un Departamento', // Ya existe
-    'select_a_format' => 'Selecciona un Formato', // Ya existe
-    'select_a_provider' => 'Selecciona un Proveedor', // Ya existe
+    'select_a_type' => 'Selecciona un Tipo',
+    'select_a_manufacturer' => 'Selecciona un Fabricante',
+    'select_a_model' => 'Selecciona un Modelo',
+    'select_a_status' => 'Selecciona un Estado',
+    'select_a_location' => 'Selecciona una Ubicación',
+    'select_a_department' => 'Selecciona un Departamento',
+    'select_a_format' => 'Selecciona un Formato',
+    'select_a_provider' => 'Selecciona un Proveedor',
     'name_type_status_required' => 'Nombre, Tipo de Activo y Estado son campos obligatorios.',
 
 
@@ -252,13 +256,13 @@ return [
     'upload_new_files' => 'Subir Nuevos Archivos',
     'multiple_files_info' => 'Puedes seleccionar múltiples archivos (PDF, DOCX, etc.).',
     'current_attachments' => 'Archivos Adjuntos Actuales',
-    'delete_attachment' => 'Eliminar', // Ya existe
+    'delete_attachment' => 'Eliminar',
     'error_uploading_file' => 'No se pudo subir el archivo \'%s\'.',
 
 
     // --- Sección: Contratos (Contracts) ---
     'contract_number' => 'Número de Contrato',
-    'contract_type' => 'Tipo de Contrato', // Ya existe
+    'contract_type' => 'Tipo de Contrato',
     'start_date' => 'Fecha de Inicio',
     'end_date' => 'Fecha de Fin',
     'annual_cost' => 'Costo Anual',
@@ -267,20 +271,18 @@ return [
     'select_multiple_hint' => 'Mantén \'Ctrl\' (Windows/Linux) o \'Cmd\' (Mac) para seleccionar múltiples contratos.',
     'new_contract' => 'Nuevo Contrato',
     'no_contracts_to_display' => 'No hay contratos para mostrar.',
-    'confirm_delete_contract' => '¿Estás seguro de que quieres eliminar este contrato? Esta acción eliminará sus asociaciones con activos.', // Ya existe
-    'contract_not_found' => 'Contrato no encontrado.', // Ya existe
-    'contract_required_fields' => 'Número de Contrato, Tipo, Fecha Inicio y Fecha Fin son obligatorios.',
-    'error_saving_contract' => 'Error al guardar el contrato. Verifique los datos o consulte los logs.', // Ya existe
-    'database_error_saving_contract' => 'Error de base de datos al guardar el contrato: %message%', // Ya existe
-    'unexpected_error_saving_contract' => 'Ocurrió un error inesperado al guardar el contrato.', // Ya existe
-    'contract_saved_successfully' => 'Contrato guardado con éxito.', // Ya existe
-    'contract_not_found_for_deletion' => 'Contrato no encontrado para eliminar.', // Ya existe
-    'error_deleting_contract_general' => 'Error al eliminar el contrato. Asegúrate de que no tenga activos asociados.', // Ya existe
+    'contract_saved_successfully' => 'Contrato guardado con éxito.',
+    'error_saving_contract' => 'Error al guardar el contrato. Verifique los datos o consulte los logs.',
+    'contract_number_exists' => 'Error: El número de contrato proporcionado ya existe. Por favor, ingrese uno diferente.',
+    'contract_not_found' => 'Contrato no encontrado.',
+    'contract_deleted_successfully' => 'Contrato eliminado con éxito.',
+    'error_deleting_contract' => 'Error al eliminar el contrato. Asegúrate de que no tenga activos asociados.',
+    'contract_details' => 'Detalles del Contrato',
+    'contract_not_found_for_deletion' => 'Contrato no encontrado para eliminar.',
+    'error_deleting_contract_general' => 'Error al eliminar el contrato. Asegúrate de que no tenga activos asociados.',
     'contract_has_associated_assets' => 'No se puede eliminar el contrato. Tiene activos asociados.',
     'database_error_deleting_contract' => 'Error de base de datos al eliminar el contrato: %message%',
     'unexpected_error_deleting_contract' => 'Ocurrió un error inesperado al eliminar el contrato.',
-    'contract_deleted_successfully' => 'Contrato eliminado con éxito.', // Ya existe
-    'contract_number_exists' => 'Error: El número de contrato proporcionado ya existe. Por favor, ingrese uno diferente.', // Ya existe
 
     // --- Sección: Campos Personalizados (Custom Fields) ---
     'specific_asset_details' => 'Detalles Específicos del Tipo de Activo',
@@ -331,8 +333,8 @@ return [
     'datatable_search_ellipsis' => 'Buscar...', // Placeholder genérico
     'datatable_all' => 'Todos', // Para "Todos" en selects
     'datatable_id' => 'ID', // Para "ID" en selects
-    'datatable_no_data' => 'No hay elementos para mostrar.', // Ya existe
-    'datatable_processing' => 'Procesando...', // Ya existe
+    'datatable_no_data' => 'No hay elementos para mostrar.',
+    'datatable_processing' => 'Procesando...',
 
 
     // --- Sección: Notifications ---
@@ -437,7 +439,7 @@ return [
     'connection_successful' => 'Conexión exitosa.',
     'connection_failed' => 'Conexión fallida.',
     'connection_error_api' => 'Error en la API de test de conexión: ', // Ya existe
-
+    
     // Nuevas claves para authenticateUser (login)
     'ldap_auth_connection_failed' => 'Fallo de conexión LDAP/AD durante la autenticación para host: %host%:%port%.',
     'ldap_auth_connection_error' => 'Error al conectar al servidor LDAP/AD durante la autenticación.',
@@ -455,7 +457,7 @@ return [
     'ldap_base_dn_required' => 'El Base DN es obligatorio.',
     'ldap_user_filter_required' => 'El filtro de usuario es obligatorio.',
 
-    // Claves para el Dashboard
+    // --- Sección: Dashboard ---
     'view_assets' => 'Ver Activos', // Para el botón del jumbotron
     'total_assets' => 'Total Activos',
     'total_contracts' => 'Total Contratos',
@@ -467,10 +469,10 @@ return [
     'close' => 'Cerrar', // Para los modales
     'no_assets_expiring' => 'No hay activos próximos a caducar.',
     'no_contracts_expiring' => 'No hay contratos próximos a caducar.',
-
     'expiring_assets_count' => 'Activos a Expirar',
     'expiring_contracts_count' => 'Contratos a Expirar',
-    // --- Sección: Importación CSV ---
+
+    // --- Sección: CSV Import ---
     'asset_name' => 'Nombre del Activo', // Ya existe
     'serial_number' => 'Número de Serie', // Ya existe
     'asset_type_name' => 'Nombre Tipo Activo', // Nueva clave para cabecera CSV
@@ -526,8 +528,8 @@ return [
     'import_failed_general' => 'Importación de %entity_type% fallida.',
     'import_unexpected_error' => 'Error inesperado durante la importación de %entity_type%: %message%.',
     'import_unexpected_error_flash' => 'Ocurrió un error inesperado durante la importación: %message%.',
-
-    // Claves para plantillas dinámicas de Activos
+    'import_model_not_found_for_manufacturer_row' => 'Fila %row%: Modelo "%model_name%" no encontrado para el fabricante "%manufacturer_name%".',
+    // --- Sección: Plantillas Dinámicas de Activos (CSV) ---
     'asset_type_name' => 'Nombre Tipo Activo', // Para cabecera CSV
     'manufacturer_name' => 'Nombre Fabricante', // Para cabecera CSV
     'model_name' => 'Nombre Modelo', // Para cabecera CSV
@@ -546,7 +548,7 @@ return [
     'error_loading_custom_field_definitions_for_template' => 'Error al cargar definiciones de campos personalizados para la plantilla (Tipo de Activo ID: %type_id%).',
     'invalid_import_entity_type' => 'Tipo de entidad de importación "%entity_type%" no válido.',
 
-    // Claves para CsvImporterService
+    // --- Sección: CsvImporterService ---
     'import_row_unexpected_error' => 'Error inesperado al procesar la fila %row%: %message%.',
     'import_row_processing_error_log' => 'Error al procesar fila %row% para %entity_type%: %message%.',
     'import_unsupported_entity_type' => 'Tipo de entidad "%entity_type%" no soportado para importación.',
@@ -560,7 +562,6 @@ return [
     'import_validation_error_row' => 'Fila %row%: Error de validación. %message%.',
     'import_asset_type_name_required_row' => 'Fila %row%: El nombre del Tipo de Activo es obligatorio.',
     'import_asset_type_not_found_row' => 'Fila %row%: Tipo de Activo "%name%" no encontrado.',
-    'import_model_not_found_for_manufacturer_row' => 'Fila %row%: Modelo "%model_name%" no encontrado para el fabricante "%manufacturer_name%".',
     'import_manufacturer_not_found_row' => 'Fila %row%: Fabricante "%name%" no encontrado.',
     'import_status_not_found_row' => 'Fila %row%: Estado "%name%" no encontrado.',
     'import_location_not_found_row' => 'Fila %row%: Ubicación "%name%" no encontrada.',
@@ -596,22 +597,12 @@ return [
     'import_completed_with_errors' => 'Importación de %entity_type% completada con %successful% éxitos y %failed% fallos.',
     'row_error_detail' => 'Fila %row%: %message%',
     'upload_csv_for_entity' => 'Subir CSV para %entity_type%',
-    'import_successful_count' => '%successful% registros importados/actualizados con éxito',
-    'import_failed_count' => '%failed% registros fallaron',
+    'import_successful_count' => '%successful% registros importados/actualizados con éxito.',
+    'import_failed_count' => '%failed% registros fallaron.',
     'download_import_log' => 'Descargar log de importación',
     'import_log_file_not_found' => 'El archivo de log de importación no se encontró.',
-    'row_error_detail' => 'Fila %row%: %message%',
-    'import_db_error_row' => 'Error de base de datos en la fila %row%: %message% (Código: %code%)',
-    'import_duplicate_entry_row' => 'Fila %row%: Error de duplicidad de entrada. %message%',
-    'import_fk_missing_parent_row' => 'Fila %row%: Error de clave foránea. No se encontró un registro padre asociado. %message%.',
-    'import_fk_has_children_row' => 'Fila %row%: Error de clave foránea. El registro tiene elementos asociados. %message%.',
-    'import_generic_db_error_row' => 'Fila %row%: Error de base de datos genérico. %message%.',
-    'import_logic_error_row' => 'Error de lógica en la fila %row% para %entity_type%: %message%.',
-    'import_validation_error_row' => 'Fila %row%: Error de validación. %message%.',
-    'import_unsupported_entity_type' => 'Tipo de entidad "%entity_type%" no soportado para importación.',
-    'import_unsupported_entity_type_flash' => 'Tipo de entidad no soportado para importación.',
 
-    // Claves para la confirmación de creación de modelos
+    // --- Sección: Confirmación de Creación de Modelos (CSV) ---
     'import_confirm_new_models_title' => 'Confirmar Creación de Nuevos Modelos',
     'import_confirm_new_models_intro' => 'Se han detectado los siguientes modelos en el archivo CSV que no existen en la base de datos. ¿Deseas crearlos y continuar con la importación?',
     'import_accept_and_continue' => 'Aceptar y Continuar Importación',
@@ -634,39 +625,29 @@ return [
     'import_new_models_to_create' => 'Nuevos Modelos a Crear',
     'import_proceed_with_import' => 'Proceder con la Importación',
     'import_cancelled_by_user' => 'Importación cancelada por el usuario.',
-    'import_error_saving_new_model' => 'Error al guardar el nuevo modelo "%model_name%" para el fabricante "%manufacturer_name%".',
-    'import_database_error_saving_new_model' => 'Error de base de datos al guardar el nuevo modelo "%model_name%" para el fabricante "%manufacturer_name%": %message%',
 
-    // Claves para el resumen de importación
+    // --- Sección: Resumen de Importación (CSV) ---
+    'language_iso_code' => 'Código ISO',
+    'language_file_name' => 'Nombre Fichero',
+    'language_upload_file' => 'Subir Fichero de Idioma (.php)',
+    'language_upload_hint' => 'El nombre de este fichero debe coincidir con el "Nombre Fichero" de arriba.',
     'import_summary_intro' => 'Resumen de la operación de importación.',
     'total_records' => 'Registros Totales',
     'successful_records' => 'Exitosos',
     'failed_records' => 'Fallidos',
     'detailed_results' => 'Resultados Detallados',
     'row_number' => 'Fila',
-    'status' => 'Estado',
     'message' => 'Mensaje',
     'download_import_log_button' => 'Descargar Log Completo',
     'go_back' => 'Volver',
     'no_import_results_found' => 'No se encontraron resultados de importación.',
-    'import_successful_count' => '%successful% registros importados/actualizados con éxito',
-    'import_failed_count' => '%failed% registros fallaron',
-    'download_import_log' => 'Descargar log de importación',
     'import_results' => 'Resultados de la Importación',
-    'import_summary_intro' => 'Resumen de la operación de importación.',
-    'total_records' => 'Registros Totales',
-    'successful_records' => 'Exitosos',
-    'failed_records' => 'Fallidos',
-    'detailed_results' => 'Resultados Detallados',
-    'row_number' => 'Fila',
-    'status' => 'Estado',
-    'message' => 'Mensaje',
-    'download_import_log_button' => 'Descargar Log Completo',
-    'go_back' => 'Volver',
-    'no_import_results_found' => 'No se encontraron resultados de importación.',
     'import_updated_success_row' => 'Registro actualizado con éxito', // Para la tabla de resultados
     'import_new_success_row' => 'Registro creado con éxito', // Para la tabla de resultados
-    // Claves de estado de importación
+
+    // --- Sección: Claves de Estado de Importación ---
+    'status_changed_successfully' => 'Estado cambiado con éxito.',
+    'error_changing_status' => 'Error al cambiar el estado.',
     'import_status_new' => 'Creado',
     'import_status_updated' => 'Actualizado',
     'import_status_error' => 'Error',
@@ -682,10 +663,9 @@ return [
     'no_logs_to_display' => 'No hay logs de auditoría para mostrar.',
     'view_details' => 'Ver Detalles',
     'log_details' => 'Detalles del Log',
-    'close' => 'Cerrar',
     'error_loading_logs' => 'Error al cargar los logs de auditoría.',
 
-    // --- Sección: Configuración SMTP ---
+    // --- Sección: SMTP Configuration ---
     'smtp_settings' => 'Configuración SMTP',
     'smtp_host' => 'Host SMTP',
     'smtp_host_hint' => 'Ej: smtp.ejemplo.com',
@@ -714,7 +694,7 @@ return [
     'test_email_failed_to_send_to' => 'Fallo al enviar correo de prueba a %email%.',
     'user_not_authenticated' => 'Usuario no autenticado.',
 
-    // --- Sección: Perfil de Usuario ---
+    // --- Sección: User Profile ---
     'profile_title' => 'Mi Perfil',
     'profile_subtitle' => 'Gestiona tu información personal y preferencias.',
     'profile_image' => 'Foto de Perfil',
@@ -728,11 +708,12 @@ return [
     'remote_user_data_note' => 'Tu nombre, apellidos y título son gestionados por el sistema de autenticación externo y no se pueden modificar aquí.',
     'notification_preferences' => 'Preferencias de Notificación',
     'notification_preferences_intro' => 'Elige qué correos electrónicos deseas recibir de la aplicación.',
+    'preferred_language' => 'Idioma Preferido',
     'save_changes' => 'Guardar Cambios',
     'profile_updated_successfully' => 'Perfil actualizado con éxito.',
     'profile_update_failed' => 'Error al actualizar el perfil.',
 
-    // Claves para los tipos de notificación
+    // --- Sección: Tipos de Notificación ---
     'notification_expiring_assets' => 'Activos Próximos a Caducar',
     'notification_expiring_contracts' => 'Contratos Próximos a Caducar',
 

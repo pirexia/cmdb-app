@@ -26,6 +26,7 @@ use League\Csv\Writer;                    // Clase para la importación de CSVs
 
 // Middleware de la Aplicación
 use App\Middlewares\RequestLogMiddleware;
+use App\Middlewares\LanguageMiddleware;
 
 // Clases de la Aplicación (App\)
 // Controladores
@@ -82,6 +83,7 @@ use App\Services\SessionService;
 use App\Services\CsvTemplateService;
 use App\Services\CsvImporterService;
 use App\Services\SmtpService;
+use App\Services\LanguageService;
 
 // --- 1. Cargar la Configuración de la Aplicación ---
 
@@ -209,37 +211,12 @@ $container->set(App\Services\SessionService::class, function (ContainerInterface
 
 // 2.5. Traductor (Translator Callable)
 // Proporciona la función `t()` para la internacionalización.
+// Esta definición será sobreescrita por el LanguageMiddleware para usar el idioma dinámico.
 $container->set('translator', function (ContainerInterface $c) {
-    $langConfig = $c->get('config')['lang']; // Configuración de rutas de archivos de idioma
-    $sessionService = $c->get(App\Services\SessionService::class); // Necesita el servicio de sesión para el idioma del usuario
-    $defaultLang = $c->get('config')['app']['default_language'] ?? 'es'; // Idioma por defecto de la aplicación
-
-    // La función de traducción real que se devolverá
-    return function (string $key, array $replacements = [], ?string $langCode = null) use ($langConfig, $sessionService, $defaultLang) {
-        // Determina el idioma actual: el que se pasa > el de la sesión > el por defecto
-        $currentLang = $langCode ?? $sessionService->getUserLanguage() ?? $defaultLang;
-        $translations = [];
-
-        // Carga el archivo de idioma. Si no existe o no es válido, usa el por defecto.
-        $langFilePath = $langConfig[$currentLang] ?? null;
-        if (!$langFilePath || !file_exists($langFilePath)) {
-            $langFilePath = $langConfig[$defaultLang]; // Fallback al idioma por defecto
-        }
-        
-        if (file_exists($langFilePath)) {
-            // Carga el array de traducciones desde el archivo PHP
-            $translations = require $langFilePath;
-        }
-
-        // Obtiene el texto. Si la clave no existe, devuelve la clave literal (para depuración).
-        $text = $translations[$key] ?? $key;
-        
-        // Reemplaza los placeholders (ej. %s, %name%) en el texto.
-        foreach ($replacements as $placeholder => $value) {
-            $text = str_replace($placeholder, $value, $text);
-        }
-        return $text;
-    };
+    // El LanguageService, inicializado por el middleware, proporcionará el traductor real.
+    // Esta es una definición de fallback en caso de que se necesite antes.
+    $languageService = $c->get(LanguageService::class);
+    return $languageService->getTranslator();
 });
 
 
@@ -279,6 +256,26 @@ $container->set(RequestLogMiddleware::class, function (ContainerInterface $c) {
         $c->get(LoggerInterface::class) // Inyecta el logger configurado.
     );
 });
+
+// 1. Registrar el nuevo LanguageService
+$container->set(LanguageService::class, function (ContainerInterface $c) {
+    return new LanguageService(
+        $c->get(App\Models\Language::class),
+        $c->get(App\Services\SessionService::class),
+        $c->get(Psr\Log\LoggerInterface::class),
+        $c->get('config')
+    );
+});
+
+// 2. Registrar el nuevo LanguageMiddleware
+$container->set(LanguageMiddleware::class, function (ContainerInterface $c) {
+    return new LanguageMiddleware(
+        $c->get(LanguageService::class),
+        $c->get(League\Plates\Engine::class),
+        $c->get(SessionService::class)
+    );
+});
+
 
 
 // 2.9. Servicio de Logs (LogService)
@@ -501,6 +498,7 @@ $container->set(App\Controllers\DashboardController::class, function (ContainerI
 $container->set(App\Controllers\LanguageController::class, function (ContainerInterface $c) {
     return new App\Controllers\LanguageController(
         $c->get(App\Services\SessionService::class),
+        $c->get(App\Services\LanguageService::class), // <-- Añadir la inyección
         $c->get('config')
     );
 });
@@ -548,6 +546,7 @@ $container->set(App\Controllers\ProfileController::class, function (ContainerInt
         $c->get(App\Models\User::class),
         $c->get(App\Models\Source::class),
         $c->get(PDO::class),
+        $c->get(App\Services\LanguageService::class),
         $c->get('config')
     );
 });

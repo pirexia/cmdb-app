@@ -1,0 +1,160 @@
+{
+    "processing": "Processando...",
+    "lengthMenu": "Mostrar _MENU_ registros",
+    "zeroRecords": "Nenhum registro encontrado",
+    "emptyTable": "Nenhum dado disponível na tabela",
+    "info": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "infoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "infoFiltered": "(filtrado de _MAX_ registros no total)",
+    "search": "Procurar:",
+    "loadingRecords": "Carregando...",
+    "paginate": {
+        "first": "Primeiro",
+        "last": "Último",
+        "next": "Próximo",
+        "previous": "Anterior"
+    },
+    "aria": {
+        "sortAscending": ": Ordenar colunas de forma ascendente",
+        "sortDescending": ": Ordenar colunas de forma descendente"
+    },
+    "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidade",
+        "collection": "Coleção",
+        "colvisRestore": "Restaurar visibilidade",
+        "copyKeys": "Pressione ctrl ou u2318 + C para copiar os dados da tabela para a área de transferência do sistema. Para cancelar, clique nesta mensagem ou pressione Esc.",
+        "copySuccess": {
+            "1": "Copiada 1 linha para a área de transferência",
+            "_": "Copiadas %d linhas para a área de transferência"
+        },
+        "copyTitle": "Copiar para a Área de Transferência",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todos os registros",
+            "_": "Mostrar %d registros"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Renomear",
+        "updateState": "Atualizar",
+        "createState": "Criar estado",
+        "removeAllStates": "Remover todos os estados",
+        "removeState": "Remover",
+        "savedStates": "Estados salvos",
+        "stateRestore": "Estado %d"
+    },
+    "autoFill": {
+        "cancel": "Cancelar",
+        "fill": "Preencher todas as células com <i>%d<\/i>",
+        "fillHorizontal": "Preencher células horizontalmente",
+        "fillVertical": "Preencher células verticalmente"
+    },
+    "decimal": ",",
+    "searchBuilder": {
+        "add": "Adicionar Condição",
+        "button": {
+            "0": "Construtor de Pesquisa",
+            "_": "Construtor de Pesquisa (%d)"
+        },
+        "clearAll": "Limpar Tudo",
+        "condition": "Condição",
+        "conditions": {
+            "date": {
+                "before": "Antes",
+                "between": "Entre",
+                "empty": "Vazio",
+                "equals": "Igual",
+                "notBetween": "Não entre",
+                "not": "Não",
+                "after": "Depois",
+                "notEmpty": "Não vazio"
+            },
+            "number": {
+                "between": "Entre",
+                "equals": "Igual",
+                "gt": "Maior que",
+                "gte": "Maior ou igual a",
+                "lt": "Menor que",
+                "lte": "Menor ou igual a",
+                "notBetween": "Não entre",
+                "notEmpty": "Não vazio",
+                "not": "Não",
+                "empty": "Vazio"
+            },
+            "string": {
+                "contains": "Contém",
+                "empty": "Vazio",
+                "endsWith": "Termina com",
+                "equals": "Igual",
+                "startsWith": "Começa com",
+                "not": "Não",
+                "notContains": "Não contém",
+                "notStartsWith": "Não começa com",
+                "notEndsWith": "Não termina com",
+                "notEmpty": "Não vazio"
+            },
+            "array": {
+                "not": "Não",
+                "equals": "Igual",
+                "empty": "Vazio",
+                "contains": "Contém",
+                "notEmpty": "Não vazio",
+                "without": "Sem"
+            }
+        },
+        "data": "Data",
+        "deleteTitle": "Excluir regra de filtragem",
+        "leftTitle": "Critérios de exclusão",
+        "logicAnd": "E",
+        "logicOr": "Ou",
+        "rightTitle": "Critérios de inclusão",
+        "title": {
+            "0": "Construtor de Pesquisa",
+            "_": "Construtor de Pesquisa (%d)"
+        },
+        "value": "Valor"
+    },
+    "searchPanes": {
+        "clearMessage": "Limpar Tudo",
+        "collapse": {
+            "0": "Painéis de Pesquisa",
+            "_": "Painéis de Pesquisa (%d)"
+        },
+        "count": "{total}",
+        "countFiltered": "{shown} ({total})",
+        "emptyPanes": "Nenhum Painel de Pesquisa",
+        "loadMessage": "Carregando Painéis de Pesquisa",
+        "title": "Filtros Ativos - %d",
+        "showMessage": "Mostrar todos",
+        "collapseMessage": "Recolher todos"
+    },
+    "select": {
+        "cells": {
+            "1": "1 célula selecionada",
+            "_": "%d células selecionadas"
+        },
+        "columns": {
+            "1": "1 coluna selecionada",
+            "_": "%d colunas selecionadas"
+        },
+        "rows": {
+            "1": "1 linha selecionada",
+            "_": "%d linhas selecionadas"
+        }
+    },
+    "thousands": ".",
+    "datetime": {
+        "previous": "Anterior",
+        "next": "Próximo",
+        "hours": "Hora",
+        "minutes": "Minuto",
+        "seconds": "Segundo",
+        "unknown": "-",
+        "amPm": ["am", "pm"],
+        "weekdays": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+        "months": ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+    },
+    "infoThousands": "."
+}
