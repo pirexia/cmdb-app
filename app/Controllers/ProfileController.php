@@ -183,16 +183,18 @@ class ProfileController
 
         // --- ¡NUEVO! Lógica para la cookie y la sesión de idioma ---
         if (isset($updateData['preferred_language_code']) && !empty($updateData['preferred_language_code'])) {
-            $langCode = $updateData['preferred_language_code'];
+            $newLang = $updateData['preferred_language_code'];
 
             // 1. Actualizar la sesión actual para un cambio inmediato
-            $this->session->set('lang', $langCode);
+            $this->session->set('lang', $newLang);
 
-            // 2. Crear/Actualizar la cookie
-            $cookieName = 'user_lang_pref';
-            $expiry = time() + (86400 * 365); // Expira en 1 año
-            $path = "/";
-            setcookie($cookieName, $langCode, $expiry, $path);
+            // 2. Crear/Actualizar la cookie solo si el consentimiento fue aceptado
+            $cookieConsent = $request->getCookieParams()['cookie_consent_status'] ?? 'not_set';
+            if ($cookieConsent === 'accepted') {
+                $this->languageService->setLanguageCookie($newLang);
+            } else {
+                $this->languageService->deleteLanguageCookie();
+            }
         }
 
         $this->session->addFlashMessage('success', $t('profile_updated_successfully'));

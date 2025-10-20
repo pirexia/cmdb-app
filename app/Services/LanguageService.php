@@ -76,4 +76,31 @@ class LanguageService
     {
         return $this->languageModel->getActiveLanguages();
     }
+
+    /**
+     * Establece la cookie de preferencia de idioma del usuario.
+     * @param string $langCode El código de idioma (ej. 'es', 'en').
+     */
+    public function setLanguageCookie(string $langCode): void
+    {
+        setcookie(
+            'user_lang_pref',
+            $langCode,
+            [
+                'expires' => time() + (86400 * 365), // 1 año
+                'path' => '/',
+                'secure' => $this->config['session']['cookie_secure'] ?? false,
+                'httponly' => $this->config['session']['cookie_httponly'] ?? true,
+                'samesite' => $this->config['session']['cookie_samesite'] ?? 'Lax'
+            ]
+        );
+    }
+
+    /**
+     * Elimina la cookie de preferencia de idioma.
+     */
+    public function deleteLanguageCookie(): void
+    {
+        setcookie('user_lang_pref', '', time() - 3600, '/');
+    }
 }

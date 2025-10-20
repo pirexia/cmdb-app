@@ -103,6 +103,9 @@
     <!-- Scripts de la aplicación (propios) -->
     <script src="<?= $config['paths']['public_assets'] ?>/js/app.js"></script>
 
+    <!-- Script de consentimiento de cookies -->
+    <script src="<?= $config['paths']['public_assets'] ?>/js/cookie_consent.js"></script>
+
     <!-- Lógica de inclusión de scripts dinámicos (partials) -->
     <!-- Nota: Los scripts dinámicos se insertan aquí para que puedan acceder a las variables PHP y a las librerías cargadas previamente. -->
     <?php
@@ -175,5 +178,11 @@
             });
         });
     </script>
+
+    <?php
+    // --- Inclusión del Banner de Consentimiento de Cookies ---
+    // Incluye el parcial que decide si mostrar el banner o no.
+    $this->insert('partials/cookie_consent_loader');
+    ?>
 </body>
 </html>

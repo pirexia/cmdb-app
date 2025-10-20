@@ -42,6 +42,7 @@ use App\Controllers\MasterController;
 use App\Controllers\ModelController;
 use App\Controllers\MfaController;
 use App\Controllers\ProfileController;
+use App\Controllers\PageController; // <-- NUEVO
 use App\Controllers\SmtpController;
 use App\Controllers\UserController;
 use App\Controllers\ImportController;
@@ -101,7 +102,8 @@ if (!$container->has('config')) {
 // Esta definición es fundamental para renderizar todas las vistas HTML de la aplicación.
 $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     $config = $c->get('config'); // Obtiene la configuración general desde el contenedor
-    $viewsPath = $config['paths']['views']; // Obtiene la ruta base de los directorios de vistas
+    // --- CORRECCIÓN: Usar una ruta absoluta y fiable para las vistas ---
+    $viewsPath = __DIR__ . '/Views'; // La ruta base de las vistas es 'app/Views'
 
     // Verificar si el directorio de vistas existe y es un directorio
     if (!is_dir($viewsPath)) {
@@ -124,6 +126,10 @@ $container->set(PlatesEngine::class, function (ContainerInterface $c) {
     $engine->addFolder('mfa', $viewsPath . '/mfa');
 
     $engine->addFolder('profile', $viewsPath . '/profile'); // <-- AÑADIR ESTA LÍNEA
+    
+    // Directorio para páginas estáticas
+    $engine->addFolder('pages', $viewsPath . '/pages');
+
     $engine->addFolder('emails', $viewsPath . '/emails'); // Para plantillas de correo
 
     // Registrar una función 'asset' para generar URLs de assets estáticos (CSS, JS, imágenes)
@@ -524,6 +530,14 @@ $container->set(App\Controllers\MasterController::class, function (ContainerInte
         $c->get('translator')
     );
 });
+
+$container->set(App\Controllers\PageController::class, function (ContainerInterface $c) {
+    return new App\Controllers\PageController(
+        $c->get(PlatesEngine::class),
+        $c->get('translator')
+    );
+});
+
 
 $container->set(App\Controllers\ModelController::class, function (ContainerInterface $c) {
     return new App\Controllers\ModelController(

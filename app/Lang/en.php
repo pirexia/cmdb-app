@@ -749,4 +749,24 @@ return [
     'mfa_verify_login_intro' => 'Enter the 6-digit code from your authenticator app.',
     'mfa_verify_button' => 'Verify',
     'cancel_and_logout' => 'Cancel and log out',
+
+    // --- Section: Cookie Consent ---
+    'cookie_consent_message' => 'We use cookies to enhance your user experience. By continuing to browse, you accept our use of cookies.',
+    'cookie_consent_accept_button' => 'Accept',
+    'cookie_consent_reject_button' => 'Reject',
+    'cookie_consent_policy_link' => 'Learn more.',
+
+    // --- Section: Cookie Policy ---
+    'cookie_policy_title' => 'Cookie Policy',
+    'cookie_policy_last_updated' => 'Last updated: May 24, 2024',
+    'cookie_policy_what_are_cookies_title' => 'What are cookies?',
+    'cookie_policy_what_are_cookies_text' => 'Cookies are small text files that are stored on your device when you visit a website. They are widely used to make websites work, or work more efficiently, as well as to provide information to the site owners.',
+    'cookie_policy_how_we_use_cookies_title' => 'How we use cookies?',
+    'cookie_policy_how_we_use_cookies_text' => 'We use cookies for the following purposes:',
+    'cookie_policy_functional_cookies_title' => 'Functional Cookies',
+    'cookie_policy_functional_cookies_text' => 'These cookies are essential for you to browse the website and use its features. They include, for example, the cookie that saves your consent to the use of cookies.',
+    'cookie_policy_analytics_cookies_title' => 'Analytics Cookies',
+    'cookie_policy_analytics_cookies_text' => 'These cookies (if implemented in the future) will help us understand how visitors interact with our website, discovering errors and providing better overall analytics.',
+    'cookie_policy_your_choices_title' => 'Your choices',
+    'cookie_policy_your_choices_text' => 'By using our site, you can accept or reject the use of non-essential cookies through the consent banner. Your choice will be saved for future visits.',
 ];

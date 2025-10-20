@@ -695,4 +695,24 @@ return [
     'mfa_verify_login_intro' => 'Introduza o código de 6 dígitos da sua aplicação de autenticação.',
     'mfa_verify_button' => 'Verificar',
     'cancel_and_logout' => 'Cancelar e sair',
+
+    // --- Seção: Consentimento de Cookies ---
+    'cookie_consent_message' => 'Utilizamos cookies para melhorar a sua experiência de utilizador. Ao continuar a navegar, aceita o nosso uso de cookies.',
+    'cookie_consent_accept_button' => 'Aceitar',
+    'cookie_consent_reject_button' => 'Rejeitar',
+    'cookie_consent_policy_link' => 'Saber mais.',
+
+    // --- Seção: Política de Cookies ---
+    'cookie_policy_title' => 'Política de Cookies',
+    'cookie_policy_last_updated' => 'Última atualização: 24 de maio de 2024',
+    'cookie_policy_what_are_cookies_title' => 'O que são cookies?',
+    'cookie_policy_what_are_cookies_text' => 'Cookies são pequenos ficheiros de texto que são armazenados no seu dispositivo quando visita um website. São amplamente utilizados para fazer os websites funcionar, ou funcionar de forma mais eficiente, bem como para fornecer informações aos proprietários do site.',
+    'cookie_policy_how_we_use_cookies_title' => 'Como utilizamos os cookies?',
+    'cookie_policy_how_we_use_cookies_text' => 'Utilizamos cookies para os seguintes fins:',
+    'cookie_policy_functional_cookies_title' => 'Cookies Funcionais',
+    'cookie_policy_functional_cookies_text' => 'Estes cookies são essenciais para que possa navegar no website e utilizar as suas funcionalidades. Incluem, por exemplo, o cookie que guarda o seu consentimento para o uso de cookies.',
+    'cookie_policy_analytics_cookies_title' => 'Cookies Analíticos',
+    'cookie_policy_analytics_cookies_text' => 'Estes cookies (se implementados no futuro) ajudar-nos-ão a entender como os visitantes interagem com o nosso website, descobrindo erros e fornecendo uma melhor análise geral.',
+    'cookie_policy_your_choices_title' => 'As suas escolhas',
+    'cookie_policy_your_choices_text' => 'Ao utilizar o nosso site, pode aceitar ou rejeitar o uso de cookies não essenciais através do banner de consentimento. A sua escolha será guardada para visitas futuras.',
 ];

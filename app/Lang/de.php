@@ -695,4 +695,24 @@ return [
     'mfa_verify_login_intro' => 'Geben Sie den 6-stelligen Code aus Ihrer Authenticator-App ein.',
     'mfa_verify_button' => 'Überprüfen',
     'cancel_and_logout' => 'Abbrechen und abmelden',
+
+    // --- Abschnitt: Cookie-Einwilligung ---
+    'cookie_consent_message' => 'Wir verwenden Cookies, um Ihre Benutzererfahrung zu verbessern. Indem Sie weiter surfen, akzeptieren Sie unsere Verwendung von Cookies.',
+    'cookie_consent_accept_button' => 'Akzeptieren',
+    'cookie_consent_reject_button' => 'Ablehnen',
+    'cookie_consent_policy_link' => 'Mehr erfahren.',
+
+    // --- Abschnitt: Cookie-Richtlinie ---
+    'cookie_policy_title' => 'Cookie-Richtlinie',
+    'cookie_policy_last_updated' => 'Zuletzt aktualisiert: 24. Mai 2024',
+    'cookie_policy_what_are_cookies_title' => 'Was sind Cookies?',
+    'cookie_policy_what_are_cookies_text' => 'Cookies sind kleine Textdateien, die auf Ihrem Gerät gespeichert werden, wenn Sie eine Website besuchen. Sie werden häufig verwendet, um Websites funktionsfähig zu machen oder effizienter zu gestalten sowie um den Website-Betreibern Informationen bereitzustellen.',
+    'cookie_policy_how_we_use_cookies_title' => 'Wie verwenden wir Cookies?',
+    'cookie_policy_how_we_use_cookies_text' => 'Wir verwenden Cookies für folgende Zwecke:',
+    'cookie_policy_functional_cookies_title' => 'Funktionale Cookies',
+    'cookie_policy_functional_cookies_text' => 'Diese Cookies sind unerlässlich, damit Sie auf der Website surfen und ihre Funktionen nutzen können. Dazu gehört beispielsweise das Cookie, das Ihre Zustimmung zur Verwendung von Cookies speichert.',
+    'cookie_policy_analytics_cookies_title' => 'Analyse-Cookies',
+    'cookie_policy_analytics_cookies_text' => 'Diese Cookies (sofern in Zukunft implementiert) helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Fehler aufdecken und eine bessere Gesamtanalyse ermöglichen.',
+    'cookie_policy_your_choices_title' => 'Ihre Wahlmöglichkeiten',
+    'cookie_policy_your_choices_text' => 'Durch die Nutzung unserer Website können Sie die Verwendung von nicht wesentlichen Cookies über das Einwilligungsbanner akzeptieren oder ablehnen. Ihre Wahl wird für zukünftige Besuche gespeichert.',
 ];

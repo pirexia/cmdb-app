@@ -737,4 +737,24 @@ return [
     'mfa_verify_login_intro' => 'Introduce el código de 6 dígitos de tu aplicación de autenticación.',
     'mfa_verify_button' => 'Verificar',
     'cancel_and_logout' => 'Cancelar y cerrar sesión',
+
+    // --- Sección: Consentimiento de Cookies ---
+    'cookie_consent_message' => 'Utilizamos cookies para mejorar tu experiencia de usuario. Al continuar navegando, aceptas nuestro uso de cookies.',
+    'cookie_consent_accept_button' => 'Aceptar',
+    'cookie_consent_reject_button' => 'Rechazar',
+    'cookie_consent_policy_link' => 'Saber más.',
+
+    // --- Sección: Política de Cookies ---
+    'cookie_policy_title' => 'Política de Cookies',
+    'cookie_policy_last_updated' => 'Última actualización: 24 de Mayo de 2024',
+    'cookie_policy_what_are_cookies_title' => '¿Qué son las cookies?',
+    'cookie_policy_what_are_cookies_text' => 'Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Se utilizan ampliamente para hacer que los sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio.',
+    'cookie_policy_how_we_use_cookies_title' => '¿Cómo utilizamos las cookies?',
+    'cookie_policy_how_we_use_cookies_text' => 'Utilizamos cookies para los siguientes propósitos:',
+    'cookie_policy_functional_cookies_title' => 'Cookies Funcionales',
+    'cookie_policy_functional_cookies_text' => 'Estas cookies son esenciales para que puedas navegar por el sitio web y utilizar sus funciones. Incluyen, por ejemplo, la cookie que guarda tu consentimiento sobre el uso de cookies.',
+    'cookie_policy_analytics_cookies_title' => 'Cookies Analíticas',
+    'cookie_policy_analytics_cookies_text' => 'Estas cookies (si se implementan en el futuro) nos ayudarán a entender cómo los visitantes interactúan con nuestro sitio web, descubriendo errores y proporcionando un mejor análisis general.',
+    'cookie_policy_your_choices_title' => 'Tus opciones',
+    'cookie_policy_your_choices_text' => 'Al usar nuestro sitio, puedes aceptar o rechazar el uso de cookies no esenciales a través del banner de consentimiento. Tu elección se guardará para futuras visitas.',
 ];

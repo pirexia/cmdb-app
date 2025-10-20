@@ -58,7 +58,8 @@ class AuthController
             return $response->withHeader('Location', '/error')->withStatus(500); // Redirigir a una página de error genérico
         }
 
-        $html = $this->view->render('auth/login', [
+        // Usar la nueva plantilla base para autenticación
+        $html = $this->view->render('auth/login_view', [
             'pageTitle' => $t('login_page_title') ?? $t('login') . ' ' . $t('in_cmdb_app'),
             'flashMessages' => $flashMessages,
             'sources' => $sources // <--- ¡Pasa las fuentes a la vista!

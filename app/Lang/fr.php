@@ -692,4 +692,24 @@ return [
     'mfa_verify_login_intro' => 'Entrez le code à 6 chiffres de votre application d\'authentification.',
     'mfa_verify_button' => 'Vérifier',
     'cancel_and_logout' => 'Annuler et se déconnecter',
+
+    // --- Section: Consentement aux cookies ---
+    'cookie_consent_message' => 'Nous utilisons des cookies pour améliorer votre expérience utilisateur. En continuant à naviguer, vous acceptez notre utilisation des cookies.',
+    'cookie_consent_accept_button' => 'Accepter',
+    'cookie_consent_reject_button' => 'Refuser',
+    'cookie_consent_policy_link' => 'En savoir plus.',
+
+    // --- Section: Politique de cookies ---
+    'cookie_policy_title' => 'Politique de cookies',
+    'cookie_policy_last_updated' => 'Dernière mise à jour : 24 mai 2024',
+    'cookie_policy_what_are_cookies_title' => 'Que sont les cookies ?',
+    'cookie_policy_what_are_cookies_text' => 'Les cookies sont de petits fichiers texte qui sont stockés sur votre appareil lorsque vous visitez un site web. Ils sont largement utilisés pour faire fonctionner les sites web, ou pour les faire fonctionner plus efficacement, ainsi que pour fournir des informations aux propriétaires du site.',
+    'cookie_policy_how_we_use_cookies_title' => 'Comment utilisons-nous les cookies ?',
+    'cookie_policy_how_we_use_cookies_text' => 'Nous utilisons des cookies aux fins suivantes :',
+    'cookie_policy_functional_cookies_title' => 'Cookies fonctionnels',
+    'cookie_policy_functional_cookies_text' => 'Ces cookies sont essentiels pour que vous puissiez naviguer sur le site web et utiliser ses fonctionnalités. Ils incluent, par exemple, le cookie qui enregistre votre consentement à l\'utilisation des cookies.',
+    'cookie_policy_analytics_cookies_title' => 'Cookies analytiques',
+    'cookie_policy_analytics_cookies_text' => 'Ces cookies (s\'ils sont mis en œuvre à l\'avenir) nous aideront à comprendre comment les visiteurs interagissent avec notre site web, en découvrant les erreurs et en fournissant une meilleure analyse globale.',
+    'cookie_policy_your_choices_title' => 'Vos choix',
+    'cookie_policy_your_choices_text' => 'En utilisant notre site, vous pouvez accepter ou refuser l\'utilisation de cookies non essentiels via la bannière de consentement. Votre choix sera enregistré pour les visites futures.',
 ];

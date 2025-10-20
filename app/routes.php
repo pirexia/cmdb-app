@@ -28,6 +28,7 @@ use App\Controllers\ImportController;
 use App\Controllers\LogController;
 use App\Controllers\SmtpController;
 use App\Controllers\ProfileController;
+use App\Controllers\PageController;
 use App\Controllers\MfaController;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\RoleMiddleware;
@@ -68,6 +69,9 @@ $app->get('/set-language/{lang_code}', App\Controllers\LanguageController::class
 // Rutas para la verificación de MFA durante el login
 $app->get('/mfa/verify-login', MfaController::class . ':showVerifyLoginForm');
 $app->post('/mfa/verify-login', MfaController::class . ':processVerifyLogin');
+
+// Ruta para la política de cookies
+$app->get('/cookie-policy', PageController::class . ':showCookiePolicy');
 
 
 // --- RUTAS PROTEGIDAS (Requieren autenticación) ---
