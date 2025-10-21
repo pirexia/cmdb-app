@@ -6,21 +6,24 @@ use PragmaRX\Google2FAQRCode\Google2FA as Google2FAQRCode;
 
 use PragmaRX\Google2FA\Google2FA;
 use App\Models\User;
+use App\Models\TrustedDevice; // <-- ¡NUEVO!
 use Exception;
 
 class MfaService
 {
     private Google2FA $google2fa;
     private User $userModel;
+    private TrustedDevice $trustedDeviceModel; // <-- ¡NUEVO!
     private array $config;
 
-    public function __construct(User $userModel, array $config)
+    public function __construct(User $userModel, TrustedDevice $trustedDeviceModel, array $config)
     {
         // Para la v9 de google2fa, la clase principal se instancia de forma simple.
         // El generador de QR se utiliza a través de la clase Google2FAQRCode.
         $this->google2fa = new Google2FA(); 
 
         $this->userModel = $userModel;
+        $this->trustedDeviceModel = $trustedDeviceModel; // <-- ¡NUEVO!
         $this->config = $config;
     }
 
@@ -92,6 +95,10 @@ class MfaService
             'mfa_enabled' => false,
             'mfa_secret' => null
         ];
+
+        // Eliminar todos los dispositivos de confianza asociados a este usuario
+        $this->trustedDeviceModel->deleteAllForUser($userId);
+
         return $this->userModel->updateProfileData($userId, $data);
     }
 

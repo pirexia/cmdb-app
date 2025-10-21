@@ -9,6 +9,7 @@ use App\Services\SessionService;
 use App\Services\MfaService;
 use App\Models\User;
 use App\Models\Role;
+use App\Services\AuthService; // <-- ¡NUEVO!
 
 class MfaController
 {
@@ -17,6 +18,7 @@ class MfaController
     private MfaService $mfaService;
     private User $userModel;
     private Role $roleModel;
+    private AuthService $authService; // <-- ¡NUEVO!
     private $translator;
 
     public function __construct(
@@ -25,6 +27,7 @@ class MfaController
         MfaService $mfaService,
         User $userModel,
         Role $roleModel,
+        AuthService $authService, // <-- ¡NUEVO!
         callable $translator
     ) {
         $this->view = $view;
@@ -32,6 +35,7 @@ class MfaController
         $this->mfaService = $mfaService;
         $this->userModel = $userModel;
         $this->roleModel = $roleModel;
+        $this->authService = $authService; // <-- ¡NUEVO!
         $this->translator = $translator;
     }
 
@@ -112,25 +116,65 @@ class MfaController
 
         if ($user && $this->mfaService->verifyCode($user['mfa_secret'], $code)) {
             // Verificación exitosa, completar el inicio de sesión
-            $this->session->remove('mfa_required');
-            $this->session->remove('mfa_user_id');
+            $this->authService->completeLogin($user);
 
-            $this->session->set('user_id', $user['id']);
-            $this->session->set('username', $user['nombre_usuario']);
-            $this->session->set('role_id', $user['id_rol']);
-            $this->session->set('id_fuente_usuario', $user['id_fuente_usuario']);
-            $this->session->set('fuente_login_nombre', $user['fuente_login_nombre']);
-            
-            $role = $this->roleModel->getRoleById($user['id_rol']);
-            $this->session->set('role_name', $role['nombre'] ?? 'Desconocido');
-
-            $this->userModel->updateLastLogin($user['id']);
-
-            $this->session->addFlashMessage('success', $t('welcome_back'));
-            return $response->withHeader('Location', '/dashboard')->withStatus(302);
+            // --- ¡NUEVO! Comprobar si se debe preguntar por dispositivo de confianza ---
+            $cookieConsent = $_COOKIE['cookie_consent_status'] ?? 'not_set';
+            if ($cookieConsent === 'accepted') {
+                // Si el usuario aceptó las cookies, lo redirigimos a la página para que decida si confía en el dispositivo
+                return $response->withHeader('Location', '/mfa/trust-device')->withStatus(302);
+            } else {
+                // Si no ha aceptado cookies, simplemente lo logueamos
+                $this->session->addFlashMessage('success', $t('welcome_back'));
+                return $response->withHeader('Location', '/dashboard')->withStatus(302);
+            }
         } else {
             $this->session->addFlashMessage('danger', $t('mfa_invalid_code'));
             return $response->withHeader('Location', '/mfa/verify-login')->withStatus(302);
         }
+    }
+
+    /**
+     * Muestra el formulario para preguntar si se confía en el dispositivo.
+     */
+    public function showTrustDeviceForm(Request $request, Response $response): Response
+    {
+        // Asegurarse de que el usuario está logueado para llegar aquí
+        if (!$this->session->get('user_id')) {
+            return $response->withHeader('Location', '/login')->withStatus(302);
+        }
+
+        $html = $this->view->render('mfa/trust_device', [
+            'flashMessages' => $this->session->getFlashMessages()
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    /**
+     * Procesa la decisión del usuario sobre confiar en el dispositivo.
+     */
+    public function processTrustDevice(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $userId = $this->session->get('user_id');
+        if (!$userId) {
+            return $response->withHeader('Location', '/login')->withStatus(302);
+        }
+
+        $data = $request->getParsedBody();
+        $trustDevice = $data['trust'] ?? 'no';
+
+        if ($trustDevice === 'yes') {
+            $userAgent = $request->getHeaderLine('User-Agent');
+            $ipAddress = $request->getServerParams()['REMOTE_ADDR'] ?? null;
+
+            if ($this->authService->createTrustedDevice($userId, $userAgent, $ipAddress)) {
+                $this->session->addFlashMessage('success', $t('mfa_device_trusted_successfully'));
+            }
+        }
+
+        // En ambos casos (sí o no), se redirige al dashboard.
+        return $response->withHeader('Location', '/dashboard')->withStatus(302);
     }
 }

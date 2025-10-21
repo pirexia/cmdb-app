@@ -18,6 +18,7 @@ use DI\Factory; // Para definir fábricas explícitas en PHP-DI
 use League\Plates\Engine as PlatesEngine; // Motor de plantillas PlatesPHP
 use Monolog\Formatter\LineFormatter;      // Para formatear los logs de Monolog
 use Monolog\Handler\StreamHandler;        // Para enviar logs a un stream (ej. archivo) en Monolog
+use Monolog\Level;                        // NUEVO: Para los niveles de log modernos
 use Monolog\Logger;                       // Clase principal de Monolog para logging
 use PHPMailer\PHPMailer\Exception as MailerException; // Excepciones de PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;        // Clase principal de PHPMailer para envío de correos
@@ -70,6 +71,7 @@ use App\Models\Role;
 use App\Models\Source; // Para la nueva gestión de fuentes de usuario
 use App\Models\Sequence; // NUEVO: Para secuencias
 use App\Models\User;
+use App\Models\TrustedDevice; // NUEVO: Para dispositivos de confianza MFA
 use App\Models\LogActivo;
 use App\Models\SmtpConfig;
 
@@ -183,7 +185,7 @@ $container->set('logger', function (ContainerInterface $c) {
     $config = $c->get('config'); // Obtiene la configuración general
     $logPath = $config['paths']['logs'] . '/app.log'; // Ruta al archivo de log principal
     $app_name = $config['app']['name'] ?? 'CMDB_App_Logger'; // Nombre de la aplicación para el logger
-    $logLevel = $config['app']['env'] === 'development' ? Logger::DEBUG : Logger::INFO; // Nivel de log (DEBUG en dev, INFO en prod)
+    $logLevel = $config['app']['env'] === 'development' ? Level::Debug : Level::Info; // Nivel de log (DEBUG en dev, INFO en prod)
 
     $logger = new Logger($app_name); // Crea una instancia de Monolog Logger
     $formatter = new LineFormatter(
@@ -306,6 +308,7 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
 $container->set(App\Services\MfaService::class, function (ContainerInterface $c) {
     return new App\Services\MfaService(
         $c->get(App\Models\User::class),
+        $c->get(App\Models\TrustedDevice::class),
         $c->get('config')
     );
 });
@@ -335,6 +338,7 @@ $container->set(App\Models\Provider::class, function (ContainerInterface $c) { r
 $container->set(App\Models\Role::class, function (ContainerInterface $c) { return new App\Models\Role($c->get(PDO::class)); });
 $container->set(App\Models\Source::class, function (ContainerInterface $c) { return new App\Models\Source($c->get(PDO::class)); });
 $container->set(App\Models\Sequence::class, function (ContainerInterface $c) { return new App\Models\Sequence($c->get(PDO::class)); }); // NUEVO
+$container->set(App\Models\TrustedDevice::class, function (ContainerInterface $c) { return new App\Models\TrustedDevice($c->get(PDO::class)); }); // NUEVO
 $container->set(App\Models\User::class, function (ContainerInterface $c) { return new App\Models\User($c->get(PDO::class)); });
 $container->set(App\Models\LogActivo::class, function (ContainerInterface $c) { return new App\Models\LogActivo($c->get(PDO::class)); });
 $container->set(App\Models\SmtpConfig::class, function (ContainerInterface $c) { return new App\Models\SmtpConfig($c->get(PDO::class)); });
@@ -390,6 +394,7 @@ $container->set(App\Services\AuthService::class, function (ContainerInterface $c
         $c->get('config'),
         $c->get(App\Services\LdapService::class), // La inyección de LdapService
         $c->get(App\Models\Source::class),
+        $c->get(App\Models\TrustedDevice::class), // <-- ¡CORRECCIÓN! Añadir TrustedDevice
         $c->get('translator')
     );
 });
@@ -516,6 +521,7 @@ $container->set(App\Controllers\MfaController::class, function (ContainerInterfa
         $c->get(App\Services\MfaService::class),
         $c->get(App\Models\User::class),
         $c->get(App\Models\Role::class),
+        $c->get(App\Services\AuthService::class), // <-- ¡CORRECCIÓN! Añadir AuthService
         $c->get('translator')
     );
 });
@@ -560,6 +566,7 @@ $container->set(App\Controllers\ProfileController::class, function (ContainerInt
         $c->get(App\Models\User::class),
         $c->get(App\Models\Source::class),
         $c->get(PDO::class),
+        $c->get(App\Models\TrustedDevice::class),
         $c->get(App\Services\LanguageService::class),
         $c->get('config')
     );

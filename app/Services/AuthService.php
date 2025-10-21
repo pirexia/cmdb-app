@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\PasswordResetToken;
 use App\Models\Role;
 use App\Models\Source;
+use App\Models\TrustedDevice; // <-- ¡NUEVO!
 use Psr\Log\LoggerInterface;
 use DateTime;
 use DateInterval;
@@ -23,6 +24,7 @@ class AuthService
     private LdapService $ldapService; // <--- ¡NUEVA PROPIEDAD!
     private $translator;
     private Source $sourceModel;
+    private TrustedDevice $trustedDeviceModel; // <-- ¡NUEVO!
 
     public function __construct(
         User $userModel,
@@ -34,6 +36,7 @@ class AuthService
         array $config,
         LdapService $ldapService, // <--- ¡NUEVO ARGUMENTO!
         Source $sourceModel,
+        TrustedDevice $trustedDeviceModel, // <-- ¡NUEVO!
         callable $translator
     ) {
         $this->userModel = $userModel;
@@ -46,9 +49,11 @@ class AuthService
         $this->ldapService = $ldapService; // <--- ASIGNACIÓN
         $this->translator = $translator;
         $this->sourceModel = $sourceModel;
+        $this->trustedDeviceModel = $trustedDeviceModel; // <-- ¡NUEVO!
 
         // Limpiar tokens expirados cada vez que se instancie el servicio
         $this->tokenModel->cleanExpiredTokens();
+        $this->trustedDeviceModel->deleteExpired(); // <-- ¡NUEVO! Limpiar dispositivos caducados
     }
 
     /**
@@ -60,6 +65,10 @@ class AuthService
      */
     public function authenticate(string $username, string $password, int $sourceId): bool
     {
+        // Limpiar dispositivos de confianza caducados en cada intento de login
+        $this->trustedDeviceModel->deleteExpired();
+
+
         // 1. Obtener los detalles de la fuente de usuario seleccionada
         // Primero, necesitamos la instancia del modelo Source.
         // Como AuthService no tiene SourceModel en su constructor, lo obtenemos vía DI (patrón service locator para casos excepcionales)
@@ -160,13 +169,12 @@ class AuthService
             }
             $this->logger->info("Usuario externo '{$user['nombre_usuario']}' autenticado correctamente via {$source['nombre_friendly']}.");
 
-            // Opcional: Actualizar datos del usuario desde LDAP/AD en cada login
-            $ldapData = $this->ldapService->getUserData($source, $username);
-            if ($ldapData) {
+            // Opcional: Actualizar datos del usuario desde LDAP/AD en cada login, usando los datos ya obtenidos.
+            if (isset($ldapAuthResult['user_data'])) {
                 $updateData = [
-                    'email' => $ldapData['email'] ?? $user['email'],
-                    'nombre' => $ldapData['given_name'] ?? $user['nombre'],
-                    'apellidos' => $ldapData['surname'] ?? $user['apellidos'],
+                    'email' => $ldapAuthResult['user_data']['email'] ?? $user['email'],
+                    'nombre' => $ldapAuthResult['user_data']['given_name'] ?? $user['nombre'],
+                    'apellidos' => $ldapAuthResult['user_data']['surname'] ?? $user['apellidos'],
                 ];
                 // Solo actualiza si hay cambios para evitar escrituras innecesarias
                 if ($updateData['email'] !== $user['email'] || $updateData['nombre'] !== $user['nombre'] || $updateData['apellidos'] !== $user['apellidos']) {
@@ -175,6 +183,25 @@ class AuthService
             }
         }
         
+        // --- ¡NUEVO! Comprobación de dispositivo de confianza ---
+        // Si el usuario tiene MFA habilitado, comprobamos si está en un dispositivo de confianza
+        if ($user['mfa_enabled']) {
+            $cookieConsent = $_COOKIE['cookie_consent_status'] ?? 'not_set';
+            $trustedDeviceCookie = $_COOKIE['trusted_device_token'] ?? null;
+
+            if ($cookieConsent === 'accepted' && $trustedDeviceCookie) {
+                $tokenHash = hash('sha256', $trustedDeviceCookie);
+                $device = $this->trustedDeviceModel->findByTokenHash($tokenHash);
+
+                if ($device && $device['id_usuario'] === $user['id'] && new DateTime() < new DateTime($device['fecha_expiracion'])) {
+                    $this->logger->info("Acceso MFA omitido para el usuario '{$user['nombre_usuario']}' a través de un dispositivo de confianza.");
+                    // Si el dispositivo es de confianza, procedemos directamente al login completo
+                    $this->completeLogin($user);
+                    return true;
+                }
+            }
+        }
+
         // Contraseña correcta. Ahora, comprobar si MFA está habilitado.
         if ($user['mfa_enabled']) {
             // No iniciar la sesión completa todavía. Guardar un estado temporal.
@@ -185,18 +212,29 @@ class AuthService
             return true; // Indicar éxito parcial para que el controlador redirija a la verificación MFA.
         } else {
             // MFA no está habilitado, iniciar sesión completa.
-            $this->sessionService->startSession();
-            $this->sessionService->set('user_id', $user['id']);
-            $this->sessionService->set('username', $user['nombre_usuario']);
-            $this->sessionService->set('role_id', $user['id_rol']);
-            $this->sessionService->set('id_fuente_usuario', $user['id_fuente_usuario']);
-            $this->sessionService->set('fuente_login_nombre', $user['fuente_login_nombre']);
-            $role = $this->roleModel->getRoleById($user['id_rol']);
-            $this->sessionService->set('role_name', $role['nombre'] ?? 'Desconocido');
-            $this->userModel->updateLastLogin($user['id']);
+            $this->completeLogin($user);
         }
         
         return true;
+    }
+
+    /**
+     * Completa el proceso de inicio de sesión estableciendo las variables de sesión.
+     * @param array $user Los datos del usuario.
+     */
+    public function completeLogin(array $user): void
+    {
+        $this->sessionService->startSession();
+        $this->sessionService->set('user_id', $user['id']);
+        $this->sessionService->set('username', $user['nombre_usuario']);
+        $this->sessionService->set('role_id', $user['id_rol']);
+        $this->sessionService->set('id_fuente_usuario', $user['id_fuente_usuario']);
+        $this->sessionService->set('fuente_login_nombre', $user['fuente_login_nombre']);
+        
+        $role = $this->roleModel->getRoleById($user['id_rol']);
+        $this->sessionService->set('role_name', $role['nombre'] ?? 'Desconocido');
+        
+        $this->userModel->updateLastLogin($user['id']);
     }
 
     /**
@@ -364,7 +402,7 @@ class AuthService
         } catch (\PDOException $e) {
             $this->logger->error("PDOException al resetear contraseña para usuario ID {$token['id_usuario']}: " . $e->getMessage());
             return false; // Fallo de DB al actualizar pass o token
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error("Excepción general al resetear contraseña para usuario ID {$token['id_usuario']}: " . $e->getMessage());
             return false; // Otros errores
         }
@@ -372,6 +410,43 @@ class AuthService
         $this->logger->error("Error al resetear contraseña para usuario ID: {$token['id_usuario']}");
         return false;
     }
+
+    /**
+     * Crea un nuevo token de dispositivo de confianza y lo establece como cookie.
+     * @param int $userId
+     * @param string|null $userAgent
+     * @param string|null $ipAddress
+     * @return bool
+     */
+    public function createTrustedDevice(int $userId, ?string $userAgent, ?string $ipAddress): bool
+    {
+        try {
+            $token = bin2hex(random_bytes(32)); // Token de 64 caracteres
+            $tokenHash = hash('sha256', $token);
+
+            $expiration = new DateTime();
+            $expiration->add(new DateInterval('P7D')); // Válido por 7 días
+
+            if ($this->trustedDeviceModel->create($userId, $tokenHash, $expiration->format('Y-m-d H:i:s'), $userAgent, $ipAddress)) {
+                setcookie(
+                    'trusted_device_token',
+                    $token,
+                    [
+                        'expires' => $expiration->getTimestamp(),
+                        'path' => '/',
+                        'secure' => $this->config['session']['cookie_secure'] ?? false,
+                        'httponly' => true,
+                        'samesite' => $this->config['session']['cookie_samesite'] ?? 'Lax'
+                    ]
+                );
+                return true;
+            }
+        } catch (\Exception $e) {
+            $this->logger->error("Error al crear el dispositivo de confianza para el usuario ID {$userId}: " . $e->getMessage());
+        }
+        return false;
+    }
+
 
     /**
      * Habilita el usuario administrador por defecto si está configurado en .env.
@@ -462,7 +537,7 @@ class AuthService
         } catch (\PDOException $e) {
             $this->logger->error("PDOException en ensureDefaultAdminUser: " . $e->getMessage() . " Code: " . $e->getCode());
             return false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error("Excepción general en ensureDefaultAdminUser: " . $e->getMessage() . " File: " . $e->getFile() . " Line: " . $e->getLine());
             return false;
         }

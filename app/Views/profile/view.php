@@ -137,6 +137,41 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                             <?php endif; ?>
                         </div>
 
+                        <!-- Sección de Dispositivos de Confianza -->
+                        <?php if ($user['mfa_enabled']): ?>
+                        <div class="mt-5">
+                            <h5><?= $t('mfa_trusted_devices_title') ?></h5>
+                            <p class="text-muted"><?= $t('mfa_trusted_devices_intro') ?></p>
+                            <hr>
+                            <?php if (empty($trustedDevices)): ?>
+                                <div class="alert alert-info" role="alert">
+                                    <i class="bi bi-info-circle me-2"></i><?= $t('mfa_no_trusted_devices') ?>
+                                </div>
+                            <?php else: ?>
+                                <ul class="list-group">
+                                    <?php foreach ($trustedDevices as $device): ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="bi bi-pc-display-horizontal me-2"></i>
+                                                <strong><?= $t('mfa_device_last_ip') ?>:</strong> <?= $this->e($device['ip_address'] ?? 'N/A') ?>
+                                                <br>
+                                                <small class="text-muted">
+                                                    <?= $t('mfa_device_user_agent') ?>: <?= $this->e(substr($device['user_agent'] ?? 'Desconocido', 0, 70)) ?>...
+                                                    <br>
+                                                    <?= $t('mfa_device_creation_date') ?>: <?= date('d/m/Y H:i', strtotime($device['fecha_creacion'])) ?> | 
+                                                    <?= $t('mfa_device_expiration_date') ?>: <?= date('d/m/Y H:i', strtotime($device['fecha_expiracion'])) ?>
+                                                </small>
+                                            </div>
+                                            <form method="POST" action="/profile/revoke-device/<?= $this->e($device['token_hash']) ?>" class="ms-3">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"><?= $t('mfa_revoke_device_button') ?></button>
+                                            </form>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+
                         <div class="mt-5 text-end border-top pt-3">
                             <a href="/dashboard" class="btn btn-secondary"><?= $this->e($t('cancel')) ?></a>
                             <button type="submit" class="btn btn-primary"><?= $this->e($t('save_changes')) ?></button>

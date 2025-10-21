@@ -4,7 +4,7 @@
     "infoEmpty": "Affichage de l'élément 0 à 0 sur 0 élément",
     "infoFiltered": "(filtré à partir de _MAX_ éléments au total)",
     "infoPostFix": "",
-    "infoThousands": " ",
+    "infoThousands": ",",
     "lengthMenu": "Afficher _MENU_ éléments",
     "loadingRecords": "Chargement...",
     "processing": "Traitement...",
@@ -21,11 +21,6 @@
         "sortDescending": ": activer pour trier la colonne par ordre décroissant"
     },
     "select": {
-        "rows": {
-            "_": "%d lignes sélectionnées",
-            "0": "Aucune ligne sélectionnée",
-            "1": "1 ligne sélectionnée"
-        },
         "cells": {
             "1": "1 cellule sélectionnée",
             "_": "%d cellules sélectionnées"
@@ -33,6 +28,10 @@
         "columns": {
             "1": "1 colonne sélectionnée",
             "_": "%d colonnes sélectionnées"
+        },
+        "rows": {
+            "1": "1 ligne sélectionnée",
+            "_": "%d lignes sélectionnées"
         }
     },
     "autoFill": {

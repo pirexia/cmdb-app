@@ -9,6 +9,7 @@ use League\Plates\Engine as PlatesEngine;
 use App\Services\SessionService;
 use Psr\Log\LoggerInterface;
 use App\Services\LanguageService; // <-- ¡NUEVO!
+use App\Models\TrustedDevice; // <-- ¡NUEVO!
 use App\Models\User;
 use App\Models\Source;
 use PDO;
@@ -24,6 +25,7 @@ class ProfileController
     private User $userModel;
     private Source $sourceModel;
     private PDO $db;
+    private TrustedDevice $trustedDeviceModel; // <-- ¡NUEVO!
     private LanguageService $languageService; // <-- ¡NUEVO!
     private array $config;
 
@@ -35,6 +37,7 @@ class ProfileController
         User $userModel,
         Source $sourceModel,
         PDO $db,
+        TrustedDevice $trustedDeviceModel, // <-- ¡NUEVO!
         LanguageService $languageService, // <-- ¡NUEVO!
         array $config
     ) {
@@ -45,6 +48,7 @@ class ProfileController
         $this->userModel = $userModel;
         $this->sourceModel = $sourceModel;
         $this->db = $db;
+        $this->trustedDeviceModel = $trustedDeviceModel; // <-- ¡NUEVO!
         $this->languageService = $languageService; // <-- ¡NUEVO!
         $this->config = $config;
     }
@@ -58,6 +62,7 @@ class ProfileController
         $notificationTypes = [];
         $user = [];
         $activeLanguages = []; // <-- ¡NUEVO!
+        $trustedDevices = []; // <-- ¡NUEVO!
         $isLocalUser = false;
 
         try {
@@ -65,9 +70,12 @@ class ProfileController
             $user = $this->userModel->getUserById($userId);
             $source = $this->sourceModel->getById($user['id_fuente_usuario']);
             $isLocalUser = ($source && $source['tipo_fuente'] === 'local');
-
+ 
             // <-- ¡NUEVO! Obtener idiomas activos
             $activeLanguages = $this->languageService->getActiveLanguages();
+
+            // <-- ¡NUEVO! Obtener dispositivos de confianza
+            $trustedDevices = $this->trustedDeviceModel->findByUserId($userId) ?: [];
 
             // Obtener tipos de notificación
             $stmt = $this->db->query("SELECT id, clave, nombre_visible FROM tipos_notificacion ORDER BY id");
@@ -87,7 +95,7 @@ class ProfileController
             }
         } catch (PDOException $e) {
             $this->logger->error("Error de base de datos al mostrar el perfil: " . $e->getMessage());
-            $this->session->addFlashMessage('error', $t('operation_failed'));
+            $this->session->addFlashMessage('danger', $t('operation_failed'));
         }
 
         $flashMessages = $this->session->getFlashMessages();
@@ -96,10 +104,46 @@ class ProfileController
             'isLocalUser' => $isLocalUser,
             'notificationTypes' => $notificationTypes,
             'activeLanguages' => $activeLanguages, // <-- ¡NUEVO!
+            'trustedDevices' => $trustedDevices, // <-- ¡NUEVO!
             'flashMessages' => $flashMessages
         ]);
         $response->getBody()->write($html);
         return $response;
+    }
+
+    /**
+     * Procesa la revocación de un dispositivo de confianza.
+     */
+    public function revokeDevice(Request $request, Response $response, array $args): Response
+    {
+        $t = $this->translator;
+        $userId = $this->session->get('user_id');
+        $tokenHash = $args['token_hash'] ?? null;
+
+        if (!$userId || !$tokenHash) {
+            $this->session->addFlashMessage('danger', $t('mfa_device_revocation_failed'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // Verificar que el dispositivo pertenece al usuario actual por seguridad
+        $device = $this->trustedDeviceModel->findByTokenHash($tokenHash);
+
+        if ($device && (int)$device['id_usuario'] === $userId) {
+            if ($this->trustedDeviceModel->deleteByTokenHash($tokenHash)) {
+                // Si la cookie actual coincide con el dispositivo revocado, la eliminamos del navegador
+                $currentCookie = $_COOKIE['trusted_device_token'] ?? null;
+                if ($currentCookie && hash('sha256', $currentCookie) === $tokenHash) {
+                    setcookie('trusted_device_token', '', time() - 3600, '/');
+                }
+                $this->session->addFlashMessage('success', $t('mfa_device_revoked_successfully'));
+            } else {
+                $this->session->addFlashMessage('danger', $t('mfa_device_revocation_failed'));
+            }
+        } else {
+            $this->session->addFlashMessage('danger', $t('mfa_device_revocation_failed'));
+        }
+
+        return $response->withHeader('Location', '/profile')->withStatus(302);
     }
 
     /**
@@ -140,7 +184,7 @@ class ProfileController
                 $updateData['profile_image_path'] = '/uploads/avatars/' . $filename;
             } catch (Exception $e) {
                 $this->logger->error("Error al mover la imagen de perfil: " . $e->getMessage());
-                $this->session->addFlashMessage('error', $t('profile_update_failed'));
+                $this->session->addFlashMessage('danger', $t('profile_update_failed'));
                 return $response->withHeader('Location', '/profile')->withStatus(302);
             }
         }
@@ -177,7 +221,7 @@ class ProfileController
         } catch (Exception $e) {
             $this->db->rollBack();
             $this->logger->error("Error al actualizar las preferencias de notificación: " . $e->getMessage());
-            $this->session->addFlashMessage('error', $t('profile_update_failed'));
+            $this->session->addFlashMessage('danger', $t('profile_update_failed'));
             return $response->withHeader('Location', '/profile')->withStatus(302);
         }
 

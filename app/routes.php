@@ -86,12 +86,17 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
 
     // Rutas para el Perfil de Usuario
     $authenticatedGroup->get('/profile', ProfileController::class . ':showProfile');
+    $authenticatedGroup->post('/profile/revoke-device/{token_hash}', ProfileController::class . ':revokeDevice');
     $authenticatedGroup->post('/profile', ProfileController::class . ':updateProfile');
 
     // Rutas para la configuración de MFA
     $authenticatedGroup->get('/mfa/setup', MfaController::class . ':showMfaSetup');
     $authenticatedGroup->post('/mfa/verify-setup', MfaController::class . ':verifyMfaSetup');
     $authenticatedGroup->get('/mfa/disable', MfaController::class . ':disableMfa');
+    // Nuevas rutas para el dispositivo de confianza
+    $authenticatedGroup->get('/mfa/trust-device', MfaController::class . ':showTrustDeviceForm');
+    $authenticatedGroup->post('/mfa/trust-device/process', MfaController::class . ':processTrustDevice');
+
 
     // Grupo de rutas para la gestión de Activos (CRUD)
     $authenticatedGroup->group('/assets', function (RouteCollectorProxy $assetGroup) {
