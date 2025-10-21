@@ -510,7 +510,8 @@ $container->set(App\Controllers\LanguageController::class, function (ContainerIn
     return new App\Controllers\LanguageController(
         $c->get(App\Services\SessionService::class),
         $c->get(App\Services\LanguageService::class), // <-- Añadir la inyección
-        $c->get('config')
+        $c->get('config'),
+        $c->get('translator') // <-- Inyectar el traductor
     );
 });
 

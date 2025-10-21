@@ -225,14 +225,15 @@ class ProfileController
             return $response->withHeader('Location', '/profile')->withStatus(302);
         }
 
-        // --- ¡NUEVO! Lógica para la cookie y la sesión de idioma ---
-        if (isset($updateData['preferred_language_code']) && !empty($updateData['preferred_language_code'])) {
-            $newLang = $updateData['preferred_language_code'];
+        // --- Lógica para la cookie y la sesión de idioma ---
+        $preferredLanguage = $data['preferred_language'] ?? null;
+        if ($isLocalUser && $preferredLanguage) {
+            $newLang = $preferredLanguage;
 
             // 1. Actualizar la sesión actual para un cambio inmediato
             $this->session->set('lang', $newLang);
 
-            // 2. Crear/Actualizar la cookie solo si el consentimiento fue aceptado
+            // 2. Crear/Actualizar la cookie de preferencia de idioma solo si se ha dado consentimiento.
             $cookieConsent = $request->getCookieParams()['cookie_consent_status'] ?? 'not_set';
             if ($cookieConsent === 'accepted') {
                 $this->languageService->setLanguageCookie($newLang);

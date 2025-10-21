@@ -84,12 +84,6 @@ class Manufacturer
             $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
             $stmt->execute();
 
-            // Si la ejecución falla y PDO está en ERRMODE_EXCEPTION, esto no se debería alcanzar.
-            // Pero si por alguna razón devuelve false sin lanzar, lo forzamos a lanzar.
-            if ($stmt->errorCode() !== '00000') {
-                 $errorInfo = $stmt->errorInfo();
-                 throw new PDOException("Database error: " . $errorInfo[2], $errorInfo[0]);
-            }
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
@@ -113,11 +107,6 @@ class Manufacturer
             $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-
-            if ($stmt->errorCode() !== '00000') {
-                 $errorInfo = $stmt->errorInfo();
-                 throw new PDOException("Database error: " . $errorInfo[2], $errorInfo[0]);
-            }
             return true;
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());
@@ -137,11 +126,6 @@ class Manufacturer
             $stmt = $this->db->prepare("DELETE FROM fabricantes WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-
-            if ($stmt->errorCode() !== '00000') {
-                 $errorInfo = $stmt->errorInfo();
-                 throw new PDOException("Database error: " . $errorInfo[2], $errorInfo[0]);
-            }
             return true;
         } catch (PDOException $e) {
             error_log("MODEL ERROR: " . __CLASS__ . "::" . __FUNCTION__ . " failed: " . $e->getMessage() . " Code: " . $e->getCode());

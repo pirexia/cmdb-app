@@ -12,14 +12,17 @@ class LanguageController
 {
     private SessionService $sessionService;
     private array $config;
-    private LanguageService $languageService; // <-- 2. Añadir propiedad
+    private LanguageService $languageService;
+    private $translator; // <-- Propiedad para el traductor
 
     public function __construct(
         SessionService $sessionService,
-        LanguageService $languageService, // <-- 3. Inyectar en el constructor
-        array $config
+        LanguageService $languageService,
+        array $config,
+        callable $translator // <-- Inyectar traductor
     ) {
-        $this->languageService = $languageService; // <-- 4. Asignar
+        $this->languageService = $languageService;
+        $this->translator = $translator; // <-- Asignar traductor
         $this->sessionService = $sessionService;
         $this->config = $config;
     }
@@ -34,6 +37,7 @@ class LanguageController
     public function setLanguage(Request $request, Response $response, array $args): Response
     {
         $langCode = $args['lang_code'];
+        $t = $this->translator;
 
         // 5. Usar LanguageService para validar si el idioma está activo en la BBDD
         $activeLanguages = $this->languageService->getActiveLanguages();
@@ -45,7 +49,7 @@ class LanguageController
             // La clave 'language_changed_successfully' será traducida por el middleware.
             $this->sessionService->addFlashMessage('success', 'language_changed_successfully');
         } else {
-            $this->sessionService->addFlashMessage('danger', $this->translate('invalid_language'));
+            $this->sessionService->addFlashMessage('danger', $t('invalid_language')); // Usar el traductor inyectado
         }
 
         // Redirigir a la página anterior o al dashboard
@@ -54,35 +58,5 @@ class LanguageController
             return $response->withHeader('Location', $referer)->withStatus(302);
         }
         return $response->withHeader('Location', '/dashboard')->withStatus(302);
-    }
-
-    /**
-     * Helper de traducción para usar dentro del controlador (si es necesario para mensajes flash específicos).
-     * @param string $key
-     * @param array $replacements
-     * @param string|null $langCode
-     * @return string
-     */
-    private function translate(string $key, array $replacements = [], ?string $langCode = null): string
-    {
-        $langConfig = $this->config['lang'];
-        $defaultLang = $this->config['app']['default_language'] ?? 'es';
-        $currentLang = $langCode ?? $this->sessionService->getUserLanguage() ?? $defaultLang;
-        $translations = [];
-
-        $langFilePath = $langConfig[$currentLang] ?? null;
-        if (!$langFilePath || !file_exists($langFilePath)) {
-            $langFilePath = $langConfig[$defaultLang];
-        }
-        
-        if (file_exists($langFilePath)) {
-            $translations = require $langFilePath;
-        }
-
-        $text = $translations[$key] ?? $key;
-        foreach ($replacements as $placeholder => $value) {
-            $text = str_replace("%{$placeholder}%", (string) $value, $text);
-        }
-        return $text;
     }
 }
