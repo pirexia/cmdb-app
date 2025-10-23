@@ -64,6 +64,7 @@ class ProfileController
         $activeLanguages = []; // <-- ¡NUEVO!
         $trustedDevices = []; // <-- ¡NUEVO!
         $isLocalUser = false;
+        $userPreferredLanguage = null; // <-- ¡NUEVO!
 
         try {
             $userId = $this->session->get('user_id');
@@ -71,6 +72,7 @@ class ProfileController
             $source = $this->sourceModel->getById($user['id_fuente_usuario']);
             $isLocalUser = ($source && $source['tipo_fuente'] === 'local');
  
+            $userPreferredLanguage = $user['preferred_language_code'] ?? null; // <-- ¡NUEVO!
             // <-- ¡NUEVO! Obtener idiomas activos
             $activeLanguages = $this->languageService->getActiveLanguages();
 
@@ -105,6 +107,7 @@ class ProfileController
             'notificationTypes' => $notificationTypes,
             'activeLanguages' => $activeLanguages, // <-- ¡NUEVO!
             'trustedDevices' => $trustedDevices, // <-- ¡NUEVO!
+            'userPreferredLanguage' => $userPreferredLanguage, // <-- ¡NUEVO!
             'flashMessages' => $flashMessages
         ]);
         $response->getBody()->write($html);
@@ -151,14 +154,21 @@ class ProfileController
      */
     public function updateProfile(Request $request, Response $response): Response
     {
+        $this->logger->debug("--- DEBUG: ProfileController::updateProfile INICIADO ---");
+
         $t = $this->translator;
         $userId = $this->session->get('user_id');
         $user = $this->userModel->getUserById($userId);
         $source = $this->sourceModel->getById($user['id_fuente_usuario']);
         $isLocalUser = ($source && $source['tipo_fuente'] === 'local');
+        
+        $this->logger->debug("UserID: {$userId}, isLocalUser: " . ($isLocalUser ? 'true' : 'false'));
 
         $data = $request->getParsedBody();
         $files = $request->getUploadedFiles();
+
+        $this->logger->debug("Datos recibidos (data): " . json_encode($data, JSON_UNESCAPED_UNICODE));
+        $this->logger->debug("Ficheros recibidos (files): " . json_encode(array_keys($files)));
 
         $updateData = [];
 
@@ -173,6 +183,7 @@ class ProfileController
 
         // Lógica para subir la foto de perfil
         if (isset($files['avatar']) && $files['avatar']->getError() === UPLOAD_ERR_OK) {
+            $this->logger->debug("Procesando subida de avatar...");
             $uploadDir = $this->config['paths']['uploads'] . '/avatars/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -191,11 +202,14 @@ class ProfileController
 
         // Actualizar datos del usuario si hay algo que cambiar
         if (!empty($updateData)) {
+            $this->logger->debug("Datos a actualizar en BBDD (updateData): " . json_encode($updateData, JSON_UNESCAPED_UNICODE));
             $this->userModel->updateProfileData($userId, $updateData);
+            $this->logger->debug("Llamada a userModel->updateProfileData completada.");
         }
 
         // Actualizar preferencias de notificación
         $this->db->beginTransaction();
+        $this->logger->debug("Iniciando transacción para actualizar notificaciones...");
         try {
             // Primero, borramos las preferencias existentes para este usuario
             $deleteStmt = $this->db->prepare("DELETE FROM usuario_notificacion_preferencias WHERE id_usuario = :user_id");
@@ -218,31 +232,37 @@ class ProfileController
                 }
             }
             $this->db->commit();
+            $this->logger->debug("Transacción de notificaciones completada (commit).");
         } catch (Exception $e) {
             $this->db->rollBack();
             $this->logger->error("Error al actualizar las preferencias de notificación: " . $e->getMessage());
             $this->session->addFlashMessage('danger', $t('profile_update_failed'));
+            $this->logger->debug("--- DEBUG: FIN por error en notificaciones ---");
             return $response->withHeader('Location', '/profile')->withStatus(302);
         }
 
-        // --- Lógica para la cookie y la sesión de idioma ---
-        $preferredLanguage = $data['preferred_language'] ?? null;
-        if ($isLocalUser && $preferredLanguage) {
-            $newLang = $preferredLanguage;
-
-            // 1. Actualizar la sesión actual para un cambio inmediato
-            $this->session->set('lang', $newLang);
-
-            // 2. Crear/Actualizar la cookie de preferencia de idioma solo si se ha dado consentimiento.
-            $cookieConsent = $request->getCookieParams()['cookie_consent_status'] ?? 'not_set';
-            if ($cookieConsent === 'accepted') {
-                $this->languageService->setLanguageCookie($newLang);
-            } else {
-                $this->languageService->deleteLanguageCookie();
+        // --- Lógica para la cookie y la sesión de idioma (solo si se ha cambiado) ---
+        $this->logger->debug("Comprobando si se debe actualizar el idioma...");
+        if ($isLocalUser && isset($data['preferred_language'])) {
+            $newLang = $data['preferred_language'];
+            $this->logger->debug("Nuevo idioma detectado: {$newLang}. Idioma actual: " . ($user['preferred_language_code'] ?? 'ninguno'));
+            // Solo actuar si el idioma ha cambiado realmente
+            if ($newLang && $newLang !== $user['preferred_language_code']) {
+                // 1. Actualizar la sesión actual para un cambio inmediato
+                $this->session->set('lang', $newLang);
+                // 2. Crear/Actualizar la cookie de preferencia de idioma solo si se ha dado consentimiento.
+                $cookieConsent = $request->getCookieParams()['cookie_consent_status'] ?? 'not_set';
+                if ($cookieConsent === 'accepted') {
+                    $this->languageService->setLanguageCookie($newLang);
+                } else {
+                    $this->languageService->deleteLanguageCookie();
+                }
             }
         }
+        $this->logger->debug("Lógica de idioma completada.");
 
         $this->session->addFlashMessage('success', $t('profile_updated_successfully'));
+        $this->logger->debug("--- DEBUG: ProfileController::updateProfile FINALIZADO CON ÉXITO ---");
         return $response->withHeader('Location', '/profile')->withStatus(302);
     }
 }

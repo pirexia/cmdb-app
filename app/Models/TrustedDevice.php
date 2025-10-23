@@ -80,7 +80,7 @@ class TrustedDevice
     public function deleteByTokenHash(string $tokenHash): bool
     {
         $stmt = $this->db->prepare("DELETE FROM dispositivos_confianza WHERE token_hash = :token_hash");
-        return $stmt->execute(['token_hash' => $tokenHash]);
+        return $stmt->execute([':token_hash' => $tokenHash]);
     }
 
     /**

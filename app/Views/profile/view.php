@@ -162,9 +162,11 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                                                     <?= $t('mfa_device_expiration_date') ?>: <?= date('d/m/Y H:i', strtotime($device['fecha_expiracion'])) ?>
                                                 </small>
                                             </div>
-                                            <form method="POST" action="/profile/revoke-device/<?= $this->e($device['token_hash']) ?>" class="ms-3">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"><?= $t('mfa_revoke_device_button') ?></button>
-                                            </form>
+                                            <a href="/profile/device/revoke/<?= $this->e($device['token_hash']) ?>" 
+                                               class="btn btn-sm btn-outline-danger ms-3"
+                                               onclick="return confirm('¿Estás seguro de que quieres revocar este dispositivo?');">
+                                                <?= $t('mfa_revoke_device_button') ?>
+                                            </a>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>

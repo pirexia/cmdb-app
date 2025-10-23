@@ -46,7 +46,7 @@ class User
         try {
             $stmt = $this->db->prepare("
                 SELECT id, nombre_usuario, email, id_rol, activo, id_fuente_usuario,
-                       fuente_login_nombre, nombre, apellidos, titulo, profile_image_path,
+                       fuente_login_nombre, nombre, apellidos, titulo, profile_image_path, preferred_language_code,
                        mfa_enabled, mfa_secret
                 FROM usuarios 
                 WHERE id = :id
@@ -292,7 +292,7 @@ class User
             return true; // No hay nada que actualizar.
         }
 
-        $allowedColumns = ['email', 'nombre', 'apellidos', 'titulo', 'profile_image_path', 'mfa_enabled', 'mfa_secret'];
+        $allowedColumns = ['email', 'nombre', 'apellidos', 'titulo', 'profile_image_path', 'mfa_enabled', 'mfa_secret', 'preferred_language_code'];
         $setClauses = [];
         $params = ['id' => $id];
 

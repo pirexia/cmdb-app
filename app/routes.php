@@ -86,8 +86,8 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
 
     // Rutas para el Perfil de Usuario
     $authenticatedGroup->get('/profile', ProfileController::class . ':showProfile');
-    $authenticatedGroup->post('/profile/revoke-device/{token_hash}', ProfileController::class . ':revokeDevice');
     $authenticatedGroup->post('/profile', ProfileController::class . ':updateProfile');
+    $authenticatedGroup->get('/profile/device/revoke/{token_hash}', ProfileController::class . ':revokeDevice');
 
     // Rutas para la configuración de MFA
     $authenticatedGroup->get('/mfa/setup', MfaController::class . ':showMfaSetup');
