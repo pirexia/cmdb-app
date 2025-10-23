@@ -167,7 +167,15 @@ class MfaController
 
         if ($trustDevice === 'yes') {
             $userAgent = $request->getHeaderLine('User-Agent');
-            $ipAddress = $request->getServerParams()['REMOTE_ADDR'] ?? null;
+            
+            // Lógica mejorada para obtener la IP real del cliente, considerando proxies.
+            $serverParams = $request->getServerParams();
+            $ipAddress = $request->getHeaderLine('X-Forwarded-For');
+            if (empty($ipAddress)) {
+                $ipAddress = $serverParams['REMOTE_ADDR'] ?? null;
+            } else {
+                $ipAddress = explode(',', $ipAddress)[0]; // Tomar la primera IP si hay una lista
+            }
 
             if ($this->authService->createTrustedDevice($userId, $userAgent, $ipAddress)) {
                 $this->session->addFlashMessage('success', $t('mfa_device_trusted_successfully'));
