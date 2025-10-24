@@ -77,14 +77,23 @@ class ImportController
     public function showImportOptions(Request $request, Response $response): Response
     {
         $t = $this->translator;
-        $availableTemplates = $this->csvTemplateService->getAvailableTemplates();
+        $templateKeys = $this->csvTemplateService->getAvailableTemplates();
         
+        // Pre-traducir los nombres de las plantillas para la vista
+        $availableTemplates = [];
+        foreach ($templateKeys as $key) {
+            // La clave de traducción es directamente el nombre de la entidad (ej: 'assets', 'manufacturers').
+            // Si no se encuentra, se formatea el nombre como fallback.
+            $translatedName = $t($key) ?: ucwords(str_replace('-', ' ', $key));
+            $availableTemplates[$key] = $translatedName;
+        }
+
         $assetTypes = $this->assetTypeModel->getAll() ?: [];
         if ($assetTypes === false) {
             $this->logger->error($t('error_loading_asset_types_for_import_templates'));
             $assetTypes = [];
         }
-
+        
         $flashMessages = $this->sessionService->getFlashMessages();
 
         $html = $this->view->render('admin/import/index', [

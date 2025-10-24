@@ -15,10 +15,10 @@
                 <?php if (empty($availableTemplates)): ?>
                     <p class="alert alert-info"><?= $t('no_templates_available') ?></p>
                 <?php else: ?>
-                    <?php foreach ($availableTemplates as $entityType): ?>
-                        <?php if ($entityType === 'assets'): ?>
+                    <?php foreach ($availableTemplates as $entityKey => $translatedName): ?>
+                        <?php if ($entityKey === 'assets'): ?>
                             <div class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <span class="me-2"><?= $t('template_for_entity', ['%entity_type%' => $t($entityType)]) ?></span>
+                                <span class="me-2"><?= $t('template_for_entity_prefix') . ' ' . $translatedName ?></span>
                                 <div class="d-flex align-items-center">
                                     <select id="asset_type_select" class="form-select form-select-sm me-2">
                                         <option value=""><?= $t('select_asset_type_for_template') ?? 'Selecciona Tipo de Activo' ?></option>
@@ -32,8 +32,8 @@
                                 </div>
                             </div>
                         <?php else: ?>
-                            <a href="/admin/import/template/<?= htmlspecialchars($entityType) ?>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <?= $t('template_for_entity', ['%entity_type%' => $t($entityType)]) ?>
+                            <a href="/admin/import/template/<?= htmlspecialchars($entityKey) ?>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <?= $t('template_for_entity_prefix') . ' ' . $translatedName ?>
                                 <i class="bi bi-download"></i>
                             </a>
                         <?php endif; ?>
@@ -47,9 +47,9 @@
                 <?php if (empty($availableTemplates)): ?>
                     <p class="alert alert-warning"><?= $t('cannot_upload_no_templates') ?></p>
                 <?php else: ?>
-                    <?php foreach ($availableTemplates as $entityType): ?>
-                        <a href="/admin/import/<?= htmlspecialchars($entityType) ?>/upload" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <?= $t('upload_for_entity', ['%entity_type%' => $t($entityType)]) ?>
+                    <?php foreach ($availableTemplates as $entityKey => $translatedName): ?>
+                        <a href="/admin/import/<?= htmlspecialchars($entityKey) ?>/upload" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <?= $t('upload_for_entity_prefix') . ' ' . $translatedName ?>
                             <i class="bi bi-upload"></i>
                         </a>
                     <?php endforeach; ?>
