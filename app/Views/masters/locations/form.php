@@ -39,7 +39,7 @@ $formAction = $isCreateMode ? '/admin/masters/location/create' : '/admin/masters
 
                         <hr>
                         <h5 class="mb-3"><?= $t('direccion') ?> (Opcional)</h5>
-                        <p class="text-muted small"><?= $t('location_form_geolocate_hint') ?? 'Rellenar estos campos permitirá geolocalizar la ubicación en un mapa.' ?></p>
+                        <p class="text-muted small"><?= $t('location_form_geolocate_hint') ?></p>
 
                         <div class="mb-3">
                             <label for="direccion" class="form-label"><?= $t('direccion') ?></label>

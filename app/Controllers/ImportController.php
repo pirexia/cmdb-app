@@ -126,10 +126,16 @@ class ImportController
                 ($entityType === 'assets' ? (int)$assetTypeId : null)
             );
             
-            $filename = $t('csv_template_filename', ['%entity_type%' => $t($entityType)]);
+            // Obtener el nombre traducido de la entidad que ya preparamos antes.
+            $translatedEntityName = $t($entityType) ?: ucwords(str_replace('-', ' ', $entityType));
+
+            // Generar el nombre del archivo usando el nombre traducido.
+            $filename = $t('csv_template_filename', ['%entity_type%' => $translatedEntityName]);
+
             if ($entityType === 'assets' && $assetTypeId !== null) {
                 $selectedAssetType = $this->assetTypeModel->getById((int)$assetTypeId);
                 if ($selectedAssetType) {
+                    // Para activos, el nombre del archivo puede ser más específico.
                     $filename = $t('csv_template_filename_asset_type', ['%asset_type_name%' => $selectedAssetType['nombre']]);
                 }
             }
