@@ -36,6 +36,20 @@ return [
     'confirm_delete_master_item' => '¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.',
     'confirm_delete_asset' => '¿Estás seguro de que quieres eliminar este activo? Esta acción no se puede deshacer y eliminará sus archivos adjuntos y logs.',
     'confirm_delete_model' => '¿Estás seguro de que quieres eliminar este modelo? Esta acción eliminará también la imagen asociada y puede afectar a activos.',
+    'direccion' => 'Dirección',
+    'codigo_postal' => 'Código Postal',
+    'poblacion' => 'Población',
+    'provincia' => 'Provincia',
+    'pais' => 'País',
+    'coordinates' => 'Coordenadas',
+    'search_coordinates' => 'Buscar Coordenadas',
+    'coordinates_found_successfully' => 'Coordenadas encontradas con éxito.',
+    'no_coordinates_found_for_address' => 'No se han encontrado coordenadas para la dirección proporcionada.',
+    'approximate_coordinates_found' => 'Coordenadas aproximadas encontradas con éxito. Puedes ajustarlas en el mapa.',
+    'location_form_map_hint' => 'Haz clic en el mapa para ajustar la posición exacta.',
+    'no_address_provided' => 'No se proporcionó una dirección para buscar.',
+    'geocoding_api_error_details' => 'La API de geocodificación no pudo encontrar coordenadas para la dirección: %address%',
+    'no_coordinates_available' => 'No hay coordenadas disponibles para mostrar el mapa.',
     'confirm_delete_contract' => '¿Estás seguro de que quieres eliminar este contrato? Esta acción eliminará sus asociaciones con activos.',
     'confirm_delete_custom_field_def' => '¿Estás seguro de que quieres eliminar esta definición de campo? Esto no elimina los valores ya existentes en los activos, pero el campo dejará de aparecer en el formulario.',
     'confirm_delete_user' => '¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.',
@@ -148,6 +162,8 @@ return [
     'name_is_required' => 'El nombre es obligatorio.',
     'created_successfully' => 'creado con éxito.', // Se concatena (ej. "Fabricante creado con éxito.")
     'error_creating_master_item' => 'Error al crear %master_name%. Puede que el nombre ya exista.',
+    'create_new_master' => 'Nuevo/a %master_name%', // Para botones "Nuevo Fabricante", "Nueva Ubicación"
+    'master_singular_location' => 'Ubicación',
     'updated_successfully' => 'actualizado con éxito.', // Se concatena
     'error_updating_master_item' => 'Error al actualizar %master_name%. Puede que el nombre ya exista.',
     'deleted_successfully' => 'eliminado con éxito.', // Se concatena
@@ -162,6 +178,7 @@ return [
     'internal_error_model_not_found' => 'Error interno: La clase "%class%" para el maestro "%master_name%" no se encontró.',
     'error_loading_master_data' => 'Error al cargar los datos del maestro %master_name%.',
     'master_plural_language' => 'Idiomas',
+    'master_plural_location' => 'Ubicaciones',
 
 
     // --- Sección: Gestión de Modelos (Models Management) ---

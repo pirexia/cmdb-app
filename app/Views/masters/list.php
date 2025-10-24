@@ -1,43 +1,63 @@
-<?php $this->layout('layout/base', ['pageTitle' => $pageTitle, 'flashMessages' => $flashMessages]) ?>
+<?php $this->layout('layout/base', ['pageTitle' => $pageTitle, 'flashMessages' => $flashMessages]); ?>
 
 <?php $this->start('page_content') ?>
 
 <div class="container-fluid py-4">
     <div class="card shadow-lg p-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h1 class="card-title mb-0"><?= $pageTitle ?></h1>
-            <a href="/admin/masters/<?= $masterName ?>/create" class="btn btn-light btn-sm">
-                <i class="bi bi-plus-circle me-1"></i> <?= $t('new') ?> <?= ucwords(str_replace('-', ' ', $masterName)) ?>
+            <h1 class="card-title mb-0"><?= $this->e($pageTitle) ?></h1>
+            <?php
+                $singularMasterKey = 'master_singular_' . str_replace('-', '_', $masterName);
+            ?>
+            <a href="/admin/masters/<?= $this->e($masterName) ?>/create" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-circle me-1"></i> <?= $this->e($t('create_new_master', ['master_name' => $t($singularMasterKey) ?? ucwords(str_replace('-', ' ', $masterName))])) ?>
             </a>
         </div>
         <div class="card-body">
             <?php if (empty($items)): ?>
                 <div class="alert alert-info text-center" role="alert">
-                    <?= $t('datatable_no_data_master') ?? 'No hay elementos para mostrar en este maestro.' ?>
+                    <?= $this->e($t('datatable_no_data_master') ?? 'No hay elementos para mostrar en este maestro.') ?>
                 </div>
             <?php else: ?>
                 <div class="table-responsive">
                     <table id="masterTable" class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th><?= $t('id') ?></th>
-                                <th class="filterable-text"><?= $t('name') ?></th>
-                                <th class="filterable-text"><?= $t('description') ?></th>
-                                <th><?= $t('actions') ?></th>
+                                <th><?= $this->e($t('id')) ?></th>
+                                <th class="filterable-text"><?= $this->e($t('name')) ?></th>
+                                <th class="filterable-text"><?= $this->e($t('description')) ?></th>
+                                <?php if ($masterName === 'location'): ?>
+                                    <th class="filterable-text"><?= $this->e($t('direccion')) ?></th>
+                                    <th class="filterable-text"><?= $this->e($t('poblacion')) ?></th>
+                                    <th class="filterable-text"><?= $this->e($t('codigo_postal')) ?></th>
+                                    <th class="filterable-text"><?= $this->e($t('pais')) ?></th>
+                                <?php endif; ?>
+                                <th><?= $this->e($t('actions')) ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($items as $item): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($item['id']) ?></td>
-                                    <td><?= htmlspecialchars($item['nombre']) ?></td>
-                                    <td><?= htmlspecialchars($item['descripcion'] ?? $t('na')) ?></td>
+                                    <td><?= $this->e($item['id']) ?></td>
+                                    <td><?= $this->e($item['nombre']) ?></td>
+                                    <td><?= $this->e(substr($item['descripcion'] ?? '', 0, 100)) . (strlen($item['descripcion'] ?? '') > 100 ? '...' : '') ?></td>
+                                    <?php if ($masterName === 'location'): ?>
+                                        <td><?= $this->e($item['direccion'] ?? '') ?></td>
+                                        <td><?= $this->e($item['poblacion'] ?? '') ?></td>
+                                        <td><?= $this->e($item['codigo_postal'] ?? '') ?></td>
+                                        <td><?= $this->e($item['pais'] ?? '') ?></td>
+                                    <?php endif; ?>
                                     <td>
-                                        <a href="/admin/masters/<?= $masterName ?>/edit/<?= $item['id'] ?>" class="btn btn-sm btn-warning me-1" title="<?= $t('edit') ?>">
+                                        <?php if ($masterName === 'location'): ?>
+                                            <a href="/admin/masters/location/detail/<?= $this->e($item['id']) ?>" class="btn btn-sm btn-info me-1" title="<?= $this->e($t('view_details')) ?>">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                        <a href="/admin/masters/<?= $this->e($masterName) ?>/edit/<?= $this->e($item['id']) ?>" class="btn btn-sm btn-warning me-1" title="<?= $this->e($t('edit')) ?>">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="/admin/masters/<?= $masterName ?>/delete/<?= $item['id'] ?>" method="POST" style="display:inline;" onsubmit="return confirm('<?= $t('confirm_delete_master_item') ?? '¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.' ?>');">
-                                            <button type="submit" class="btn btn-sm btn-danger" title="<?= $t('delete') ?>">
+                                        <form action="/admin/masters/<?= $this->e($masterName) ?>/delete/<?= $this->e($item['id']) ?>" method="POST" style="display:inline;" onsubmit="return confirm('<?= $this->e($t('confirm_delete_master_item')) ?>');">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="<?= $this->e($t('delete')) ?>">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>

@@ -4,7 +4,7 @@
 // Las variables PHP ($assetsByType, $assetsByStatus, $t, $daysAdvance) se pasan desde DashboardController.
 ?>
 
-$(document).ready(function() {
+<script>
     // Datos para el gráfico de Activos por Tipo
     // Asegurarse de que las variables PHP se impriman correctamente en el JS.
     var assetsByTypeData = <?php echo json_encode($assetsByType); ?>;
@@ -90,4 +90,4 @@ $(document).ready(function() {
             }
         }
     });
-});
+</script>

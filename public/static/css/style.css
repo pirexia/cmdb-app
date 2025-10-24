@@ -63,3 +63,18 @@ body {
 .custom-switch-lg .custom-control-input:checked ~ .custom-control-label::after {
     transform: translateX(1.5rem);
 }
+
+/* ==========================================================================
+   Correcciones para Leaflet (Mapas)
+   ========================================================================== */
+
+/**
+ * Corrige un conflicto con los estilos de imagen de Bootstrap.
+ * Bootstrap aplica `max-width: 100%` a todas las imágenes, lo que rompe
+ * el renderizado de las teselas del mapa de Leaflet.
+ * Esta regla anula ese estilo específicamente para las imágenes dentro del mapa.
+ */
+.leaflet-tile-container img {
+    max-width: none !important; /* Anula el max-width: 100% de Bootstrap */
+    height: unset !important;   /* Anula el height: auto de Bootstrap */
+}

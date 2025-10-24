@@ -10,6 +10,12 @@
  * @param array $config El array de configuración global de la aplicación.
  * @param callable $t La función de traducción para internacionalización.
  */
+
+// Obtener la ruta actual para la lógica de la barra de navegación y la inclusión de scripts.
+$currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+// Obtener el idioma actual para el inicializador de DataTables.
+$currentLanguage = $sessionService->getUserLanguage() ?? 'es';
+
 ?>
 <!DOCTYPE html>
 <html lang="<?= $t('lang_code') ?? 'es' ?>">
@@ -21,10 +27,10 @@
     <!-- Hojas de Estilo CSS -->
     <!-- Nota: Se cargan los archivos de librería antes que los archivos locales para
                evitar que los estilos de la aplicación sean sobrescritos. -->
-    
+
     <!-- Bootstrap CSS (CDN) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <!-- Bootstrap Icons (CDN) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
@@ -38,6 +44,7 @@
 
     <!-- Archivos CSS propios de la aplicación -->
     <link rel="stylesheet" href="<?= $config['paths']['public_assets'] ?>/css/style.css">
+    <?= $this->section('head_assets') ?>
 
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -101,88 +108,81 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
     <!-- Scripts de la aplicación (propios) -->
-    <script src="<?= $config['paths']['public_assets'] ?>/js/app.js"></script>
+    <script src="<?= $this->e($config['paths']['public_assets']) ?>/js/app.js"></script>
 
     <!-- Script de consentimiento de cookies -->
-    <script src="<?= $config['paths']['public_assets'] ?>/js/cookie_consent.js"></script>
+    <script src="<?= $this->e($config['paths']['public_assets']) ?>/js/cookie_consent.js"></script>
 
     <!-- Lógica de inclusión de scripts dinámicos (partials) -->
-    <!-- Nota: Los scripts dinámicos se insertan aquí para que puedan acceder a las variables PHP y a las librerías cargadas previamente. -->
-    <?php
-    // Lógica PHP para incluir el script parcial correcto según la URL.
-    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    ?>
     <script>
     $(document).ready(function() {
-    <?php
-        // Lógica de inclusión de scripts dinámicos
-        if (str_starts_with($currentPath, '/admin/masters/language')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'languages-table', 'options' => ['order' => [[0, 'asc']]]]);
-        } elseif (preg_match('/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format)/', $currentPath)) {
-            $this->insert('partials/datatables_init', ['tableId' => 'masterTable', 'options' => ['order' => [[1, 'asc']]]]);
-        } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'modelTable', 'options' => ['order' => [[2, 'asc']]]]);
-        } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'contractsTable', 'options' => ['order' => [[1, 'asc']]]]);
-        } elseif (str_starts_with($currentPath, '/admin/users')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'usersTable', 'options' => ['order' => [[1, 'asc']]]]);
-            if (str_starts_with($currentPath, '/admin/users/create') || str_starts_with($currentPath, '/admin/users/edit/')) {
-                $this->insert('partials/users_form_scripts');
-            }
-        } elseif (str_starts_with($currentPath, '/assets')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'assetsTable', 'options' => ['order' => [[1, 'asc']]]]);
-            if (str_starts_with($currentPath, '/assets/create') || str_starts_with($currentPath, '/assets/edit/')) {
-                $this->insert('partials/assets_form_scripts');
-            }
-        } elseif ($currentPath === '/dashboard') {
-            $this->insert('partials/dashboard_scripts', [
-                'assetsByType' => $assetsByType ?? [],
-                'assetsByStatus' => $assetsByStatus ?? [],
-                't' => $t
-            ]);
-        } elseif (str_starts_with($currentPath, '/admin/custom-fields')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'customFieldsTable', 'options' => ['order' => [[1, 'asc']]]]);
-            if (str_starts_with($currentPath, '/admin/custom-fields/create') || str_starts_with($currentPath, '/admin/custom-fields/edit/')) {
-                $this->insert('partials/custom_fields_form_scripts');
-            }
-        } elseif (str_starts_with($currentPath, '/admin/sources')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'sourcesTable', 'options' => ['order' => [[1, 'asc']]]]);
-            if (str_starts_with($currentPath, '/admin/sources/create') || str_starts_with($currentPath, '/admin/sources/edit/')) {
-                $this->insert('partials/sources_form_scripts');
-            }
-        } elseif (str_starts_with($currentPath, '/admin/import')) {
-            if ($currentPath === '/admin/import' || $currentPath === '/admin/import/') {
-                $this->insert('partials/import_index_scripts');
-            }
-        } elseif (str_starts_with($currentPath, '/admin/logs')) {
-            $this->insert('partials/datatables_init', ['tableId' => 'logsTable', 'options' => ['order' => [[0, 'desc']]]]);
-        } elseif (str_starts_with($currentPath, '/admin/smtp')) {
-            $this->insert('partials/smtp_script');
-        }
-    ?>
-    });
+        // --- JavaScript para que los mensajes flash desaparezcan automáticamente ---
+        $('.flash-message').each(function(index) {
+            var $this = $(this);
+            setTimeout(function() {
+                $this.fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }, 3000); // 3 segundos
+        });
+    }); // Fin de $(document).ready
     </script>
 
-    <!-- Script para los mensajes flash que se ocultan automáticamente -->
-    <script>
-        $(document).ready(function() {
-            // Selecciona todos los elementos con la clase 'flash-message'
-            $('.flash-message').each(function(index) {
-                var $this = $(this);
-                // Desvanecer y eliminar el mensaje después de 3 segundos (3000 milisegundos)
-                setTimeout(function() {
-                    $this.fadeOut('slow', function() {
-                        $(this).remove();
-                    });
-                }, 3000); // 3 segundos
-            });
-        });
-    </script>
+    <?php
+    // Lógica de inclusión de scripts dinámicos (partials)
+    // Estos parciales contienen sus propias etiquetas <script> y deben ser insertados fuera del $(document).ready principal.
+    if (str_starts_with($currentPath, '/admin/masters/language')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'languages-table', 'options' => ['order' => [[0, 'asc']]]]);
+    } elseif (preg_match('/^\/admin\/masters\/(manufacturer|asset-type|asset-status|contract-type|location|department|provider|acquisition-format)/', $currentPath)) {
+        $this->insert('partials/datatables_init', ['tableId' => 'masterTable', 'options' => ['order' => [[1, 'asc']]]]);
+    } elseif (str_starts_with($currentPath, '/admin/masters/model')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'modelTable', 'options' => ['order' => [[2, 'asc']]]]);
+    } elseif (str_starts_with($currentPath, '/admin/masters/contract')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'contractsTable', 'options' => ['order' => [[1, 'asc']]]]);
+    } elseif (str_starts_with($currentPath, '/admin/users')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'usersTable', 'options' => ['order' => [[1, 'asc']]]]);
+        if (str_starts_with($currentPath, '/admin/users/create') || str_starts_with($currentPath, '/admin/users/edit/')) {
+            $this->insert('partials/users_form_scripts');
+        }
+    } elseif (str_starts_with($currentPath, '/assets')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'assetsTable', 'options' => ['order' => [[1, 'asc']]]]);
+        if (str_starts_with($currentPath, '/assets/create') || str_starts_with($currentPath, '/assets/edit/')) {
+            $this->insert('partials/assets_form_scripts');
+        }
+    } elseif ($currentPath === '/dashboard') {
+        $this->insert('partials/dashboard_scripts', [
+            'assetsByType' => $assetsByType ?? [],
+            'assetsByStatus' => $assetsByStatus ?? [],
+            't' => $t
+        ]);
+    } elseif (str_starts_with($currentPath, '/admin/custom-fields')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'customFieldsTable', 'options' => ['order' => [[1, 'asc']]]]);
+        if (str_starts_with($currentPath, '/admin/custom-fields/create') || str_starts_with($currentPath, '/admin/custom-fields/edit/')) {
+            $this->insert('partials/custom_fields_form_scripts');
+        }
+    } elseif (str_starts_with($currentPath, '/admin/sources')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'sourcesTable', 'options' => ['order' => [[1, 'asc']]]]);
+        if (str_starts_with($currentPath, '/admin/sources/create') || str_starts_with($currentPath, '/admin/sources/edit/')) {
+            $this->insert('partials/sources_form_scripts');
+        }
+    } elseif (str_starts_with($currentPath, '/admin/import')) {
+        if ($currentPath === '/admin/import' || $currentPath === '/admin/import/') {
+            $this->insert('partials/import_index_scripts');
+        }
+    } elseif (str_starts_with($currentPath, '/admin/logs')) {
+        $this->insert('partials/datatables_init', ['tableId' => 'logsTable', 'options' => ['order' => [[0, 'desc']]]]);
+    } elseif (str_starts_with($currentPath, '/admin/smtp')) {
+        $this->insert('partials/smtp_script');
+    }
+    ?>
 
     <?php
     // --- Inclusión del Banner de Consentimiento de Cookies ---
     // Incluye el parcial que decide si mostrar el banner o no.
     $this->insert('partials/cookie_consent_loader');
     ?>
+    <!-- Inyecta scripts específicos de la página (ej. para mapas, gráficos, etc.) -->
+    <?= $this->section('scripts') ?>
+
 </body>
 </html>

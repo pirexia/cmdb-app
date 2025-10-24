@@ -151,14 +151,24 @@ class MasterController
         $flashMessages = $this->sessionService->getFlashMessages();
 
         // Determinar qué vista renderizar
-        $viewToRender = ($masterName === 'language') ? 'admin/language/form' : 'masters/form';
+        if ($masterName === 'language') {
+            $viewToRender = 'admin/language/form';
+        } elseif ($masterName === 'location') {
+            $viewToRender = 'masters/locations/form'; // Vista específica para ubicaciones (en plural)
+        } else {
+            $viewToRender = 'masters/form';
+        }
+
+        // Construir el título de la página de creación usando la clave singular
+        $singularMasterKey = 'master_singular_' . str_replace('-', '_', $masterName);
 
         $html = $this->view->render($viewToRender, [
-            'pageTitle' => $t('create') . ' ' . ucwords(str_replace('-', ' ', $masterName)), // Traducir "Crear"
+            'pageTitle' => $t('create') . ' ' . ($t($singularMasterKey) ?? ucwords(str_replace('-', ' ', $masterName))),
             'masterName' => $masterName,
             'item' => null, // Indica que es un formulario de creación
             'flashMessages' => $flashMessages,
-            'isCreateMode' => true // Variable para el formulario
+            'isCreateMode' => true, // Variable para el formulario
+            't' => $t // Pasar el traductor a la vista
         ]);
 
         $response->getBody()->write($html);
@@ -217,6 +227,17 @@ class MasterController
         } else { // Lógica genérica para otros maestros
             $modelData['nombre'] = trim($data['nombre'] ?? '');
             $modelData['descripcion'] = trim($data['descripcion'] ?? null);
+
+            // Añadir campos de dirección para ubicaciones
+            if ($masterName === 'location') {
+                $modelData['direccion'] = trim($data['direccion'] ?? null);
+                $modelData['codigo_postal'] = trim($data['codigo_postal'] ?? null);
+                $modelData['poblacion'] = trim($data['poblacion'] ?? null);
+                $modelData['provincia'] = trim($data['provincia'] ?? null);
+                $modelData['pais'] = trim($data['pais'] ?? null);
+                $modelData['latitud'] = !empty($data['latitud']) ? (float)$data['latitud'] : null;
+                $modelData['longitud'] = !empty($data['longitud']) ? (float)$data['longitud'] : null;
+            }
         }
 
         // Validación común para el nombre
@@ -226,7 +247,15 @@ class MasterController
         }
 
         // Llamada unificada al método create del modelo
-        if ($model->create($modelData)) {
+        if ($masterName === 'location') {
+            $success = $model->create($modelData); // Location y Language esperan un array
+        } else if ($masterName === 'language') {
+            $success = $model->create($modelData);
+        } else {
+            // La mayoría de los modelos esperan parámetros individuales
+            $success = $model->create($modelData['nombre'], $modelData['descripcion']); // Otros modelos esperan parámetros
+        }
+        if ($success !== false) {
             $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('created_successfully'));
             return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
         }
@@ -245,13 +274,16 @@ class MasterController
      */
     public function showEditForm(Request $request, Response $response, array $args): Response
     {
+        $this->logger->debug("--- DEBUG: MasterController::showEditForm INICIADO ---");
         $masterName = $args['master_name'];
         $id = (int)$args['id'];
         $t = $this->translator; // Accede a la función de traducción
+        $this->logger->debug("Recibido master_name: '{$masterName}', id: {$id}");
 
         $model = null;
         try {
             $model = $this->getMasterModel($masterName);
+            $this->logger->debug("Modelo '" . get_class($model) . "' obtenido correctamente.");
         } catch (\InvalidArgumentException $e) {
             $this->sessionService->addFlashMessage('danger', $t('invalid_master', ['%master_name%' => htmlspecialchars($masterName)]));
             return $response->withHeader('Location', '/dashboard')->withStatus(302);
@@ -259,6 +291,7 @@ class MasterController
 
         $item = $model->getById($id);
         if (!$item) {
+            $this->logger->warning("No se encontró el item con ID {$id} para el maestro '{$masterName}'.");
             $this->sessionService->addFlashMessage('danger', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('not_found')); // Traducir
             return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
         }
@@ -266,17 +299,27 @@ class MasterController
         $flashMessages = $this->sessionService->getFlashMessages();
 
         // Determinar qué vista renderizar y corregir el bug
-        $viewToRender = ($masterName === 'language') ? 'admin/language/form' : 'masters/form';
+        if ($masterName === 'language') {
+            $viewToRender = 'admin/language/form';
+        } elseif ($masterName === 'location') {
+            $viewToRender = 'masters/locations/form'; // Vista específica para ubicaciones (en plural)
+        } else {
+            $viewToRender = 'masters/form';
+        }
+        $this->logger->debug("Vista a renderizar seleccionada: '{$viewToRender}'");
 
         $html = $this->view->render($viewToRender, [
             'pageTitle' => $t('edit') . ' ' . ucwords(str_replace('-', ' ', $masterName)), // Traducir "Editar"
             'masterName' => $masterName,
             'item' => $item,
             'flashMessages' => $flashMessages,
-            'isCreateMode' => false // Indicar que no es modo creación
+            'isCreateMode' => false, // Indicar que no es modo creación
+            't' => $t // Pasar el traductor a la vista
         ]);
 
+        $this->logger->debug("Renderizado de la vista '{$viewToRender}' completado.");
         $response->getBody()->write($html);
+        $this->logger->debug("--- DEBUG: MasterController::showEditForm FINALIZADO CON ÉXITO ---");
         return $response;
     }
 
@@ -313,6 +356,17 @@ class MasterController
         } else { // Lógica genérica para otros maestros
             $modelData['nombre'] = trim($data['nombre'] ?? '');
             $modelData['descripcion'] = trim($data['descripcion'] ?? null);
+
+            // Añadir campos de dirección para ubicaciones
+            if ($masterName === 'location') {
+                $modelData['direccion'] = trim($data['direccion'] ?? null);
+                $modelData['codigo_postal'] = trim($data['codigo_postal'] ?? null);
+                $modelData['poblacion'] = trim($data['poblacion'] ?? null);
+                $modelData['provincia'] = trim($data['provincia'] ?? null);
+                $modelData['pais'] = trim($data['pais'] ?? null);
+                $modelData['latitud'] = !empty($data['latitud']) ? (float)$data['latitud'] : null;
+                $modelData['longitud'] = !empty($data['longitud']) ? (float)$data['longitud'] : null;
+            }
         }
 
         // Validación común para el nombre
@@ -322,7 +376,14 @@ class MasterController
         }
 
         // Llamada unificada al método update del modelo
-        if ($model->update($id, $modelData)) {
+        if ($masterName === 'location') {
+            $success = $model->update($id, $modelData);
+        } else if ($masterName === 'language') {
+            $success = $model->update($id, $modelData);
+        } else {
+            $success = $model->update($id, $modelData['nombre'], $modelData['descripcion']); // Otros modelos esperan parámetros
+        }
+        if ($success !== false) {
             $this->sessionService->addFlashMessage('success', ucwords(str_replace('-', ' ', $masterName)) . ' ' . $t('updated_successfully'));
             return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
         }
@@ -380,6 +441,43 @@ class MasterController
         }
         
         return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+    }
+
+    /**
+     * Muestra la página de detalles para un elemento de un maestro.
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function showItemDetail(Request $request, Response $response, array $args): Response
+    {
+        $masterName = $args['master_name'];
+        $id = (int)$args['id'];
+        $t = $this->translator;
+
+        try {
+            $model = $this->getMasterModel($masterName);
+            $item = $model->getById($id);
+
+            if (!$item) {
+                $this->sessionService->addFlashMessage('danger', $t('not_found'));
+                return $response->withHeader('Location', "/admin/masters/{$masterName}")->withStatus(302);
+            }
+
+            // Renderizar una vista de detalle específica para el maestro
+            if ($masterName === 'location') {
+                $viewPath = 'masters/locations/detail';
+            } else {
+                // Fallback o lógica para otros maestros si tuvieran vistas de detalle
+            }
+            $html = $this->view->render($viewPath, ['item' => $item, 'pageTitle' => $item['nombre']]);
+            $response->getBody()->write($html);
+            return $response;
+        } catch (\Exception $e) {
+            $this->sessionService->addFlashMessage('danger', $e->getMessage());
+            return $response->withHeader('Location', '/dashboard')->withStatus(302);
+        }
     }
 
     /**

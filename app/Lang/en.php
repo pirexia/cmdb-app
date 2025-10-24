@@ -40,6 +40,22 @@ return [
     'confirm_delete_custom_field_def' => 'Are you sure you want to delete this field definition? This does not delete existing values in assets, but the field will no longer appear in the form.',
     'confirm_delete_user' => 'Are you sure you want to delete this user? This action cannot be undone.',
 
+    // --- Section: Locations ---
+    'direccion' => 'Address',
+    'codigo_postal' => 'Postal Code',
+    'poblacion' => 'City',
+    'provincia' => 'Province',
+    'pais' => 'Country',
+    'coordinates' => 'Coordinates',
+    'search_coordinates' => 'Search Coordinates',
+    'coordinates_found_successfully' => 'Coordinates found successfully.',
+    'no_coordinates_found_for_address' => 'No coordinates were found for the provided address.',
+    'approximate_coordinates_found' => 'Approximate coordinates found successfully. You can adjust them on the map.',
+    'location_form_map_hint' => 'Click on the map to adjust the exact position.',
+    'no_address_provided' => 'No address was provided to search for.',
+    'geocoding_api_error_details' => 'Geocoding API could not find coordinates for the address: %address%',
+    'no_coordinates_available' => 'No coordinates available to display the map.',
+
     // --- Sección: Autenticación (Auth) ---
     'in_cmdb_app' => 'to CMDB App', // For "Login to CMDB App"
     'username' => 'Username',
@@ -148,6 +164,8 @@ return [
     'name_is_required' => 'Name is required.',
     'created_successfully' => 'created successfully.', // Concatenated (e.g. "Manufacturer created successfully.")
     'error_creating_master_item' => 'Error creating %master_name%. The name might already exist.',
+    'create_new_master' => 'New %master_name%', // For "New Manufacturer", "New Location" buttons
+    'master_singular_location' => 'Location',
     'updated_successfully' => 'updated successfully.', // Concatenated
     'error_updating_master_item' => 'Error updating %master_name%. The name might already exist.',
     'deleted_successfully' => 'deleted successfully.', // Concatenated
@@ -162,6 +180,7 @@ return [
     'internal_error_model_not_found' => 'Internal error: Class "%class%" for master "%master_name%" not found.',
     'error_loading_master_data' => 'Error loading master data for %master_name%.',
     'master_plural_language' => 'Languages',
+    'master_plural_location' => 'Locations',
     'status_changed_successfully' => 'Status changed successfully.',
     'error_changing_status' => 'Error changing status.',
 

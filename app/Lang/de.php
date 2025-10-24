@@ -40,6 +40,22 @@ return [
     'confirm_delete_custom_field_def' => 'Sind Sie sicher, dass Sie diese Felddefinition löschen möchten? Dies löscht keine vorhandenen Werte in Assets, aber das Feld wird nicht mehr im Formular angezeigt.',
     'confirm_delete_user' => 'Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
 
+    // --- Abschnitt: Standorte (Locations) ---
+    'direccion' => 'Adresse',
+    'codigo_postal' => 'Postleitzahl',
+    'poblacion' => 'Stadt',
+    'provincia' => 'Provinz',
+    'pais' => 'Land',
+    'coordinates' => 'Koordinaten',
+    'search_coordinates' => 'Koordinaten suchen',
+    'coordinates_found_successfully' => 'Koordinaten erfolgreich gefunden.',
+    'no_coordinates_found_for_address' => 'Für die angegebene Adresse wurden keine Koordinaten gefunden.',
+    'approximate_coordinates_found' => 'Ungefähre Koordinaten erfolgreich gefunden. Sie können sie auf der Karte anpassen.',
+    'location_form_map_hint' => 'Klicken Sie auf die Karte, um die genaue Position anzupassen.',
+    'no_address_provided' => 'Es wurde keine Adresse für die Suche angegeben.',
+    'geocoding_api_error_details' => 'Die Geocoding-API konnte keine Koordinaten für die Adresse finden: %address%',
+    'no_coordinates_available' => 'Keine Koordinaten zur Anzeige der Karte verfügbar.',
+
     // --- Abschnitt: Authentifizierung (Auth) ---
     'in_cmdb_app' => 'in der CMDB App', // Für "Anmelden in der CMDB App"
     'username' => 'Benutzername',
@@ -146,6 +162,8 @@ return [
     'name_is_required' => 'Name ist erforderlich.',
     'created_successfully' => 'erfolgreich erstellt.', // Wird angehängt (z.B. "Hersteller erfolgreich erstellt.")
     'error_creating_master_item' => 'Fehler beim Erstellen von %master_name%. Der Name existiert möglicherweise bereits.',
+    'create_new_master' => 'Neu %master_name%', // Für "Neuer Hersteller", "Neuer Standort"
+    'master_singular_location' => 'Standort',
     'updated_successfully' => 'erfolgreich aktualisiert.', // Wird angehängt
     'error_updating_master_item' => 'Fehler beim Aktualisieren von %master_name%. Der Name existiert möglicherweise bereits.',
     'deleted_successfully' => 'erfolgreich gelöscht.', // Wird angehängt
@@ -160,6 +178,7 @@ return [
     'internal_error_model_not_found' => 'Interner Fehler: Klasse "%class%" für Master "%master_name%" nicht gefunden.',
     'error_loading_master_data' => 'Fehler beim Laden der Stammdaten für %master_name%.',
     'master_plural_language' => 'Sprachen',
+    'master_plural_location' => 'Standorte',
     'status_changed_successfully' => 'Status erfolgreich geändert.',
     'error_changing_status' => 'Fehler beim Ändern des Status.',
 
@@ -602,6 +621,11 @@ return [
     'download_import_log_button' => 'Vollständiges Protokoll herunterladen',
     'go_back' => 'Zurück',
     'no_import_results_found' => 'Keine Importergebnisse gefunden.',
+    'import_results' => 'Importergebnisse',
+    'import_updated_success_row' => 'Datensatz erfolgreich aktualisiert.',
+    'import_new_success_row' => 'Datensatz erfolgreich erstellt.',
+
+    // --- Abschnitt: Importstatus-Schlüssel ---
     'import_results' => 'Importergebnisse',
     'import_updated_success_row' => 'Datensatz erfolgreich aktualisiert.',
     'import_new_success_row' => 'Datensatz erfolgreich erstellt.',

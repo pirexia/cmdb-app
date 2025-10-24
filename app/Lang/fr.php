@@ -40,6 +40,22 @@ return [
     'confirm_delete_custom_field_def' => 'Êtes-vous sûr de vouloir supprimer cette définition de champ ? Cela ne supprime pas les valeurs existantes dans les actifs, mais le champ n\'apparaîtra plus dans le formulaire.',
     'confirm_delete_user' => 'Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.',
 
+    // --- Section: Emplacements (Locations) ---
+    'direccion' => 'Adresse',
+    'codigo_postal' => 'Code Postal',
+    'poblacion' => 'Ville',
+    'provincia' => 'Province',
+    'pais' => 'Pays',
+    'coordinates' => 'Coordonnées',
+    'search_coordinates' => 'Rechercher les coordonnées',
+    'coordinates_found_successfully' => 'Coordonnées trouvées avec succès.',
+    'no_coordinates_found_for_address' => 'Aucune coordonnée n\'a été trouvée pour l\'adresse fournie.',
+    'approximate_coordinates_found' => 'Coordonnées approximatives trouvées avec succès. Vous pouvez les ajuster sur la carte.',
+    'location_form_map_hint' => 'Cliquez sur la carte pour ajuster la position exacte.',
+    'no_address_provided' => 'Aucune adresse n\'a été fournie pour la recherche.',
+    'geocoding_api_error_details' => 'L\'API de géocodage n\'a pas pu trouver de coordonnées pour l\'adresse : %address%',
+    'no_coordinates_available' => 'Aucune coordonnée disponible pour afficher la carte.',
+
     // --- Section: Authentification (Auth) ---
     'in_cmdb_app' => 'à l\'App CMDB', // Pour "Connexion à l'App CMDB"
     'username' => 'Nom d\'utilisateur',
@@ -146,6 +162,8 @@ return [
     'name_is_required' => 'Le nom est requis.',
     'created_successfully' => 'créé avec succès.', // Concaténé (ex. "Fabricant créé avec succès.")
     'error_creating_master_item' => 'Erreur lors de la création de %master_name%. Le nom existe peut-être déjà.',
+    'create_new_master' => 'Nouveau/Nouvel %master_name%', // Pour "Nouveau Fabricant", "Nouvel Emplacement"
+    'master_singular_location' => 'Emplacement',
     'updated_successfully' => 'mis à jour avec succès.', // Concaténé
     'error_updating_master_item' => 'Erreur lors de la mise à jour de %master_name%. Le nom existe peut-être déjà.',
     'deleted_successfully' => 'supprimé avec succès.', // Concaténé
@@ -160,6 +178,7 @@ return [
     'internal_error_model_not_found' => 'Erreur interne : Classe "%class%" pour le maître "%master_name%" non trouvée.',
     'error_loading_master_data' => 'Erreur de chargement des données du maître pour %master_name%.',
     'master_plural_language' => 'Langues',
+    'master_plural_location' => 'Emplacements',
     'status_changed_successfully' => 'Statut modifié avec succès.',
     'error_changing_status' => 'Erreur lors du changement de statut.',
 

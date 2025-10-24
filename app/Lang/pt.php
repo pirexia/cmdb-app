@@ -40,6 +40,22 @@ return [
     'confirm_delete_custom_field_def' => 'Tem a certeza de que quer eliminar esta definição de campo? Isto não elimina os valores existentes nos ativos, mas o campo deixará de aparecer no formulário.',
     'confirm_delete_user' => 'Tem a certeza de que quer eliminar este utilizador? Esta ação não pode ser desfeita.',
 
+    // --- Seção: Localizações (Locations) ---
+    'direccion' => 'Endereço',
+    'codigo_postal' => 'Código Postal',
+    'poblacion' => 'Cidade',
+    'provincia' => 'Província',
+    'pais' => 'País',
+    'coordinates' => 'Coordenadas',
+    'search_coordinates' => 'Procurar Coordenadas',
+    'coordinates_found_successfully' => 'Coordenadas encontradas com sucesso.',
+    'no_coordinates_found_for_address' => 'Não foram encontradas coordenadas para o endereço fornecido.',
+    'approximate_coordinates_found' => 'Coordenadas aproximadas encontradas com sucesso. Pode ajustá-las no mapa.',
+    'location_form_map_hint' => 'Clique no mapa para ajustar a posição exata.',
+    'no_address_provided' => 'Nenhum endereço foi fornecido para a pesquisa.',
+    'geocoding_api_error_details' => 'A API de geocodificação não conseguiu encontrar coordenadas para o endereço: %address%',
+    'no_coordinates_available' => 'Não há coordenadas disponíveis para exibir o mapa.',
+
     // --- Seção: Autenticação (Auth) ---
     'in_cmdb_app' => 'na CMDB App', // Para "Iniciar Sessão na CMDB App"
     'username' => 'Nome de Utilizador',
@@ -148,6 +164,8 @@ return [
     'name_is_required' => 'O nome é obrigatório.',
     'created_successfully' => 'criado com sucesso.', // Concatenado (ex. "Fabricante criado com sucesso.")
     'error_creating_master_item' => 'Erro ao criar %master_name%. O nome pode já existir.',
+    'create_new_master' => 'Novo/a %master_name%', // Para "Novo Fabricante", "Nova Localização"
+    'master_singular_location' => 'Localização',
     'updated_successfully' => 'atualizado com sucesso.', // Concatenado
     'error_updating_master_item' => 'Erro ao atualizar %master_name%. O nome pode já existir.',
     'deleted_successfully' => 'eliminado com sucesso.', // Concatenado
@@ -162,6 +180,7 @@ return [
     'internal_error_model_not_found' => 'Erro interno: A classe "%class%" para o mestre "%master_name%" não foi encontrada.',
     'error_loading_master_data' => 'Erro ao carregar os dados do mestre %master_name%.',
     'master_plural_language' => 'Idiomas',
+    'master_plural_location' => 'Localizações',
 
     // --- Seção: Gestão de Modelos (Models Management) ---
     'error_loading_models' => 'Erro ao carregar os modelos.',

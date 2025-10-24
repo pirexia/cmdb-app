@@ -144,4 +144,94 @@ class ApiController
         $response->getBody()->write(json_encode($result));
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    /**
+     * Endpoint para geocodificar una dirección.
+     */
+    public function geocode(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $data = $request->getParsedBody();
+
+        $addressData = [
+            'direccion'     => $data['direccion'] ?? '',
+            'poblacion'     => $data['poblacion'] ?? '',
+            'codigo_postal' => $data['codigo_postal'] ?? '',
+            'provincia'     => $data['provincia'] ?? '',
+            'pais'          => $data['pais'] ?? '',
+        ];
+
+        $result = $this->geocodeAddress($addressData);
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * Realiza una llamada a la API de Nominatim para obtener coordenadas.
+     * @param array $addressData Datos de la dirección.
+     * @return array ['success' => bool, 'data' => ['lat' => float, 'lon' => float]|['error' => string, 'urls' => array]]
+     */
+    private function geocodeAddress(array $addressData): array
+    {
+        $t = $this->translator;
+
+        // --- Nueva Estrategia de Búsqueda ---
+        $searchStrings = [];
+
+        // Intento 1: Dirección completa
+        $searchStrings[] = implode(', ', array_filter([$addressData['direccion'], $addressData['poblacion'], $addressData['codigo_postal'], $addressData['pais']]));
+
+        // Intento 2: Simplificar la dirección (quitar número, piso, etc., si hay una coma)
+        if (str_contains($addressData['direccion'], ',')) {
+            $simplifiedStreet = explode(',', $addressData['direccion'])[0];
+            $searchStrings[] = implode(', ', array_filter([$simplifiedStreet, $addressData['poblacion'], $addressData['codigo_postal'], $addressData['pais']]));
+        }
+
+        // Intento 3: Fallback a solo la población
+        $searchStrings[] = implode(', ', array_filter([$addressData['poblacion'], $addressData['codigo_postal'], $addressData['pais']]));
+
+        // Eliminar intentos vacíos o duplicados
+        $searchStrings = array_unique(array_filter($searchStrings, 'trim'));
+
+        if (empty($searchStrings)) {
+            return ['success' => false, 'data' => ['error' => $t('no_address_provided') ?? 'No address provided', 'urls' => []]];
+        }
+
+        $attemptedUrls = [];
+
+        foreach ($searchStrings as $index => $addressString) {
+            $url = "https://nominatim.openstreetmap.org/search?q=" . urlencode($addressString) . "&format=json&limit=1";
+            $attemptedUrls[] = $url; // Guardar todas las URLs intentadas
+
+            $this->logger->info("Intentando geocodificación con URL: " . $url);
+
+            $opts = ['http' => ['method' => "GET", 'header' => "User-Agent: CMDB-App/1.0\r\n"]];
+            $context = stream_context_create($opts);
+            $apiResponse = @file_get_contents($url, false, $context);
+
+            if ($apiResponse) {
+                $json = json_decode($apiResponse, true);
+                if (!empty($json) && isset($json[0]['lat'], $json[0]['lon'])) {
+                    $this->logger->info("Geocodificación exitosa para la dirección: " . $addressString);
+                    // Considerar aproximado si no es el primer o segundo intento (que incluyen la calle)
+                    $is_approximate = ($index > 1); // 0: completo, 1: simplificado, 2: solo población
+                    return ['success' => true, 'data' => [
+                        'lat' => (float)$json[0]['lat'], 
+                        'lon' => (float)$json[0]['lon'],
+                        'is_approximate' => $is_approximate
+                    ]];
+                }
+            }
+        }
+
+        // Si todos los intentos fallan
+        $finalAddressString = reset($searchStrings); // Usar la primera (la más completa) para el mensaje de error
+        $this->logger->warning("Geocodificación fallida para la dirección: " . $finalAddressString . ". URLs intentadas: " . implode(' | ', $attemptedUrls));
+        
+        return ['success' => false, 'data' => [
+            'error' => $t('geocoding_api_error_details', ['%address%' => $finalAddressString]) ?? 'Geocoding API could not find coordinates for the address: ' . $finalAddressString,
+            'urls' => $attemptedUrls
+        ]];
+    }
 }

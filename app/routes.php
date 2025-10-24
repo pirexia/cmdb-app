@@ -190,6 +190,7 @@ $app->group('', function (RouteCollectorProxy $authenticatedGroup) {
             $masterNamesRegex = implode('|', $allowedMasterNames);
 
             $masterGroup->get('/{master_name:' . $masterNamesRegex . '}', MasterController::class . ':listItems');
+            $masterGroup->get('/{master_name:location}/detail/{id}', MasterController::class . ':showItemDetail'); // <-- NUEVA RUTA
             $masterGroup->get('/{master_name:' . $masterNamesRegex . '}/create', MasterController::class . ':showCreateForm');
             $masterGroup->post('/{master_name:' . $masterNamesRegex . '}/create', MasterController::class . ':processCreate');
             $masterGroup->get('/{master_name:' . $masterNamesRegex . '}/edit/{id}', MasterController::class . ':showEditForm');
@@ -222,6 +223,7 @@ $app->group('/api', function (RouteCollectorProxy $apiGroup) use ($app) {
     $apiGroup->post('/sources/test-connection', App\Controllers\ApiController::class . ':testSourceConnection');
     $apiGroup->post('/smtp/test-connection', App\Controllers\ApiController::class . ':testSmtpConnection');
     $apiGroup->get('/test-email', App\Controllers\ApiController::class . ':sendTestEmail');
+    $apiGroup->post('/geocode', App\Controllers\ApiController::class . ':geocode'); // <-- NUEVA RUTA
 
 })->add(AuthMiddleware::class);
 

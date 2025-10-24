@@ -185,6 +185,14 @@ $container->set('logger', function (ContainerInterface $c) {
     $config = $c->get('config'); // Obtiene la configuración general
     $logPath = $config['paths']['logs'] . '/app.log'; // Ruta al archivo de log principal
     $app_name = $config['app']['name'] ?? 'CMDB_App_Logger'; // Nombre de la aplicación para el logger
+
+    // --- VERIFICACIÓN DE DIRECTORIO ---
+    $logDir = dirname($logPath);
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0775, true);
+    }
+    // ---------------------------------
+
     $logLevel = $config['app']['env'] === 'development' ? Level::Debug : Level::Info; // Nivel de log (DEBUG en dev, INFO en prod)
 
     $logger = new Logger($app_name); // Crea una instancia de Monolog Logger
