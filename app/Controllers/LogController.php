@@ -60,6 +60,8 @@ class LogController
      */
     public function listLogs(Request $request, Response $response): Response
     {
+        $this->logger->debug('Acceso a la página de listado de logs de auditoría.');
+
         $t = $this->translator;
 
         // Obtiene todos los logs de activos desde el servicio de logs.

@@ -65,6 +65,8 @@ class AuthService
      */
     public function authenticate(string $username, string $password, int $sourceId): bool
     {
+        $this->logger->debug("Iniciando intento de autenticación para el usuario '{$username}' desde la fuente ID {$sourceId}.");
+
         // Limpiar dispositivos de confianza caducados en cada intento de login
         $this->trustedDeviceModel->deleteExpired();
 
@@ -224,6 +226,8 @@ class AuthService
      */
     public function completeLogin(array $user): void
     {
+        $this->logger->debug("Completando inicio de sesión y estableciendo sesión para el usuario '{$user['nombre_usuario']}' (ID: {$user['id']}).");
+
         $this->sessionService->startSession();
         $this->sessionService->set('user_id', $user['id']);
         $this->sessionService->set('username', $user['nombre_usuario']);
@@ -242,6 +246,8 @@ class AuthService
      */
     public function logout(): void
     {
+        $this->logger->debug("Iniciando proceso de cierre de sesión para el usuario '{$this->sessionService->get('username')}'.");
+
         $username = $this->sessionService->get('username');
         $this->sessionService->destroySession();
         // Limpiar también cookies o sesiones específicas de MFA si se implementa

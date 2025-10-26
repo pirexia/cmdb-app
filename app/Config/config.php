@@ -4,12 +4,6 @@
  * Configuración principal de la aplicación.
  */
 
-// Carga las variables de entorno si no están cargadas
-if (!isset($_ENV['APP_ENV'])) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
-    $dotenv->load();
-}
-
 return [
     'app' => [
         'env' => $_ENV['APP_ENV'] ?? 'production',
@@ -35,9 +29,9 @@ return [
         'collation' => 'utf8mb4_unicode_ci',
     ],
     'paths' => [
-        'uploads' => $_ENV['UPLOADS_DIR'] ?? __DIR__ . '/../../storage/uploads',
-        'logs' => $_ENV['LOGS_DIR'] ?? __DIR__ . '/../../storage/logs',
-        'views' => __DIR__ . '/../Views', // Ruta a las plantillas de vista
+        'uploads' => ROOT_PATH . '/storage/uploads',
+        'logs' => ROOT_PATH . '/storage/logs',
+        'views' => ROOT_PATH . '/app/Views', // Ruta a las plantillas de vista
         'public_assets' => '/static', // Ruta URL base para los assets públicos
     ],
     'session' => [

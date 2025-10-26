@@ -14,6 +14,11 @@ class Config
             $dotenv->load();
         }
 
+        // Definir la constante ROOT_PATH si no existe, para que config.php funcione.
+        if (!defined('ROOT_PATH')) {
+            define('ROOT_PATH', $mainAppPath);
+        }
+
         // Cargar config.php que ahora usará las variables de .env
         $this->config = require $mainAppPath . '/app/Config/config.php';
     }

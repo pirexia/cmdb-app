@@ -115,6 +115,8 @@ class MailService
      */
     public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): array
     {
+        $this->logger->debug("Preparando para enviar correo con asunto '{$subject}' a través de la plantilla '{$templateName}'.");
+
         $this->logger->info("Inicio de envío de correo a: " . (is_array($to) ? implode(', ', $to) : $to));
         try {
             if (!$this->setupMailer()) {

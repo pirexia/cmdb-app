@@ -184,26 +184,34 @@ $container->set(PDO::class, \DI\Factory(function (ContainerInterface $c) {
 // Configuración del logger principal de la aplicación.
 $container->set('logger', function (ContainerInterface $c) {
     $config = $c->get('config'); // Obtiene la configuración general
-    $logPath = $config['paths']['logs'] . '/app.log'; // Ruta al archivo de log principal
     $app_name = $config['app']['name'] ?? 'CMDB_App_Logger'; // Nombre de la aplicación para el logger
 
-    // --- VERIFICACIÓN DE DIRECTORIO ---
+    // Obtener la ruta del log desde la configuración inyectada.
+    $logPath = $config['paths']['logs'] . '/app.log';
+
+    // Asegurarse de que el directorio de logs existe.
     $logDir = dirname($logPath);
     if (!is_dir($logDir)) {
-        mkdir($logDir, 0775, true);
+        @mkdir($logDir, 0775, true);
     }
-    // ---------------------------------
 
     $logLevel = $config['app']['env'] === 'development' ? Level::Debug : Level::Info; // Nivel de log (DEBUG en dev, INFO en prod)
 
     $logger = new Logger($app_name); // Crea una instancia de Monolog Logger
-    $formatter = new LineFormatter(
+
+    // --- CONFIGURACIÓN ROBUSTA DE MONOLOG PARA WAMP/WINDOWS ---
+    // 1. $logLevel: Nivel de log a registrar (Debug, Info, etc.).
+    // 2. $bubble = true: Permite que los mensajes se propaguen a otros handlers si los hay.
+    // 3. $filePermission = 0666: Permisos para el fichero de log si se crea. 0666 es escribible por todos los usuarios del sistema.
+    // 4. $useLocking = false: Desactiva el bloqueo de ficheros. Es la causa más común de fallos silenciosos en Windows.
+    $streamHandler = new StreamHandler($logPath, $logLevel, true, 0666, false);
+
+    $formatter = new LineFormatter( // Formato de la línea de log
         '[%datetime%] %channel%.%level_name%: %message% %context% %extra%' . PHP_EOL, // Formato de la línea de log
         "Y-m-d H:i:s", // Formato de la fecha/hora
         true,          // Incluir stack traces para excepciones
         true           // Permitir saltos de línea dentro del mensaje
     );
-    $streamHandler = new StreamHandler($logPath, $logLevel); // Handler para escribir a un archivo
     $streamHandler->setFormatter($formatter); // Asigna el formateador al handler
     $logger->pushHandler($streamHandler); // Añade el handler al logger
 
