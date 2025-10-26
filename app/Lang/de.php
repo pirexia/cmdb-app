@@ -29,6 +29,10 @@ return [
     'guest' => 'Gast', // Für "Hallo, Gast"
     'my_profile' => 'Mein Profil',
     'example' => 'Bsp.', // Für Feldbeispiele
+    'welcome_to_app' => 'Willkommen bei %app_name%',
+    'welcome_email_body' => 'Ihr Konto wurde erfolgreich erstellt. Sie können sich jetzt in der Anwendung anmelden.',
+    'access_dashboard_button' => 'Zum Dashboard',
+    'app_team' => 'Das %app_name% Team',
     'sincerely' => 'Mit freundlichen Grüßen', // Für E-Mail-Fußzeile
     'operation_successful' => 'Vorgang erfolgreich.', // Generische Nachrichten
     'operation_failed' => 'Während des Vorgangs ist ein Fehler aufgetreten.', // Generische Nachrichten
@@ -78,6 +82,7 @@ return [
     'password_reset_success' => 'Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt anmelden.',
     'password_reset_error' => 'Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten oder der Token ist ungültig/abgelaufen. Bitte versuchen Sie es erneut oder fordern Sie einen neuen Link an.',
     'token_not_provided' => 'Token zum Zurücksetzen des Passworts nicht angegeben.',
+    'new_user_welcome_subject' => 'Willkommen bei der CMDB App!',
     'welcome_back' => 'Willkommen zurück!',
     'invalid_email' => 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
     'password_reset_error_invalid_expired' => 'Der Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an.',
@@ -673,6 +678,7 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'SMTP-Testverbindungs-API für Host aufgerufen: %host%. Ergebnis: %result%.',
     'test_email_subject' => 'Test-E-Mail von der CMDB App',
     'test_email_sent_successfully_to' => 'Test-E-Mail erfolgreich an %email% gesendet.',
+    'send_test_email' => 'Test-E-Mail senden',
     'test_email_failed_to_send_to' => 'Fehler beim Senden der Test-E-Mail an %email%.',
     'user_not_authenticated' => 'Benutzer nicht authentifiziert.',
 

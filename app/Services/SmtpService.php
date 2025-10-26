@@ -15,6 +15,8 @@ use Psr\Log\LoggerInterface;  // Interfaz de logger para registrar eventos.
 use PDO;                      // Clase de conexión a la base de datos.
 use Exception;                // Para manejar excepciones generales.
 use PHPMailer\PHPMailer\PHPMailer; // Para la prueba de conexión
+use PDOException;             // Para capturar errores específicos de la base de datos.
+use App\Services\EncryptionService; // Importar el nuevo servicio de cifrado.
 use PHPMailer\PHPMailer\Exception as MailerException; // Para capturar errores de PHPMailer
 
 /**
@@ -28,6 +30,7 @@ class SmtpService
     private LoggerInterface $logger;  // Instancia del logger.
     private $translator;              // Función de traducción.
     private SmtpConfig $smtpConfigModel; // Modelo para la configuración SMTP.
+    private EncryptionService $encryptionService; // Servicio de cifrado.
 
     /**
      * Constructor del servicio. Inyecta todas las dependencias necesarias.
@@ -35,16 +38,19 @@ class SmtpService
      * @param LoggerInterface $logger Instancia del logger.
      * @param callable $translator La función de traducción.
      * @param PDO $db Instancia de la conexión a la base de datos.
+     * @param EncryptionService $encryptionService Servicio para cifrar/descifrar.
      */
     public function __construct(
         array $config,
         LoggerInterface $logger,
         callable $translator,
-        PDO $db
+        PDO $db,
+        EncryptionService $encryptionService
     ) {
         $this->config = $config;
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->encryptionService = $encryptionService;
         $this->smtpConfigModel = new SmtpConfig($db); // Se instancia el modelo aquí.
     }
 
@@ -63,13 +69,14 @@ class SmtpService
             throw new Exception($t('smtp_required_fields_error'));
         }
 
-        // Cifrar la contraseña si se ha proporcionado.
+        // Si se proporciona una nueva contraseña, la ciframos antes de guardarla.
         if (!empty($newConfig['password'])) {
-            $newConfig['password'] = password_hash($newConfig['password'], PASSWORD_DEFAULT);
+            $newConfig['password'] = $this->encryptionService->encrypt($newConfig['password']);
         } else {
-            // Si la contraseña está vacía, no la guardamos y mantenemos la anterior.
+            // Si la contraseña está vacía en el formulario, mantenemos la que ya existe
+            // en la BBDD (que ya debería estar cifrada).
             $existingConfig = $this->smtpConfigModel->getConfig();
-            $newConfig['password'] = $existingConfig['password'] ?? null;
+            $newConfig['password'] = $existingConfig['password'] ?? '';
         }
 
         try {
@@ -78,7 +85,7 @@ class SmtpService
             $this->smtpConfigModel->saveConfig($newConfig);
             $this->logger->info($t('smtp_config_saved_log'));
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->logger->error($t('smtp_config_save_pdo_error', ['%message%' => $e->getMessage()]));
             return false;
         } catch (Exception $e) {
@@ -102,7 +109,19 @@ class SmtpService
             $config['port'] = $dbConfig['port'];
             $config['auth_required'] = (bool)$dbConfig['auth_required'];
             $config['username'] = $dbConfig['username'];
-            $config['password'] = $dbConfig['password'];
+            // Descifrar la contraseña si existe.
+            $config['password'] = ''; // Inicializar como vacía
+            if (!empty($dbConfig['password'])) {                
+                // Comprobar si la contraseña parece un hash antiguo en lugar de un valor cifrado.
+                // Los hashes de password_hash() suelen empezar por '$2y$' o '$argon2i$'.
+                // Los valores cifrados por nuestro servicio son base64, no empiezan con '$'.
+                if (str_starts_with($dbConfig['password'], '$')) {
+                    $this->logger->warning('Se ha detectado una contraseña SMTP hasheada antigua. Se ha ignorado. Por favor, guarde de nuevo la configuración SMTP para cifrarla correctamente.');
+                } else {
+                    // Solo intentar descifrar si no es un hash.
+                    $config['password'] = $this->encryptionService->decrypt($dbConfig['password']);
+                }
+            }
             $config['encryption'] = $dbConfig['encryption'];
             $config['from_email'] = $dbConfig['from_email'];
             $config['from_name'] = $dbConfig['from_name'];

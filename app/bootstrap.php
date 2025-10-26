@@ -86,6 +86,7 @@ use App\Services\SessionService;
 use App\Services\CsvTemplateService;
 use App\Services\CsvImporterService;
 use App\Services\SmtpService;
+use App\Services\EncryptionService;
 use App\Services\LanguageService;
 
 // --- 1. Cargar la Configuración de la Aplicación ---
@@ -308,7 +309,8 @@ $container->set(App\Services\SmtpService::class, function (ContainerInterface $c
         $c->get('config'),
         $c->get(LoggerInterface::class),
         $c->get('translator'),
-        $c->get(PDO::class)
+        $c->get(PDO::class),
+        $c->get(App\Services\EncryptionService::class) // Inyectar el servicio de cifrado
     );
 });
 
@@ -317,6 +319,13 @@ $container->set(App\Services\MfaService::class, function (ContainerInterface $c)
     return new App\Services\MfaService(
         $c->get(App\Models\User::class),
         $c->get(App\Models\TrustedDevice::class),
+        $c->get('config')
+    );
+});
+
+// 2.12. Servicio de Cifrado (EncryptionService)
+$container->set(App\Services\EncryptionService::class, function (ContainerInterface $c) {
+    return new App\Services\EncryptionService(
         $c->get('config')
     );
 });
@@ -590,7 +599,8 @@ $container->set(App\Controllers\UserController::class, function (ContainerInterf
         $c->get(App\Models\User::class),
         $c->get(App\Models\Role::class),
         $c->get('translator'),
-        $c->get(App\Models\Source::class)
+        $c->get(App\Models\Source::class),
+        $c->get(App\Services\MailService::class) // <-- AÑADIR INYECCIÓN
     );
 });
 

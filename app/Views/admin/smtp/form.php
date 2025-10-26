@@ -40,7 +40,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label"><?= $t('smtp_password') ?? 'Contraseña SMTP' ?></label>
-                        <input type="password" class="form-control" id="password" name="password" value="<?= htmlspecialchars($smtpConfig['password'] ?? '') ?>">
+                        <input type="password" class="form-control" id="password" name="password" value="" placeholder="********">
+                        <small class="form-text text-muted"><?= $t('leave_empty_for_no_change') ?? 'Si no hay cambios dejar en blanco.' ?></small>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -61,7 +62,8 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary me-2"><?= $t('save') ?></button>
-                <button type="button" id="test-smtp-btn" class="btn btn-info"><?= $t('test_connection') ?></button>
+                <button type="button" id="test-smtp-btn" class="btn btn-secondary"><?= $t('test_connection') ?></button>
+                <button type="button" id="send-test-email-btn" class="btn btn-info"><?= $t('send_test_email') ?? 'Enviar Correo de Prueba' ?></button>
                 <a href="/dashboard" class="btn btn-secondary"><?= $t('cancel') ?></a>
 
                 <!-- Div para mostrar los resultados del test -->

@@ -29,6 +29,10 @@ return [
     'guest' => 'Convidado', // Para "Olá, Convidado"
     'my_profile' => 'Meu Perfil',
     'example' => 'Ex', // Para exemplos de campos
+    'welcome_to_app' => 'Bem-vindo/a à %app_name%',
+    'welcome_email_body' => 'A sua conta foi criada com sucesso. Já pode aceder à aplicação.',
+    'access_dashboard_button' => 'Aceder ao Painel',
+    'app_team' => 'A equipa de %app_name%',
     'sincerely' => 'Atenciosamente', // Para rodapé de email
     'operation_successful' => 'Operação realizada com sucesso.', // Mensagens genéricas
     'operation_failed' => 'Ocorreu um erro na operação.', // Mensagens genéricas
@@ -78,6 +82,7 @@ return [
     'password_reset_success' => 'A sua senha foi redefinida com sucesso. Já pode iniciar sessão.',
     'password_reset_error' => 'Ocorreu um erro ao redefinir a sua senha ou o token é inválido/expirado. Por favor, tente novamente ou solicite um novo link.',
     'token_not_provided' => 'Token de redefinição de senha não fornecido.',
+    'new_user_welcome_subject' => 'Bem-vindo/a à CMDB App!',
     'welcome_back' => 'Bem-vindo de volta!',
     'invalid_email' => 'Por favor, introduza um endereço de email válido.',
     'password_reset_error_invalid_expired' => 'O token de redefinição de senha é inválido ou expirou. Por favor, solicite um novo.',
@@ -668,6 +673,7 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'API de teste de conexão SMTP chamada para o host: %host%. Resultado: %result%.',
     'test_email_subject' => 'Email de teste da CMDB App',
     'test_email_sent_successfully_to' => 'Email de teste enviado com sucesso para %email%.',
+    'send_test_email' => 'Enviar Email de Teste',
     'test_email_failed_to_send_to' => 'Falha ao enviar email de teste para %email%.',
     'user_not_authenticated' => 'Utilizador não autenticado.',
 

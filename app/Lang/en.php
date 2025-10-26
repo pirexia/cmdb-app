@@ -29,6 +29,10 @@ return [
     'guest' => 'Guest', // For "Hello, Guest"
     'my_profile' => 'My Profile',
     'example' => 'Ex', // For field examples
+    'welcome_to_app' => 'Welcome to %app_name%',
+    'welcome_email_body' => 'Your account has been created successfully. You can now access the application.',
+    'access_dashboard_button' => 'Access Dashboard',
+    'app_team' => 'The %app_name% Team',
     'sincerely' => 'Sincerely', // For email footer
     'operation_successful' => 'Operation successful.', // Generic messages
     'operation_failed' => 'An error occurred during the operation.', // Generic messages
@@ -78,6 +82,7 @@ return [
     'password_reset_success' => 'Your password has been reset successfully. You can now log in.',
     'password_reset_error' => 'An error occurred while resetting your password or the token is invalid/expired. Please try again or request a new link.',
     'token_not_provided' => 'Password reset token not provided.',
+    'new_user_welcome_subject' => 'Welcome to CMDB App!',
     'welcome_back' => 'Welcome back!',
     'invalid_email' => 'Please enter a valid email address.',
     'password_reset_error_invalid_expired' => 'The password reset token is invalid or has expired. Please request a new one.',
@@ -722,6 +727,7 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'SMTP test connection API called for host: %host%. Result: %result%.',
     'test_email_subject' => 'Test Email from CMDB App',
     'test_email_sent_successfully_to' => 'Test email sent successfully to %email%.',
+    'send_test_email' => 'Send Test Email',
     'test_email_failed_to_send_to' => 'Failed to send test email to %email%.',
     'user_not_authenticated' => 'User not authenticated.',
 

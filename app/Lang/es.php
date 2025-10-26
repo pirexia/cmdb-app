@@ -29,6 +29,10 @@ return [
     'guest' => 'Invitado', // Para "Hola, Invitado"
     'my_profile' => 'Mi Perfil',
     'example' => 'Ej', // Para ejemplos de campos
+    'welcome_to_app' => 'Bienvenido/a a %app_name%',
+    'welcome_email_body' => 'Tu cuenta ha sido creada con éxito. Ya puedes acceder a la aplicación.',
+    'access_dashboard_button' => 'Acceder al Dashboard',
+    'app_team' => 'El equipo de %app_name%',
     'sincerely' => 'Atentamente', // Para pie de email
     'operation_successful' => 'Operación realizada con éxito.', // Mensajes genéricos
     'operation_failed' => 'Ocurrió un error en la operación.', // Mensajes genéricos
@@ -76,6 +80,7 @@ return [
     'password_reset_success' => 'Tu contraseña ha sido restablecida con éxito. Ya puedes iniciar sesión.',
     'password_reset_error' => 'Ha ocurrido un error al restablecer tu contraseña o el token no es válido/expirado. Por favor, inténtalo de nuevo o solicita un nuevo enlace.',
     'token_not_provided' => 'Token de restablecimiento de contraseña no proporcionado.',
+    'new_user_welcome_subject' => '¡Bienvenido/a a CMDB App!',
     'welcome_back' => '¡Bienvenido de nuevo!',
     'invalid_email' => 'Por favor, introduce una dirección de correo electrónico válida.',
     'password_reset_error_invalid_expired' => 'El token de restablecimiento de contraseña no es válido o ha expirado. Por favor, solicita uno nuevo.',
@@ -708,6 +713,9 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'API de prueba de conexión SMTP llamada para host: %host%. Resultado: %result%.',
     'test_email_subject' => 'Correo de prueba desde CMDB App',
     'test_email_sent_successfully_to' => 'Correo de prueba enviado con éxito a %email%.',
+    'sending_test_email_start' => 'Iniciando envío de correo de prueba...',
+    'sending_test_email_error' => 'Error al enviar correo de prueba:',
+    'send_test_email' => 'Enviar Correo de Prueba',
     'test_email_failed_to_send_to' => 'Fallo al enviar correo de prueba a %email%.',
     'user_not_authenticated' => 'Usuario no autenticado.',
 

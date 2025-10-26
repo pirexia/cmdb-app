@@ -133,12 +133,15 @@ class ApiController
             'appName' => 'CMDB App'
         ];
 
-        $success = $this->mailService->sendEmail($to, $subject, $template, $data);
+        $sendResult = $this->mailService->sendEmail($to, $subject, $template, $data);
 
-        if ($success) {
-            $result = ['success' => true, 'message' => $t('test_email_sent_successfully_to', ['%email%' => $to])];
+        if ($sendResult['success']) {
+            $result = ['success' => true, 'message' => $t('test_email_sent_successfully_to', ['email' => $to])];
         } else {
-            $result = ['success' => false, 'message' => $t('test_email_failed_to_send_to', ['%email%' => $to])];
+            // Devolvemos el mensaje de error detallado que ahora proporciona el MailService
+            $errorMessage = $sendResult['error'] ?? $t('test_email_failed_to_send_to', ['%email%' => $to]);
+            $result = ['success' => false, 'message' => $errorMessage];
+            $response = $response->withStatus(500); // Devolver un código de error HTTP
         }
 
         $response->getBody()->write(json_encode($result));

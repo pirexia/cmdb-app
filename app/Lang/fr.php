@@ -29,6 +29,10 @@ return [
     'guest' => 'Invité', // Pour "Bonjour, Invité"
     'my_profile' => 'Mon Profil',
     'example' => 'Ex', // Pour exemples de champs
+    'welcome_to_app' => 'Bienvenue sur %app_name%',
+    'welcome_email_body' => 'Votre compte a été créé avec succès. Vous pouvez maintenant accéder à l\'application.',
+    'access_dashboard_button' => 'Accéder au tableau de bord',
+    'app_team' => 'L\'équipe de %app_name%',
     'sincerely' => 'Cordialement', // Pour pied de page d'email
     'operation_successful' => 'Opération réussie.', // Messages génériques
     'operation_failed' => 'Une erreur est survenue pendant l\'opération.', // Messages génériques
@@ -78,6 +82,7 @@ return [
     'password_reset_success' => 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.',
     'password_reset_error' => 'Une erreur s\'est produite lors de la réinitialisation de votre mot de passe ou le jeton est invalide/expiré. Veuillez réessayer ou demander un nouveau lien.',
     'token_not_provided' => 'Jeton de réinitialisation de mot de passe non fourni.',
+    'new_user_welcome_subject' => 'Bienvenue sur l\'App CMDB !',
     'welcome_back' => 'Content de vous revoir !',
     'invalid_email' => 'Veuillez entrer une adresse e-mail valide.',
     'password_reset_error_invalid_expired' => 'Le jeton de réinitialisation de mot de passe est invalide ou a expiré. Veuillez en demander un nouveau.',
@@ -665,6 +670,7 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'API de test de connexion SMTP appelée pour l\'hôte : %host%. Résultat : %result%.',
     'test_email_subject' => 'E-mail de test de l\'App CMDB',
     'test_email_sent_successfully_to' => 'E-mail de test envoyé avec succès à %email%.',
+    'send_test_email' => 'Envoyer un e-mail de test',
     'test_email_failed_to_send_to' => 'Échec de l\'envoi de l\'e-mail de test à %email%.',
     'user_not_authenticated' => 'Utilisateur non authentifié.',
 

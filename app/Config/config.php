@@ -16,6 +16,8 @@ return [
         'name' => 'CMDB App',
         'url' => 'http://cmdb-app.svc.int', // Cambia esto por la URL real de tu aplicación
         'csrf_secret' => $_ENV['CSRF_SECRET'] ?? 'fallback_secret_if_not_set',
+        'encryption_key' => $_ENV['APP_ENCRYPTION_KEY'] ?? '',
+        'encryption_cipher' => 'aes-256-gcm', // Algoritmo de cifrado recomendado
         'default_language' => 'es', // Idioma por defecto de la aplicación
         'admin_user' => [
             'enabled' => (bool) ($_ENV['DEFAULT_ADMIN_ENABLED'] ?? 0),

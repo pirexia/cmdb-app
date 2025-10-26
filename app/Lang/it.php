@@ -29,6 +29,10 @@ return [
     'guest' => 'Ospite', // Per "Ciao, Ospite"
     'my_profile' => 'Il mio profilo',
     'example' => 'Es.', // Per esempi di campi
+    'welcome_to_app' => 'Benvenuto/a in %app_name%',
+    'welcome_email_body' => 'Il tuo account è stato creato con successo. Ora puoi accedere all\'applicazione.',
+    'access_dashboard_button' => 'Accedi alla Dashboard',
+    'app_team' => 'Il team di %app_name%',
     'sincerely' => 'Cordiali saluti', // Per piè di pagina email
     'operation_successful' => 'Operazione riuscita.', // Messaggi generici
     'operation_failed' => 'Si è verificato un errore durante l\'operazione.', // Messaggi generici
@@ -78,6 +82,7 @@ return [
     'password_reset_success' => 'La tua password è stata reimpostata con successo. Ora puoi accedere.',
     'password_reset_error' => 'Si è verificato un errore durante la reimpostazione della password o il token non è valido/scaduto. Riprova o richiedi un nuovo link.',
     'token_not_provided' => 'Token di reimpostazione password non fornito.',
+    'new_user_welcome_subject' => 'Benvenuto/a nell\'App CMDB!',
     'welcome_back' => 'Bentornato!',
     'invalid_email' => 'Inserisci un indirizzo email valido.',
     'password_reset_error_invalid_expired' => 'Il token di reimpostazione della password non è valido o è scaduto. Richiedine uno nuovo.',
@@ -665,6 +670,7 @@ return [
     'debug_api_test_smtp_connection_attempt' => 'API di test connessione SMTP chiamata per l\'host: %host%. Risultato: %result%.',
     'test_email_subject' => 'Email di prova dall\'App CMDB',
     'test_email_sent_successfully_to' => 'Email di prova inviata con successo a %email%.',
+    'send_test_email' => 'Invia Email di Prova',
     'test_email_failed_to_send_to' => 'Invio dell\'email di prova a %email% fallito.',
     'user_not_authenticated' => 'Utente non autenticato.',
 

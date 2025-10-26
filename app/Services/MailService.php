@@ -42,6 +42,9 @@ class MailService
         $this->logger = $logger;
         $this->view = $view;
         $this->smtpService = $smtpService;
+
+        // Cargar el idioma español para los mensajes de error de PHPMailer
+        $this->mailer->setLanguage('es');
     }
 
     /**
@@ -61,6 +64,11 @@ class MailService
             return false;
         }
 
+        // Habilitar la salida de depuración detallada de SMTP.
+        // Se desactiva para producción. Cambiar a SMTP::DEBUG_SERVER para depurar.
+        // Los errores seguirán siendo capturados y registrados en el log.
+        $this->mailer->SMTPDebug = SMTP::DEBUG_OFF;
+
         $this->mailer->isSMTP();
         $this->mailer->Host       = $smtpConfig['host'];
         $this->mailer->Port       = (int)$smtpConfig['port'];
@@ -75,7 +83,9 @@ class MailService
         if (!empty($smtpConfig['encryption'])) {
             $this->mailer->SMTPSecure = $smtpConfig['encryption']; // Acepta 'tls' o 'ssl'
         } else {
-            $this->mailer->SMTPSecure = false;
+            // Corrección: Para deshabilitar el cifrado en PHPMailer,
+            // SMTPSecure debe ser una cadena vacía, no el booleano false.
+            $this->mailer->SMTPSecure = '';
         }
 
         // ¡ADVERTENCIA! Esta opción reduce la seguridad y solo debe usarse si confías
@@ -101,26 +111,25 @@ class MailService
      * @param string $templateName Nombre de la plantilla de correo (en app/Views/emails/).
      * @param array $templateData Datos para la plantilla de correo.
      * @return bool True si el correo se envió con éxito, false de lo contrario.
+     * @return array ['success' => bool, 'error' => ?string]
      */
-    public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): bool
+    public function sendEmail(string|array $to, string $subject, string $templateName, array $templateData = []): array
     {
         $this->logger->info("Inicio de envío de correo a: " . (is_array($to) ? implode(', ', $to) : $to));
         try {
-            // Configura el mailer con los datos más recientes de la BBDD. Si falla, no continúa.
             if (!$this->setupMailer()) {
-                return false;
+                return ['success' => false, 'error' => 'Configuración SMTP no encontrada o inválida.'];
             }
-            
-            $this->mailer->clearAddresses();
-            $this->mailer->clearAttachments();
-
+    
             // Añadir destinatario(s).
             if (is_array($to)) {
                 foreach ($to as $recipient) {
                     $this->mailer->addAddress($recipient);
                 }
             } else {
-                $this->mailer->addAddress($to);
+                if (!empty($to)) {
+                    $this->mailer->addAddress($to);
+                }
             }
 
             $this->mailer->Subject = $subject;
@@ -132,11 +141,15 @@ class MailService
 
             $this->mailer->send();
             $this->logger->info("Correo enviado a " . (is_array($to) ? implode(', ', $to) : $to) . " con asunto: '{$subject}'");
-            return true;
+            return ['success' => true];
         } catch (MailerException $e) {
-            $this->logger->error("Error al enviar correo: {$e->getMessage()} - Destinatario: " . (is_array($to) ? implode(', ', $to) : $to) . " - Asunto: '{$subject}'");
-            $this->logger->error("Mailer Error: " . $this->mailer->ErrorInfo);
-            return false;
+            // El error detallado de PHPMailer se registra en el log con nivel de advertencia (WARNING).
+            // Puedes cambiar ->warning() por ->error(), ->critical(), etc., según tus necesidades.
+            $this->logger->warning("Error al enviar correo a " . (is_array($to) ? implode(', ', $to) : $to) . ". Mailer Error: " . $this->mailer->ErrorInfo);
+ 
+            // Devolver un mensaje de error limpio a la interfaz.
+            // El mensaje de la excepción es el más descriptivo para el usuario.
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
 }

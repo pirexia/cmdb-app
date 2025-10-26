@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use App\Models\User; // El modelo para usuarios
 use App\Models\Role; // El modelo para roles
 use App\Models\Source; // <--- ¡NUEVA IMPORTACIÓN! Para las fuentes de usuario
+use App\Services\MailService; // <-- ¡NUEVA IMPORTACIÓN!
 use Exception; // Para manejo de errores
 use PDOException;
 
@@ -22,6 +23,7 @@ class UserController
     private User $userModel;
     private Role $roleModel;
     private Source $sourceModel; // <--- ¡NUEVA PROPIEDAD! Para las fuentes de usuario
+    private MailService $mailService; // <-- ¡NUEVA PROPIEDAD!
     private $translator; // Para la función t()
 
     public function __construct(
@@ -31,7 +33,8 @@ class UserController
         User $userModel,
         Role $roleModel,
         callable $translator,
-        Source $sourceModel // <--- ¡NUEVO ARGUMENTO!
+        Source $sourceModel, // <--- ¡NUEVO ARGUMENTO!
+        MailService $mailService // <-- ¡NUEVO ARGUMENTO!
     ) {
         $this->view = $view;
         $this->sessionService = $sessionService;
@@ -40,6 +43,7 @@ class UserController
         $this->roleModel = $roleModel;
         $this->translator = $translator;
         $this->sourceModel = $sourceModel; // <--- ASIGNACIÓN
+        $this->mailService = $mailService; // <-- ASIGNACIÓN
     }
 
     /**
@@ -205,6 +209,20 @@ class UserController
                 $success = ($newUserId !== false);
                 if ($success) {
                     $userIdForRedirect = $newUserId;
+                    // --- ¡AQUÍ ENVIAMOS EL CORREO! ---
+                    // Solo enviamos correo si es un usuario local y tiene un email válido.
+                    if ($source['tipo_fuente'] === 'local' && !empty($email)) {
+                        $this->mailService->sendEmail(
+                            $email,
+                            $t('new_user_welcome_subject'),
+                            'new_user_welcome', // Nombre de nuestra nueva plantilla
+                            [
+                                'username' => $username,
+                                'appName' => 'CMDB App', // Puedes obtenerlo de la config si quieres
+                                'appUrl' => 'http://cmdb-app.svc.int' // Puedes obtenerlo de la config
+                            ]
+                        );
+                    }
                 }
             }
             
