@@ -21,6 +21,7 @@
         "pragmarx/google2fa": "^9.0",
         "pragmarx/google2fa-qrcode": "^3.0",
         "psr/log": "^3.0",
+        "robmorgan/phinx": "^0.16.10",
         "slim/php-view": "^3.2",
         "slim/psr7": "^1.6",
         "slim/slim": "4.*",
@@ -44,5 +45,8 @@
         "post-install-cmd": [
             "PhpMyAdmin\\Composer\\Script::setup"
         ]
+    },
+    "require-dev": {
+        "odan/phinx-migrations-generator": "^6.3"
     }
 }

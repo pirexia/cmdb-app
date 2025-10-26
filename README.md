@@ -41,7 +41,10 @@ Configurar la base de datos:
 
 Crea una base de datos en MariaDB.
 
-Ejecuta las migraciones SQL para crear las tablas necesarias (las encontrarás en el directorio database/).
+Una vez configurado el `.env` (ver siguiente paso), ejecuta el sistema de migraciones para crear la estructura de la base de datos automáticamente:
+```bash
+php db-manager.php migrate
+```
 
 Configura las credenciales de la base de datos en el archivo .env.
 
@@ -71,3 +74,84 @@ sudo chown -R apache:apache storage/
 
 Uso
 Una vez instalado y configurado, puedes acceder a la aplicación desde la URL que hayas definido. La primera vez que accedas, el usuario administrador por defecto se creará automáticamente si está habilitado en el archivo .env.
+
+---
+
+## Gestión de la Base de Datos (Migraciones)
+
+Este proyecto utiliza **Phinx** para gestionar los cambios en el esquema de la base de datos de manera controlada y versionada. El script `db-manager.php` en la raíz del proyecto simplifica el uso de Phinx.
+
+### Requisitos Previos
+
+1.  **Fichero `.env`**: Asegúrate de que tu fichero `.env` esté correctamente configurado con las credenciales de la base de datos (`DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`).
+2.  **Herramientas de MySQL/MariaDB**: Para que los comandos `dump` e `import` funcionen, las herramientas de línea de comandos `mysqldump` y `mysql` deben estar accesibles en el `PATH` de tu sistema.
+
+### Comandos Disponibles
+
+Todos los comandos se ejecutan desde la raíz del proyecto.
+
+#### 1. Aplicar Migraciones (`migrate`)
+
+Aplica todas las migraciones pendientes. Este es el comando principal para actualizar la base de datos en cualquier entorno.
+
+```bash
+php db-manager.php migrate
+```
+
+#### 2. Crear una Nueva Migración (`create`)
+
+Crea un nuevo fichero de migración en `database/migrations/`. Debes proporcionar un nombre descriptivo en formato `CamelCase`.
+
+```bash
+php db-manager.php create NombreDescriptivoDeLaMigracion
+```
+
+**Ejemplo:**
+```bash
+php db-manager.php create AddLastLoginToUsers
+```
+
+#### 3. Revertir la Última Migración (`rollback`)
+
+Deshace la última migración que se aplicó. Útil durante el desarrollo.
+
+```bash
+php db-manager.php rollback
+```
+
+#### 4. Exportar Esquema (`dump:schema`)
+
+Crea una copia de seguridad con **solo la estructura** de la base de datos. El fichero se guarda en `database/dumps/`.
+
+```bash
+php db-manager.php dump:schema
+```
+
+#### 5. Exportar Base de Datos Completa (`dump:full`)
+
+Crea una copia de seguridad completa con **estructura y datos**. El fichero se guarda en `database/dumps/`.
+
+```bash
+php db-manager.php dump:full
+```
+
+#### 6. Importar un Fichero SQL (`import`)
+
+Importa un fichero `.sql` a la base de datos. **¡CUIDADO! Esta operación es destructiva y reemplazará los datos existentes.**
+
+```bash
+php db-manager.php import ruta/al/fichero.sql
+```
+
+### Flujo de Trabajo Recomendado
+
+1.  **Desarrollo**:
+    -   Crea una migración con `php db-manager.php create MiCambio`.
+    -   Edita el fichero PHP generado con tus sentencias SQL.
+    -   Aplica el cambio en tu BBDD local con `php db-manager.php migrate`.
+    -   Haz `commit` del nuevo fichero de migración.
+
+2.  **Despliegue / Actualización de otro entorno**:
+    -   Haz `git pull` para obtener los últimos cambios.
+    -   Ejecuta `composer install` para actualizar dependencias.
+    -   Ejecuta `php db-manager.php migrate` para poner la base de datos al día.
