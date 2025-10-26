@@ -47,3 +47,22 @@
 [2025-10-26 21:15:23] CMDB App.DEBUG: Preparando para enviar correo con asunto 'Correo de prueba desde CMDB App' a través de la plantilla 'test_email'.  
 [2025-10-26 21:15:23] CMDB App.INFO: Inicio de envío de correo a: andres.matias@dachser.com  
 [2025-10-26 21:15:23] CMDB App.INFO: Correo enviado a andres.matias@dachser.com con asunto: 'Correo de prueba desde CMDB App'  
+[2025-10-26 21:23:59] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/smtp  
+[2025-10-26 21:24:00] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/smtp  
+[2025-10-26 21:24:00] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:24:06] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/masters/location  
+[2025-10-26 21:24:07] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:24:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/masters/location/detail/1  
+[2025-10-26 21:24:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:24:12] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/masters/location  
+[2025-10-26 21:24:13] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/masters/location/edit/1  
+[2025-10-26 21:24:15] CMDB App.DEBUG: --- DEBUG: MasterController::showEditForm INICIADO ---  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Recibido master_name: 'location', id: 1  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Modelo 'App\Models\Location' obtenido correctamente.  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Vista a renderizar seleccionada: 'masters/locations/form'  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Renderizado de la vista 'masters/locations/form' completado.  
+[2025-10-26 21:24:15] CMDB App.DEBUG: --- DEBUG: MasterController::showEditForm FINALIZADO CON ÉXITO ---  
+[2025-10-26 21:24:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  

@@ -226,14 +226,3 @@ $app->group('/api', function (RouteCollectorProxy $apiGroup) use ($app) {
     $apiGroup->post('/geocode', App\Controllers\ApiController::class . ':geocode'); // <-- NUEVA RUTA
 
 })->add(AuthMiddleware::class);
-
-// Ejecutar la creación/activación del usuario administrador por defecto si está habilitado
-$app->add(function (Request $request, RequestHandler $handler) use ($container) {
-    $authService = $container->get(AuthService::class);
-    $config = $container->get('config');
-
-    if ($config['app']['admin_user']['enabled']) {
-        $authService->ensureDefaultAdminUser();
-    }
-    return $handler->handle($request);
-});
