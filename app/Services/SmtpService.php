@@ -69,14 +69,19 @@ class SmtpService
             throw new Exception($t('smtp_required_fields_error'));
         }
 
-        // Si se proporciona una nueva contraseña, la ciframos antes de guardarla.
-        if (!empty($newConfig['password'])) {
-            $newConfig['password'] = $this->encryptionService->encrypt($newConfig['password']);
+        // Si la autenticación está desactivada, limpiar usuario y contraseña.
+        if (empty($newConfig['auth_required'])) {
+            $newConfig['username'] = '';
+            $newConfig['password'] = '';
         } else {
-            // Si la contraseña está vacía en el formulario, mantenemos la que ya existe
-            // en la BBDD (que ya debería estar cifrada).
-            $existingConfig = $this->smtpConfigModel->getConfig();
-            $newConfig['password'] = $existingConfig['password'] ?? '';
+            // Si la autenticación está activada y se proporciona una nueva contraseña, la ciframos.
+            if (!empty($newConfig['password'])) {
+                $newConfig['password'] = $this->encryptionService->encrypt($newConfig['password']);
+            } else {
+                // Si no se proporciona una nueva contraseña, mantenemos la existente.
+                $existingConfig = $this->smtpConfigModel->getConfig();
+                $newConfig['password'] = $existingConfig['password'] ?? '';
+            }
         }
 
         try {
