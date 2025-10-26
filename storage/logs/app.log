@@ -66,3 +66,4 @@
 [2025-10-26 21:24:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
 [2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
 [2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
+[2025-10-26 21:46:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
