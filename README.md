@@ -29,21 +29,14 @@ Extensión php-ldap si se utiliza autenticación con LDAP/AD
 
 Instalación y Configuración
 Clonar el repositorio:
-
+```bash
 git clone https://github.com/pirexia/cmdb-app.git
 cd cmdb-app
+```
 
 Instalar dependencias de Composer:
-
-composer install --no-dev
-
-Configurar la base de datos:
-
-Crea una base de datos en MariaDB.
-
-Una vez configurado el `.env` (ver siguiente paso), ejecuta el sistema de migraciones para crear la estructura de la base de datos automáticamente:
 ```bash
-php db-manager.php migrate
+composer install --no-dev --optimize-autoloader
 ```
 
 Configura las credenciales de la base de datos en el archivo .env.
@@ -153,5 +146,17 @@ php db-manager.php import ruta/al/fichero.sql
 
 2.  **Despliegue / Actualización de otro entorno**:
     -   Haz `git pull` para obtener los últimos cambios.
-    -   Ejecuta `composer install` para actualizar dependencias.
+    -   Ejecuta `composer install --no-dev --optimize-autoloader` para actualizar dependencias.
     -   Ejecuta `php db-manager.php migrate` para poner la base de datos al día.
+
+
+### Nuevo Flujo de Trabajo para una Instalación Limpia
+A partir de ahora, cuando instales la aplicación en un servidor completamente nuevo, los pasos serán:
+
+1. `git pull`
+2. `composer install --no-dev --optimize-autoloader`
+3. Configurar el .env con las credenciales de una base de datos vacía.
+4. `php db-manager.php migrate` (Crea la estructura).
+5. `php db-manager.php seed:run` (Inserta los datos esenciales).
+
+Con esto, tu proceso de despliegue es ahora completo, robusto y profesional.

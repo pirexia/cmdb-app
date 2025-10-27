@@ -36,7 +36,7 @@ $phinxEnv = 'production';
 
 if ($argc < 2) {
     echo "Uso: php db-manager.php <comando> [argumentos]\n";
-    echo "Comandos disponibles: migrate, create, rollback, dump:schema, dump:full, import\n";
+    echo "Comandos disponibles: migrate, create, rollback, seed:run, dump:schema, dump:full, import\n";
     exit(1);
 }
 
@@ -67,6 +67,11 @@ switch ($command) {
     case 'rollback':
         echo "Revirtiendo la última migración...\n";
         passthru('vendor/bin/phinx rollback -e ' . escapeshellarg($phinxEnv));
+        break;
+
+    case 'seed:run':
+        echo "Poblando la base de datos con datos iniciales...\n";
+        passthru('vendor/bin/phinx seed:run -e ' . escapeshellarg($phinxEnv));
         break;
 
     case 'dump:schema':
@@ -107,7 +112,12 @@ switch ($command) {
             echo "Error: El fichero '$fileToImport' no existe.\n";
             exit(1);
         }
-        $importCommand = sprintf('mysql -h %s -u %s -p%s %s < %s', escapeshellarg($dbHost), escapeshellarg($dbUser), escapeshellarg($dbPass), escapeshellarg($dbName), escapeshellarg($fileToImport));
+        $importCommand = sprintf('mysql -h %s -u %s -p%s %s < %s',
+            escapeshellarg($dbHost),
+            escapeshellarg($dbUser),
+            escapeshellarg($dbPass),
+            escapeshellarg($dbName),
+            escapeshellarg($fileToImport));
         echo "Importando '$fileToImport' a la base de datos '$dbName'...\n";
         passthru($importCommand);
         break;
