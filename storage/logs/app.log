@@ -132,3 +132,36 @@
 [2025-10-28 22:34:13] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
 [2025-10-28 22:34:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
 [2025-10-28 22:34:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:38:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:38:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 22:38:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:39:14] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:39:14] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:40:14] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:40:14] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:40:16] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:40:16] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:40:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:40:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:40:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:40:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:40:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:40:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
+[2025-10-28 22:41:22] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:42:10] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-setup  
+[2025-10-28 22:42:10] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 22:42:20] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 22:42:33] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/logout  
+[2025-10-28 22:42:33] CMDB App.DEBUG: Iniciando proceso de cierre de sesión para el usuario 'andres.matias.lopez'.  
+[2025-10-28 22:42:33] CMDB App.INFO: Usuario 'andres.matias.lopez' ha cerrado sesión.  
+[2025-10-28 22:42:33] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-28 22:42:50] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/login  
+[2025-10-28 22:42:50] CMDB App.DEBUG: Iniciando intento de autenticación para el usuario 'andres.matias.lopez' desde la fuente ID 1.  
+[2025-10-28 22:42:50] CMDB App.INFO: Usuario local 'andres.matias.lopez' ha iniciado sesión correctamente.  
+[2025-10-28 22:42:50] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-28 22:43:09] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/verify-login  
+[2025-10-28 22:43:09] CMDB App.DEBUG: Completando inicio de sesión y estableciendo sesión para el usuario 'andres.matias.lopez' (ID: 31).  
+[2025-10-28 22:43:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/trust-device  
+[2025-10-28 22:43:11] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/trust-device/process  
+[2025-10-28 22:43:11] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 22:43:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  

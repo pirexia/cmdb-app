@@ -14,7 +14,7 @@ $this->layout('layout/base', ['pageTitle' => $t('mfa_setup_title'), 'flashMessag
                     <p><?= $t('mfa_setup_instructions') ?></p>
                     
                     <div class="text-center my-4">
-                        <img src="<?= $qrCodeInline ?>" alt="QR Code">
+                        <?php echo $qrCodeInline; ?>
                     </div>
 
                     <p><?= $t('mfa_setup_manual_key') ?></p>
