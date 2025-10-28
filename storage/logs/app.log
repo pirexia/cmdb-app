@@ -92,3 +92,6 @@
 [2025-10-28 20:51:57] CMDB App.ERROR: Error al enviar correo a andres.matias.lopez@gmail.com. Mailer Error: Error SMTP: Imposible conectar al servidor SMTP. Failed to connect to server Error del servidor SMTP: Failed to connect to server Código del servidor SMTP: 10061 Información adicional del servidor SMTP: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión  
 [2025-10-28 20:51:57] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
 [2025-10-28 20:56:22] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
+[2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  

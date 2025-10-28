@@ -94,21 +94,18 @@ class LdapService
             $ldapConnection = @ldap_connect($uri); 
 
             if (!$ldapConnection) {
-                // Obtener el último error LDAP si la conexión falla antes de bind
-                $ldapErrorNum = ldap_errno($ldapConnection ?: null); // ldap_errno puede necesitar un recurso válido
-                $ldapErrorStr = ldap_err2str($ldapErrorNum);
-                $this->logger->error($t('ldap_connection_failed', ['%host%' => $host, '%port%' => $port, '%error%' => $ldapErrorStr]));
-                return ['success' => false, 'message' => $t('ldap_connection_error', ['%host%' => $host, '%port%' => $port]) . ' (' . $ldapErrorStr . ')'];
+                // Si la conexión falla, no hay un recurso. El error es global.
+                // No se puede usar ldap_error() porque no hay un recurso de conexión.
+                $this->logger->error($t('ldap_connection_failed', ['%host%' => $host, '%port%' => $port, '%error%' => 'Unknown connection error']));
+                return ['success' => false, 'message' => $t('ldap_connection_error', ['%host%' => $host, '%port%' => $port])];
             }
 
             // Iniciar TLS si es necesario (para ldap://)
             if ($useTls) {
                 if (!@ldap_start_tls($ldapConnection)) {
-                    $ldapErrorNum = ldap_errno($ldapConnection);
-                    $ldapErrorStr = ldap_err2str($ldapErrorNum);
-                    $this->logger->error($t('ldap_starttls_failed', ['%error%' => $ldapErrorStr]));
+                    $this->logger->error($t('ldap_starttls_failed', ['%error%' => ldap_error($ldapConnection)]));
                     ldap_close($ldapConnection);
-                    return ['success' => false, 'message' => $t('ldap_starttls_error', ['%error%' => $ldapErrorStr])];
+                    return ['success' => false, 'message' => $t('ldap_starttls_error', ['%error%' => ldap_error($ldapConnection)])];
                 }
             }
 
@@ -116,23 +113,19 @@ class LdapService
             if (!empty($bindDn) && !empty($bindPassword)) {
                 $this->logger->info($t('ldap_attempting_bind', ['%bind_dn%' => $bindDn]));
                 if (!@ldap_bind($ldapConnection, $bindDn, $bindPassword)) {
-                    $ldapErrorNum = ldap_errno($ldapConnection);
-                    $ldapErrorStr = ldap_err2str($ldapErrorNum);
-                    $this->logger->error($t('ldap_bind_failed', ['%bind_dn%' => $bindDn, '%error%' => $ldapErrorStr]));
+                    $this->logger->error($t('ldap_bind_failed', ['%bind_dn%' => $bindDn, '%error%' => ldap_error($ldapConnection)]));
                     ldap_close($ldapConnection);
-                    return ['success' => false, 'message' => $t('ldap_bind_error', ['%bind_dn%' => $bindDn, '%error%' => $ldapErrorStr])];
+                    return ['success' => false, 'message' => $t('ldap_bind_error', ['%bind_dn%' => $bindDn, '%error%' => ldap_error($ldapConnection)])];
                 }
                 $this->logger->info($t('ldap_bind_successful', ['%bind_dn%' => $bindDn]));
             } else {
                 // Anonymous bind (si no se proporciona Bind DN/Password)
                 $this->logger->info($t('ldap_attempting_anonymous_bind'));
                 if (!@ldap_bind($ldapConnection)) { // Intenta bind anónimo
-                    $ldapErrorNum = ldap_errno($ldapConnection);
-                    $ldapErrorStr = ldap_err2str($ldapErrorNum);
-                    $this->logger->warning($t('ldap_anonymous_bind_failed', ['%error%' => $ldapErrorStr]));
+                    $this->logger->warning($t('ldap_anonymous_bind_failed', ['%error%' => ldap_error($ldapConnection)]));
                     // Aquí, podríamos decidir si es un fallo crítico o no. Para el test, lo marcamos como fallo.
                     ldap_close($ldapConnection);
-                    return ['success' => false, 'message' => $t('ldap_anonymous_bind_error', ['%error%' => $ldapErrorStr]) ?? 'Bind anónimo fallido.'];
+                    return ['success' => false, 'message' => $t('ldap_anonymous_bind_error', ['%error%' => ldap_error($ldapConnection)]) ?? 'Bind anónimo fallido.'];
                 } else {
                     $this->logger->info($t('ldap_anonymous_bind_successful'));
                 }
@@ -202,10 +195,9 @@ class LdapService
 
             if ($useTls) {
                 if (!@ldap_start_tls($ldapConnection)) {
-                    $ldapError = ldap_error($ldapConnection);
-                    $this->logger->error($t('ldap_auth_starttls_failed', ['%error%' => $ldapError]));
+                    $this->logger->error($t('ldap_auth_starttls_failed', ['%error%' => ldap_error($ldapConnection)]));
                     ldap_close($ldapConnection);
-                    return ['success' => false, 'message' => $t('ldap_auth_starttls_error')];
+                    return ['success' => false, 'message' => $t('ldap_auth_starttls_error', ['%error%' => ldap_error($ldapConnection)])];
                 }
             }
 
@@ -214,10 +206,9 @@ class LdapService
             $searchBindPassword = $sourceConfig['bind_password'] ?? null;
             if (!empty($searchBindDn) && !empty($searchBindPassword)) {
                 if (!@ldap_bind($ldapConnection, $searchBindDn, $searchBindPassword)) {
-                    $ldapError = ldap_error($ldapConnection);
-                    $this->logger->error($t('ldap_auth_search_bind_failed', ['%bind_dn%' => $searchBindDn, '%error%' => $ldapError]));
+                    $this->logger->error($t('ldap_auth_search_bind_failed', ['%bind_dn%' => $searchBindDn, '%error%' => ldap_error($ldapConnection)]));
                     ldap_close($ldapConnection);
-                    return ['success' => false, 'message' => $t('ldap_auth_search_bind_error')];
+                    return ['success' => false, 'message' => $t('ldap_auth_search_bind_error', ['%error%' => ldap_error($ldapConnection)])];
                 }
             } else {
                 // Intenta bind anónimo para búsqueda si no se proporciona bind_dn/password
@@ -229,8 +220,7 @@ class LdapService
             $searchResult = @ldap_search($ldapConnection, $baseDn, $userRdn, ['dn']); // Buscar solo el DN
             
             if (!$searchResult) {
-                $ldapError = ldap_error($ldapConnection);
-                $this->logger->warning($t('ldap_auth_user_search_failed', ['%username%' => $username, '%filter%' => $userRdn, '%error%' => $ldapError]));
+                $this->logger->warning($t('ldap_auth_user_search_failed', ['%username%' => $username, '%filter%' => $userRdn, '%error%' => ldap_error($ldapConnection)]));
                 ldap_close($ldapConnection);
                 return ['success' => false, 'message' => $t('incorrect_credentials')]; // Mensaje genérico por seguridad
             }
@@ -245,8 +235,7 @@ class LdapService
 
             // Intentar autenticar con las credenciales del usuario
             if (!@ldap_bind($ldapConnection, $userDn, $password)) {
-                $ldapError = ldap_error($ldapConnection);
-                $this->logger->warning($t('ldap_auth_user_bind_failed', ['%username%' => $username, '%error%' => $ldapError]));
+                $this->logger->warning($t('ldap_auth_user_bind_failed', ['%username%' => $username, '%error%' => ldap_error($ldapConnection)]));
                 ldap_close($ldapConnection);
                 return ['success' => false, 'message' => $t('incorrect_credentials')];
             }
