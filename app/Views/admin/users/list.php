@@ -23,6 +23,7 @@
                                 <th><?= $t('id') ?></th>
                                 <th class="filterable-text"><?= $t('username') ?></th>
                                 <th class="filterable-text"><?= $t('email_address') ?></th>
+                                <th class="filterable-select"><?= $t('user_source') ?? 'Fuente' ?></th>
                                 <th class="filterable-select"><?= $t('role') ?? 'Rol' ?></th>
                                 <th class="filterable-select"><?= $t('active') ?? 'Activo' ?></th>
                                 <th><?= $t('creation_date') ?? 'Fecha Creación' ?></th>
@@ -36,6 +37,7 @@
                                     <td><?= htmlspecialchars($user['id']) ?></td>
                                     <td><?= htmlspecialchars($user['nombre_usuario']) ?></td>
                                     <td><?= htmlspecialchars($user['email']) ?></td>
+                                    <td><?= htmlspecialchars($user['fuente_nombre'] ?? $t('na')) ?></td>
                                     <td><?= htmlspecialchars($user['rol_nombre'] ?? $t('na')) ?></td>
                                     <td><?= $user['activo'] ? '<i class="bi bi-check-circle-fill text-success"></i> ' . $t('yes') : '<i class="bi bi-x-circle-fill text-danger"></i> ' . $t('no') ?></td>
                                     <td><?= htmlspecialchars($user['fecha_creacion']) ?></td>

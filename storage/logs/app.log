@@ -95,3 +95,40 @@
 [2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
 [2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
 [2025-10-28 21:40:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 22:26:37] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/  
+[2025-10-28 22:26:37] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-28 22:26:43] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/login  
+[2025-10-28 22:26:43] CMDB App.DEBUG: Iniciando intento de autenticación para el usuario 'admin_default' desde la fuente ID 1.  
+[2025-10-28 22:26:43] CMDB App.INFO: Usuario local 'admin_default' ha iniciado sesión correctamente.  
+[2025-10-28 22:26:43] CMDB App.INFO: Acceso MFA omitido para el usuario 'admin_default' a través de un dispositivo de confianza.  
+[2025-10-28 22:26:43] CMDB App.DEBUG: Completando inicio de sesión y estableciendo sesión para el usuario 'admin_default' (ID: 1).  
+[2025-10-28 22:26:43] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 22:26:51] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 22:30:54] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 22:33:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/edit/31  
+[2025-10-28 22:33:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/logout  
+[2025-10-28 22:33:28] CMDB App.DEBUG: Iniciando proceso de cierre de sesión para el usuario 'admin_default'.  
+[2025-10-28 22:33:28] CMDB App.INFO: Usuario 'admin_default' ha cerrado sesión.  
+[2025-10-28 22:33:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/login  
+[2025-10-28 22:33:44] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/login  
+[2025-10-28 22:33:44] CMDB App.DEBUG: Iniciando intento de autenticación para el usuario 'andres.matias.lopez' desde la fuente ID 1.  
+[2025-10-28 22:33:44] CMDB App.INFO: Usuario local 'andres.matias.lopez' ha iniciado sesión correctamente.  
+[2025-10-28 22:33:44] CMDB App.DEBUG: Completando inicio de sesión y estableciendo sesión para el usuario 'andres.matias.lopez' (ID: 31).  
+[2025-10-28 22:33:44] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 22:33:54] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile  
+[2025-10-28 22:34:13] CMDB App.DEBUG: --- DEBUG: ProfileController::updateProfile INICIADO ---  
+[2025-10-28 22:34:13] CMDB App.DEBUG: UserID: 31, isLocalUser: true  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Datos recibidos (data): {"email":"andres.matias.lopez@gmail.com","titulo":"","nombre":"Andrés","apellidos":"Matías López","preferred_language":"es"}  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Ficheros recibidos (files): ["avatar"]  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Datos a actualizar en BBDD (updateData): {"email":"andres.matias.lopez@gmail.com","titulo":"","nombre":"Andrés","apellidos":"Matías López","preferred_language_code":"es"}  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Llamada a userModel->updateProfileData completada.  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Iniciando transacción para actualizar notificaciones...  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Transacción de notificaciones completada (commit).  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Comprobando si se debe actualizar el idioma...  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Nuevo idioma detectado: es. Idioma actual: ninguno  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Lógica de idioma completada.  
+[2025-10-28 22:34:13] CMDB App.DEBUG: --- DEBUG: ProfileController::updateProfile FINALIZADO CON ÉXITO ---  
+[2025-10-28 22:34:13] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 22:34:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/setup  
+[2025-10-28 22:34:17] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/mfa/%3C?xml%20version=  
