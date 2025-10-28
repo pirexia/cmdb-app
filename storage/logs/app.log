@@ -67,3 +67,28 @@
 [2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
 [2025-10-26 21:24:30] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/favicon.ico  
 [2025-10-26 21:46:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 20:46:54] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/smtp  
+[2025-10-28 20:46:58] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 20:47:03] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 20:47:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 20:47:18] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:48:03] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:48:03] CMDB App.DEBUG: Preparando para enviar correo con asunto '¡Bienvenido/a a CMDB App!' a través de la plantilla 'new_user_welcome'.  
+[2025-10-28 20:48:03] CMDB App.INFO: Inicio de envío de correo a: andres.matias.lopez@gmail.com  
+[2025-10-28 20:48:07] CMDB App.ERROR: Error al enviar correo a andres.matias.lopez@gmail.com. Mailer Error: Error SMTP: Imposible conectar al servidor SMTP. Failed to connect to server Error del servidor SMTP: Failed to connect to server Código del servidor SMTP: 10061 Información adicional del servidor SMTP: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión  
+[2025-10-28 20:50:37] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:50:37] CMDB App.ERROR: PDOException en UserController::processForm: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'andres.matias.lopez' for key 'nombre_usuario' Code: 23000  
+[2025-10-28 20:50:37] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:51:06] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:51:06] CMDB App.ERROR: PDOException en UserController::processForm: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'andres.matias.lopez' for key 'nombre_usuario' Code: 23000  
+[2025-10-28 20:51:06] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:51:16] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 20:51:24] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/users/delete/28  
+[2025-10-28 20:51:24] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 20:51:26] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:51:53] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/admin/users/create  
+[2025-10-28 20:51:53] CMDB App.DEBUG: Preparando para enviar correo con asunto '¡Bienvenido/a a CMDB App!' a través de la plantilla 'new_user_welcome'.  
+[2025-10-28 20:51:53] CMDB App.INFO: Inicio de envío de correo a: andres.matias.lopez@gmail.com  
+[2025-10-28 20:51:57] CMDB App.ERROR: Error al enviar correo a andres.matias.lopez@gmail.com. Mailer Error: Error SMTP: Imposible conectar al servidor SMTP. Failed to connect to server Error del servidor SMTP: Failed to connect to server Código del servidor SMTP: 10061 Información adicional del servidor SMTP: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión  
+[2025-10-28 20:51:57] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users  
+[2025-10-28 20:56:22] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/admin/users/create  

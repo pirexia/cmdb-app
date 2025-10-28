@@ -75,6 +75,7 @@ return [
     'reset_password_button' => 'Restablecer Contraseña',
     'new_password' => 'Nueva Contraseña',
     'confirm_new_password' => 'Confirmar Nueva Contraseña',
+    'confirm_password' => 'Confirmar Contraseña',
     'password_requirements' => 'Mínimo 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos.',
     'passwords_do_not_match' => 'Las contraseñas no coinciden.',
     'password_reset_success' => 'Tu contraseña ha sido restablecida con éxito. Ya puedes iniciar sesión.',

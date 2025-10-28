@@ -77,6 +77,7 @@ return [
     'reset_password_button' => 'Redefinir Senha',
     'new_password' => 'Nova Senha',
     'confirm_new_password' => 'Confirmar Nova Senha',
+    'confirm_password' => 'Confirmar Senha',
     'password_requirements' => 'Mínimo de 8 caracteres, incluindo maiúsculas, minúsculas, números e símbolos.',
     'passwords_do_not_match' => 'As senhas não coincidem.',
     'password_reset_success' => 'A sua senha foi redefinida com sucesso. Já pode iniciar sessão.',

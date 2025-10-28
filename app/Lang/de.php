@@ -77,6 +77,7 @@ return [
     'reset_password_button' => 'Passwort zurücksetzen',
     'new_password' => 'Neues Passwort',
     'confirm_new_password' => 'Neues Passwort bestätigen',
+    'confirm_password' => 'Passwort bestätigen',
     'password_requirements' => 'Mindestens 8 Zeichen, einschließlich Groß- und Kleinbuchstaben, Zahlen und Symbolen.',
     'passwords_do_not_match' => 'Die Passwörter stimmen nicht überein.',
     'password_reset_success' => 'Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt anmelden.',

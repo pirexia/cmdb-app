@@ -159,12 +159,12 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     // Manejo de errores de la llamada AJAX.
                     console.error('Error al cargar definiciones de campos personalizados (AJAX):', error);
-                    customFieldsContainer.html('<div class="alert alert-danger" role="alert">Error al cargar campos personalizados.</div>');
+                    customFieldsContainer.html('<div class="alert alert-danger" role="alert">' + <?= json_encode($t('error_loading_custom_fields')) ?> + '</div>');
                 }
             });
         } else {
             // Si no hay tipo de activo seleccionado, muestra un mensaje informativo.
-            customFieldsContainer.html('<div class="alert alert-info" role="alert">Selecciona un tipo de activo para ver campos personalizados.</div>');
+            customFieldsContainer.html('<div class="alert alert-info" role="alert">' + <?= json_encode($t('select_asset_type_for_custom_fields')) ?> + '</div>');
             typeChangeWarningDiv.addClass('d-none'); // Asegura que la advertencia esté oculta.
         }
     });
@@ -243,7 +243,7 @@ $(document).ready(function() {
             customFieldsContainer.html(htmlFields); // Inserta todos los campos generados en el contenedor.
         } else {
             // Si no hay definiciones de campos, muestra un mensaje informativo.
-            customFieldsContainer.html('<div class="alert alert-info" role="alert"><?= $t('no_custom_fields_defined') ?></div>');
+            customFieldsContainer.html('<div class="alert alert-info" role="alert">' + <?= json_encode($t('no_custom_fields_defined')) ?> + '</div>');
         }
     }
 
@@ -262,12 +262,12 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 console.error('Error al cargar campos personalizados iniciales (AJAX):', error);
-                $('#custom-fields-container').html('<div class="alert alert-danger" role="alert"><?= $t('error_loading_custom_fields') ?></div>');
+                $('#custom-fields-container').html('<div class="alert alert-danger" role="alert">' + <?= json_encode($t('error_loading_custom_fields')) ?> + '</div>');
             }
         });
     } else {
         // En modo creación, si no hay tipo seleccionado inicialmente, muestra el mensaje.
-        $('#custom-fields-container').html('<div class="alert alert-info" role="alert"><?= $t('select_asset_type_for_custom_fields') ?></div>');
+        $('#custom-fields-container').html('<div class="alert alert-info" role="alert">' + <?= json_encode($t('select_asset_type_for_custom_fields')) ?> + '</div>');
     }
 
     // --- Ejecutar la carga inicial de modelos por fabricante ---

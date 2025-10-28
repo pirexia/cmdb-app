@@ -77,6 +77,7 @@ return [
     'reset_password_button' => 'Réinitialiser le mot de passe',
     'new_password' => 'Nouveau mot de passe',
     'confirm_new_password' => 'Confirmer le nouveau mot de passe',
+    'confirm_password' => 'Confirmer le mot de passe',
     'password_requirements' => 'Minimum 8 caractères, incluant majuscules, minuscules, chiffres et symboles.',
     'passwords_do_not_match' => 'Les mots de passe ne correspondent pas.',
     'password_reset_success' => 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.',

@@ -77,6 +77,7 @@ return [
     'reset_password_button' => 'Reset Password',
     'new_password' => 'New Password',
     'confirm_new_password' => 'Confirm New Password',
+    'confirm_password' => 'Confirm Password',
     'password_requirements' => 'Minimum 8 characters, including uppercase, lowercase, numbers, and symbols.',
     'passwords_do_not_match' => 'Passwords do not match.',
     'password_reset_success' => 'Your password has been reset successfully. You can now log in.',

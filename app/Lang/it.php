@@ -77,6 +77,7 @@ return [
     'reset_password_button' => 'Reimposta password',
     'new_password' => 'Nuova password',
     'confirm_new_password' => 'Conferma nuova password',
+    'confirm_password' => 'Conferma password',
     'password_requirements' => 'Minimo 8 caratteri, incluse maiuscole, minuscole, numeri e simboli.',
     'passwords_do_not_match' => 'Le password non corrispondono.',
     'password_reset_success' => 'La tua password è stata reimpostata con successo. Ora puoi accedere.',

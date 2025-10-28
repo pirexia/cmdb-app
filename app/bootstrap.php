@@ -429,7 +429,8 @@ $container->set(App\Services\MailService::class, function (ContainerInterface $c
         $c->get(PHPMailer::class), // Usamos la definición de la clase PHPMailer
         $c->get(Psr\Log\LoggerInterface::class),
         $c->get(PlatesEngine::class),
-        $c->get(App\Services\SmtpService::class)
+        $c->get(App\Services\SmtpService::class),
+        $c->get('translator') // <-- AÑADIR ESTA LÍNEA
     );
 });
 

@@ -24,6 +24,7 @@ class MailService
     private LoggerInterface $logger;       // Instancia del logger para registrar eventos.
     private PlatesEngine $view;           // Motor de plantillas PlatesPHP para renderizar correos.
     private SmtpService $smtpService;      // Servicio para obtener la configuración SMTP desde la DB.
+    private $translator;                   // Función de traducción.
 
     /**
      * Constructor del servicio. Recibe todas las dependencias necesarias.
@@ -31,18 +32,21 @@ class MailService
      * @param LoggerInterface $logger
      * @param PlatesEngine $view
      * @param SmtpService $smtpService El servicio que obtiene la configuración SMTP de la base de datos.
+     * @param callable $translator La función de traducción.
      */
     public function __construct(
         PHPMailer $mailer,
         LoggerInterface $logger,
         PlatesEngine $view,
-        SmtpService $smtpService
+        SmtpService $smtpService,
+        callable $translator // <-- AÑADIR ARGUMENTO
     ) {
         $this->mailer = $mailer;
         $this->logger = $logger;
         $this->view = $view;
         $this->smtpService = $smtpService;
-
+        $this->translator = $translator; // <-- ASIGNAR PROPIEDAD
+        
         // Cargar el idioma español para los mensajes de error de PHPMailer
         $this->mailer->setLanguage('es');
     }
@@ -146,12 +150,13 @@ class MailService
             return ['success' => true];
         } catch (MailerException $e) {
             // El error detallado de PHPMailer se registra en el log con nivel de advertencia (WARNING).
-            // Puedes cambiar ->warning() por ->error(), ->critical(), etc., según tus necesidades.
-            $this->logger->warning("Error al enviar correo a " . (is_array($to) ? implode(', ', $to) : $to) . ". Mailer Error: " . $this->mailer->ErrorInfo);
+            // Se registra el error completo para depuración interna.
+            $this->logger->error("Error al enviar correo a " . (is_array($to) ? implode(', ', $to) : $to) . ". Mailer Error: " . $this->mailer->ErrorInfo);
  
-            // Devolver un mensaje de error limpio a la interfaz.
-            // El mensaje de la excepción es el más descriptivo para el usuario.
-            return ['success' => false, 'error' => $e->getMessage()];
+            // Devolver un mensaje de error genérico y traducido a la interfaz para no exponer detalles del servidor.
+            $t = $this->translator; // Usar el traductor inyectado
+            $genericErrorMessage = $t('operation_failed');
+            return ['success' => false, 'error' => $genericErrorMessage];
         }
     }
 }
