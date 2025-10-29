@@ -2,6 +2,7 @@
 // app/Services/AuthService.php
 
 namespace App\Services;
+use App\Models\PasswordHistory; // NUEVO
 
 use App\Models\User;
 use App\Models\PasswordResetToken;
@@ -16,6 +17,7 @@ class AuthService
 {
     private User $userModel;
     private PasswordResetToken $tokenModel;
+    private PasswordHistory $passwordHistoryModel; // NUEVO
     private Role $roleModel;
     private SessionService $sessionService;
     private MailService $mailService;
@@ -29,6 +31,7 @@ class AuthService
     public function __construct(
         User $userModel,
         PasswordResetToken $tokenModel,
+        PasswordHistory $passwordHistoryModel, // NUEVO
         Role $roleModel,
         SessionService $sessionService,        
         MailService $mailService,
@@ -41,6 +44,7 @@ class AuthService
     ) {
         $this->userModel = $userModel;
         $this->tokenModel = $tokenModel;
+        $this->passwordHistoryModel = $passwordHistoryModel; // NUEVO
         $this->roleModel = $roleModel;
         $this->sessionService = $sessionService;
         $this->mailService = $mailService;
@@ -144,6 +148,22 @@ class AuthService
             } else {
                 $this->logger->warning("Intento de login fallido para usuario local: $username (no encontrado en DB).");
                 return false;
+            }
+        }
+
+        // --- ¡NUEVO! Comprobar si la contraseña ha caducado ---
+        $expirationDays = $this->config['app']['password_expiration_days'] ?? 0;
+        if ($source['tipo_fuente'] === 'local' && $expirationDays > 0) {
+            $passwordChangedAt = $user['password_changed_at'] ? new DateTime($user['password_changed_at']) : new DateTime($user['fecha_creacion']);
+            $expirationDate = (clone $passwordChangedAt)->add(new DateInterval("P{$expirationDays}D"));
+            $now = new DateTime();
+
+            if ($now > $expirationDate) {
+                $this->logger->warning("Intento de login para usuario '{$username}' con contraseña caducada.");
+                $this->sessionService->startSession();
+                $this->sessionService->set('force_password_change_user_id', $user['id']);
+                // No se completa el login, se redirige a la fuerza
+                return true; // Devuelve true para que el controlador redirija
             }
         }
 
@@ -397,10 +417,26 @@ class AuthService
             return false;
         }
 
+        // Validar complejidad de la nueva contraseña
+        if (strlen($newPassword) < 16 || !preg_match('/[A-Z]/', $newPassword) || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[0-9]/', $newPassword) || !preg_match('/[^A-Za-z0-9]/', $newPassword)) {
+            $this->logger->warning("Intento de reseteo de contraseña para usuario ID {$token['id_usuario']} con contraseña débil.");
+            // Podríamos devolver un mensaje de error más específico, pero por ahora es un fallo genérico.
+            return false;
+        }
+
+        // Validar que la nueva contraseña no esté en el historial
+        if ($this->passwordHistoryModel->isPasswordInHistory($token['id_usuario'], $newPassword)) {
+            $this->logger->warning("Intento de reseteo de contraseña para usuario ID {$token['id_usuario']} con una contraseña reutilizada.");
+            return false;
+        }
+
         $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
 
         try { // Añadido try-catch para updatePassword y markTokenAsUsed
+            $user = $this->userModel->getUserById($token['id_usuario']); // Obtener datos del usuario para el historial
             if ($this->userModel->updatePassword($token['id_usuario'], $newPasswordHash)) {
+                $this->userModel->updatePasswordChangedDate($token['id_usuario']);
+                $this->passwordHistoryModel->add($token['id_usuario'], $user['password_hash']); // Añadir la contraseña ANTIGUA al historial
                 $this->tokenModel->markTokenAsUsed($token['id']);
                 $this->logger->info("Contraseña reseteada con éxito para usuario ID: {$token['id_usuario']}");
                 return true;
@@ -547,5 +583,37 @@ class AuthService
             $this->logger->error("Excepción general en ensureDefaultAdminUser: " . $e->getMessage() . " File: " . $e->getFile() . " Line: " . $e->getLine());
             return false;
         }
+    }
+
+    /**
+     * Desactiva usuarios locales que han estado inactivos por más de 180 días.
+     * Este método está diseñado para ser llamado por un script de cron.
+     * @return array Resumen de la operación ['deactivated_count' => int, 'failed_count' => int].
+     */
+    public function deactivateInactiveUsers(): array
+    {
+        $this->logger->info("Iniciando tarea de desactivación de usuarios inactivos.");
+        $inactiveUsers = $this->userModel->findInactiveForDeactivation(180);
+        
+        $deactivatedCount = 0;
+        $failedCount = 0;
+
+        foreach ($inactiveUsers as $user) {
+            // No desactivar al administrador por defecto
+            if ($user['nombre_usuario'] === ($this->config['app']['admin_user']['username'] ?? null)) {
+                continue;
+            }
+
+            if ($this->userModel->deactivateUser($user['id'])) {
+                $this->logger->info("Usuario ID {$user['id']} ('{$user['nombre_usuario']}') desactivado por inactividad de más de 180 días.");
+                $deactivatedCount++;
+            } else {
+                $this->logger->error("Fallo al desactivar usuario inactivo ID {$user['id']}.");
+                $failedCount++;
+            }
+        }
+
+        $this->logger->info("Tarea de desactivación finalizada. Usuarios desactivados: {$deactivatedCount}, Fallos: {$failedCount}.");
+        return ['deactivated_count' => $deactivatedCount, 'failed_count' => $failedCount];
     }
 }

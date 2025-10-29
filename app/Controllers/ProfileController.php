@@ -9,6 +9,7 @@ use League\Plates\Engine as PlatesEngine;
 use App\Services\SessionService;
 use Psr\Log\LoggerInterface;
 use App\Services\LanguageService; // <-- ¡NUEVO!
+use App\Models\PasswordHistory; // <-- ¡NUEVO!
 use App\Models\TrustedDevice; // <-- ¡NUEVO!
 use App\Models\User;
 use App\Models\Source;
@@ -26,6 +27,7 @@ class ProfileController
     private Source $sourceModel;
     private PDO $db;
     private TrustedDevice $trustedDeviceModel; // <-- ¡NUEVO!
+    private PasswordHistory $passwordHistoryModel; // <-- ¡NUEVO!
     private LanguageService $languageService; // <-- ¡NUEVO!
     private array $config;
 
@@ -38,6 +40,7 @@ class ProfileController
         Source $sourceModel,
         PDO $db,
         TrustedDevice $trustedDeviceModel, // <-- ¡NUEVO!
+        PasswordHistory $passwordHistoryModel, // <-- ¡NUEVO!
         LanguageService $languageService, // <-- ¡NUEVO!
         array $config
     ) {
@@ -49,6 +52,7 @@ class ProfileController
         $this->sourceModel = $sourceModel;
         $this->db = $db;
         $this->trustedDeviceModel = $trustedDeviceModel; // <-- ¡NUEVO!
+        $this->passwordHistoryModel = $passwordHistoryModel; // <-- ¡NUEVO!
         $this->languageService = $languageService; // <-- ¡NUEVO!
         $this->config = $config;
     }
@@ -263,6 +267,70 @@ class ProfileController
 
         $this->session->addFlashMessage('success', $t('profile_updated_successfully'));
         $this->logger->debug("--- DEBUG: ProfileController::updateProfile FINALIZADO CON ÉXITO ---");
+        return $response->withHeader('Location', '/profile')->withStatus(302);
+    }
+
+    /**
+     * Procesa el cambio de contraseña desde el perfil del usuario.
+     */
+    public function processChangePassword(Request $request, Response $response): Response
+    {
+        $t = $this->translator;
+        $userId = $this->session->get('user_id');
+        $data = $request->getParsedBody();
+
+        $currentPassword = $data['current_password'] ?? '';
+        $newPassword = $data['new_password'] ?? '';
+        $confirmPassword = $data['confirm_new_password'] ?? '';
+
+        $user = $this->userModel->getUserById($userId);
+
+        // 1. Verificar que el usuario es local
+        $source = $this->sourceModel->getById($user['id_fuente_usuario']);
+        if (!$source || $source['tipo_fuente'] !== 'local') {
+            $this->session->addFlashMessage('danger', $t('password_not_managed_by_app'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // 2. Verificar contraseña actual
+        if (!password_verify($currentPassword, $user['password_hash'])) {
+            $this->session->addFlashMessage('danger', $t('current_password_incorrect'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // 3. Validar nueva contraseña
+        if ($newPassword !== $confirmPassword) {
+            $this->session->addFlashMessage('danger', $t('passwords_do_not_match'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        if (strlen($newPassword) < 16 || !preg_match('/[A-Z]/', $newPassword) || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[0-9]/', $newPassword) || !preg_match('/[^A-Za-z0-9]/', $newPassword)) {
+            $this->session->addFlashMessage('danger', $t('password_requirements'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // 4. Verificar historial de contraseñas
+        if ($this->passwordHistoryModel->isPasswordInHistory($userId, $newPassword)) {
+            $this->session->addFlashMessage('danger', $t('password_reused_error'));
+            return $response->withHeader('Location', '/profile')->withStatus(302);
+        }
+
+        // 5. Actualizar contraseña
+        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        if ($this->userModel->updatePassword($userId, $newPasswordHash)) {
+            // 6. Actualizar fecha de cambio de contraseña
+            $this->userModel->updatePasswordChangedDate($userId);
+
+            // 7. Añadir la contraseña ANTIGUA al historial
+            $this->passwordHistoryModel->add($userId, $user['password_hash']);
+
+            $this->logger->info("Usuario ID {$userId} ha cambiado su contraseña desde el perfil.");
+            $this->session->addFlashMessage('success', $t('password_changed_successfully'));
+        } else {
+            $this->logger->error("Error al actualizar la contraseña para el usuario ID {$userId} desde el perfil.");
+            $this->session->addFlashMessage('danger', $t('error_saving_password'));
+        }
+
         return $response->withHeader('Location', '/profile')->withStatus(302);
     }
 }

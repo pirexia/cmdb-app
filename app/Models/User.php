@@ -316,4 +316,53 @@ class User
             throw $e; // Relanzar la excepción para que el controlador la maneje.
         }
     }
+
+    /**
+     * Actualiza la fecha de último cambio de contraseña para un usuario.
+     * @param int $userId
+     * @return bool
+     */
+    public function updatePasswordChangedDate(int $userId): bool
+    {
+        $stmt = $this->db->prepare("UPDATE usuarios SET password_changed_at = NOW() WHERE id = :id");
+        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }    
+
+    /**
+     * Encuentra usuarios locales que no han iniciado sesión en un número determinado de días.
+     * @param int $days Días de inactividad.
+     * @return array|false
+     */
+    public function findInactiveForDeactivation(int $days): array|false
+    {
+        $stmt = $this->db->prepare("
+            SELECT id, nombre_usuario, fecha_ultima_sesion
+            FROM usuarios
+            WHERE 
+                activo = 1 AND
+                id_fuente_usuario = 1 AND -- Solo usuarios locales
+                (
+                    fecha_ultima_sesion IS NULL AND fecha_creacion < DATE_SUB(NOW(), INTERVAL :days DAY) OR
+                    fecha_ultima_sesion < DATE_SUB(NOW(), INTERVAL :days DAY)
+                )
+        ");
+        $stmt->bindValue(':days', $days, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Desactiva un usuario.
+     * @param int $userId
+     * @return bool
+     */
+    public function deactivateUser(int $userId): bool
+    {
+        $stmt = $this->db->prepare("UPDATE usuarios SET activo = 0 WHERE id = :id");
+        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
 }

@@ -160,3 +160,23 @@ A partir de ahora, cuando instales la aplicación en un servidor completamente n
 5. `php db-manager.php seed:run` (Inserta los datos esenciales).
 
 Con esto, tu proceso de despliegue es ahora completo, robusto y profesional.
+
+---
+
+## Tareas Programadas (Cron Jobs)
+
+La aplicación incluye scripts diseñados para ser ejecutados periódicamente por un planificador de tareas como `cron` en Linux o el Programador de Tareas en Windows.
+
+### Desactivación de Usuarios Inactivos
+
+Este script desactiva las cuentas de usuarios locales que no han iniciado sesión en un período configurable (por defecto, 180 días). Esto ayuda a mantener la seguridad y la higiene de la base de datos de usuarios.
+
+-   **Script**: `cron/deactivate_inactive_users.php`
+-   **Frecuencia recomendada**: Una vez al día.
+
+**Ejemplo de configuración en `crontab` (Linux):**
+
+```bash
+# Ejecutar todos los días a las 03:00 AM
+0 3 * * * /usr/bin/php /ruta/completa/a/cmdb-app/cron/deactivate_inactive_users.php >> /ruta/completa/a/cmdb-app/storage/logs/cron.log 2>&1
+```

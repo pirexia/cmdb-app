@@ -165,3 +165,17 @@
 [2025-10-28 22:43:11] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/mfa/trust-device/process  
 [2025-10-28 22:43:11] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
 [2025-10-28 22:43:15] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 23:26:53] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 23:29:28] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 23:34:03] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-28 23:34:09] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-28 23:34:09] CMDB App.ERROR: Error de base de datos al mostrar el perfil: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cmdb_app.usuario_notificacion_preferencias' doesn't exist  
+[2025-10-29 00:06:07] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-29 00:06:07] CMDB App.ERROR: Error de base de datos al mostrar el perfil: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cmdb_app.usuario_notificacion_preferencias' doesn't exist  
+[2025-10-29 00:20:42] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-29 00:20:42] CMDB App.ERROR: Error de base de datos al mostrar el perfil: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cmdb_app.usuario_notificacion_preferencias' doesn't exist  
+[2025-10-29 00:21:59] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile/change-password  
+[2025-10-29 00:22:25] CMDB App.DEBUG: Request: POST http://cmdb-app.svc.int/profile/change-password  
+[2025-10-29 00:23:19] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/dashboard  
+[2025-10-29 00:23:25] CMDB App.DEBUG: Request: GET http://cmdb-app.svc.int/profile  
+[2025-10-29 00:23:25] CMDB App.ERROR: Error de base de datos al mostrar el perfil: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'cmdb_app.usuario_notificacion_preferencias' doesn't exist  

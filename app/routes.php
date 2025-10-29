@@ -63,6 +63,11 @@ $app->group('', function (RouteCollectorProxy $group) {
     $group->post('/reset-password', AuthController::class . ':processResetPassword');
 });
 
+// Rutas para el cambio de contraseña forzado
+$app->get('/force-change-password', AuthController::class . ':showForceChangePasswordForm');
+$app->post('/force-change-password', AuthController::class . ':processForceChangePassword');
+
+
 // Ruta para cambiar el idioma (accesible públicamente)
 $app->get('/set-language/{lang_code}', App\Controllers\LanguageController::class . ':setLanguage');
 

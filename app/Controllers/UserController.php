@@ -9,6 +9,7 @@ use League\Plates\Engine as PlatesEngine;
 use App\Services\SessionService;
 use Psr\Log\LoggerInterface;
 use App\Models\User; // El modelo para usuarios
+use App\Models\PasswordHistory; // NUEVO
 use App\Models\Role; // El modelo para roles
 use App\Models\Source; // <--- ¡NUEVA IMPORTACIÓN! Para las fuentes de usuario
 use App\Services\MailService; // <-- ¡NUEVA IMPORTACIÓN!
@@ -22,6 +23,7 @@ class UserController
     private LoggerInterface $logger;
     private User $userModel;
     private Role $roleModel;
+    private PasswordHistory $passwordHistoryModel; // NUEVO
     private Source $sourceModel; // <--- ¡NUEVA PROPIEDAD! Para las fuentes de usuario
     private MailService $mailService; // <-- ¡NUEVA PROPIEDAD!
     private $translator; // Para la función t()
@@ -32,6 +34,7 @@ class UserController
         LoggerInterface $logger,
         User $userModel,
         Role $roleModel,
+        PasswordHistory $passwordHistoryModel, // NUEVO
         callable $translator,
         Source $sourceModel, // <--- ¡NUEVO ARGUMENTO!
         MailService $mailService // <-- ¡NUEVO ARGUMENTO!
@@ -41,6 +44,7 @@ class UserController
         $this->logger = $logger;
         $this->userModel = $userModel;
         $this->roleModel = $roleModel;
+        $this->passwordHistoryModel = $passwordHistoryModel; // NUEVO
         $this->translator = $translator;
         $this->sourceModel = $sourceModel; // <--- ASIGNACIÓN
         $this->mailService = $mailService; // <-- ASIGNACIÓN
@@ -178,8 +182,15 @@ class UserController
                     $redirectUrl = $userId ? "/admin/users/edit/{$userId}" : "/admin/users/create";
                     return $response->withHeader('Location', $redirectUrl)->withStatus(302);
                 }
-                if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[^A-Za-z0-9]/', $password)) {
+                // Nueva política de contraseñas: 16 caracteres, mayúscula, minúscula, número y símbolo.
+                if (strlen($password) < 16 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[^A-Za-z0-9]/', $password)) {
                     $this->sessionService->addFlashMessage('danger', $t('password_requirements'));
+                    $redirectUrl = $userId ? "/admin/users/edit/{$userId}" : "/admin/users/create";
+                    return $response->withHeader('Location', $redirectUrl)->withStatus(302);
+                }
+                // Comprobar historial de contraseñas (solo en edición, ya que en creación no hay historial)
+                if ($userId && $this->passwordHistoryModel->isPasswordInHistory((int)$userId, $password)) {
+                    $this->sessionService->addFlashMessage('danger', $t('password_reused_error') ?? 'No puedes reutilizar una de tus últimas 20 contraseñas.');
                     $redirectUrl = $userId ? "/admin/users/edit/{$userId}" : "/admin/users/create";
                     return $response->withHeader('Location', $redirectUrl)->withStatus(302);
                 }
@@ -197,10 +208,17 @@ class UserController
 
         try {
             if ($userId) { // Modo Edición
+                $userToUpdate = $this->userModel->getUserById((int)$userId);
                 $success = $this->userModel->updateUser((int)$userId, $username, $email, $roleId, $activo, $sourceId, $sourceName);
                 // Solo actualizar password si es local Y se proporcionó una nueva
                 if ($success && !empty($password) && $source['tipo_fuente'] === 'local') {
-                    $success = $this->userModel->updatePassword((int)$userId, password_hash($password, PASSWORD_DEFAULT));
+                    $newHashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $success = $this->userModel->updatePassword((int)$userId, $newHashedPassword);
+                    if ($success) {
+                        $this->userModel->updatePasswordChangedDate((int)$userId);
+                        // Añadir la contraseña ANTIGUA al historial
+                        $this->passwordHistoryModel->add((int)$userId, $userToUpdate['password_hash']);
+                    }
                 }
             } else { // Modo Creación
                 // Para usuarios no locales, el password_hash puede ser null en la DB.
@@ -211,6 +229,9 @@ class UserController
                     $userIdForRedirect = $newUserId;
                     // --- ¡AQUÍ ENVIAMOS EL CORREO! ---
                     // Solo enviamos correo si es un usuario local y tiene un email válido.
+                    if ($source['tipo_fuente'] === 'local') {
+                        $this->userModel->updatePasswordChangedDate($newUserId);
+                    }
                     if ($source['tipo_fuente'] === 'local' && !empty($email)) {
                         $this->mailService->sendEmail(
                             $email,

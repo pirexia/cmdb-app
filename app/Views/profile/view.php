@@ -90,6 +90,15 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                                     </select>
                                 </div>
                                 <?php endif; ?>
+
+                                <!-- Botón para abrir el modal de cambio de contraseña -->
+                                <?php if ($isLocalUser): ?>
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        <i class="bi bi-key-fill me-1"></i> <?= $t('change_password_button') ?? 'Cambiar Contraseña' ?>
+                                    </button>
+                                </div>
+                                <?php endif; ?>
                                 
                             </div>
                         </div>
@@ -182,8 +191,45 @@ $this->layout('layout/base', ['pageTitle' => $t('profile_title'), 'flashMessages
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<!-- Modal para Cambiar Contraseña -->
+<?php if ($isLocalUser): ?>
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel"><?= $t('change_password') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/profile/change-password" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label"><?= $t('current_password') ?></label>
+                        <input type="password" class="form-control" id="current_password" name="current_password" required autocomplete="current-password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label"><?= $t('new_password') ?></label>
+                        <input type="password" class="form-control" id="new_password" name="new_password" required autocomplete="new-password">
+                        <small class="form-text text-muted"><?= $t('password_requirements') ?></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_new_password" class="form-label"><?= $t('confirm_new_password') ?></label>
+                        <input type="password" class="form-control" id="confirm_new_password" name="confirm_new_password" required autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $t('cancel') ?></button>
+                    <button type="submit" class="btn btn-primary"><?= $t('save_changes') ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <?php $this->stop() ?>
 
 <?php $this->start('scripts') ?>

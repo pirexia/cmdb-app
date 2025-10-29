@@ -47,10 +47,12 @@ if (!is_dir($outputDir)) {
     mkdir($outputDir, 0775, true);
 }
 
+$phinxCommand = 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phinx';
+
 switch ($command) {
     case 'migrate':
         echo "Aplicando migraciones...\n";
-        passthru('vendor/bin/phinx migrate -e ' . escapeshellarg($phinxEnv));
+        passthru($phinxCommand . ' migrate -e ' . escapeshellarg($phinxEnv));
         break;
 
     case 'create':
@@ -61,17 +63,17 @@ switch ($command) {
         }
         $migrationName = $argv[2];
         echo "Creando nueva migración: $migrationName\n";
-        passthru('vendor/bin/phinx create ' . escapeshellarg($migrationName) . ' -e ' . escapeshellarg($phinxEnv));
+        passthru($phinxCommand . ' create ' . escapeshellarg($migrationName));
         break;
 
     case 'rollback':
         echo "Revirtiendo la última migración...\n";
-        passthru('vendor/bin/phinx rollback -e ' . escapeshellarg($phinxEnv));
+        passthru($phinxCommand . ' rollback -e ' . escapeshellarg($phinxEnv));
         break;
 
     case 'seed:run':
         echo "Poblando la base de datos con datos iniciales...\n";
-        passthru('vendor/bin/phinx seed:run -e ' . escapeshellarg($phinxEnv));
+        passthru($phinxCommand . ' seed:run -e ' . escapeshellarg($phinxEnv));
         break;
 
     case 'dump:schema':

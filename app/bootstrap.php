@@ -65,6 +65,7 @@ use App\Models\Language;
 use App\Models\Location;
 use App\Models\Manufacturer;
 use App\Models\Model; // Alias para App\Models\Model (evita conflicto con Model de PSR-7 si lo usáramos)
+use App\Models\PasswordHistory; // NUEVO
 use App\Models\PasswordResetToken;
 use App\Models\Provider;
 use App\Models\Role;
@@ -358,6 +359,9 @@ $container->set(App\Models\Language::class, function (ContainerInterface $c) { r
 $container->set(App\Models\Location::class, function (ContainerInterface $c) { return new App\Models\Location($c->get(PDO::class)); });
 $container->set(App\Models\Manufacturer::class, function (ContainerInterface $c) { return new App\Models\Manufacturer($c->get(PDO::class)); });
 $container->set(App\Models\Model::class, function (ContainerInterface $c) { return new App\Models\Model($c->get(PDO::class)); });
+$container->set(App\Models\PasswordHistory::class, function (ContainerInterface $c) { // NUEVO
+    return new App\Models\PasswordHistory($c->get(PDO::class), $c->get(Psr\Log\LoggerInterface::class));
+});
 $container->set(App\Models\PasswordResetToken::class, function (ContainerInterface $c) { return new App\Models\PasswordResetToken($c->get(PDO::class)); });
 $container->set(App\Models\Provider::class, function (ContainerInterface $c) { return new App\Models\Provider($c->get(PDO::class)); });
 $container->set(App\Models\Role::class, function (ContainerInterface $c) { return new App\Models\Role($c->get(PDO::class)); });
@@ -412,6 +416,7 @@ $container->set(App\Services\AuthService::class, function (ContainerInterface $c
     return new App\Services\AuthService(
         $c->get(App\Models\User::class),
         $c->get(App\Models\PasswordResetToken::class),
+        $c->get(App\Models\PasswordHistory::class),
         $c->get(App\Models\Role::class),
         $c->get(App\Services\SessionService::class),
         $c->get(App\Services\MailService::class),
@@ -594,6 +599,7 @@ $container->set(App\Controllers\ProfileController::class, function (ContainerInt
         $c->get(App\Models\Source::class),
         $c->get(PDO::class),
         $c->get(App\Models\TrustedDevice::class),
+        $c->get(App\Models\PasswordHistory::class),
         $c->get(App\Services\LanguageService::class),
         $c->get('config')
     );
@@ -607,6 +613,7 @@ $container->set(App\Controllers\UserController::class, function (ContainerInterf
         $c->get('logger'),
         $c->get(App\Models\User::class),
         $c->get(App\Models\Role::class),
+        $c->get(App\Models\PasswordHistory::class),
         $c->get('translator'),
         $c->get(App\Models\Source::class),
         $c->get(App\Services\MailService::class) // <-- AÑADIR INYECCIÓN

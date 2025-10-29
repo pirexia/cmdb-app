@@ -13,6 +13,7 @@ return [
         'encryption_key' => $_ENV['APP_ENCRYPTION_KEY'] ?? '',
         'encryption_cipher' => 'aes-256-gcm', // Algoritmo de cifrado recomendado
         'default_language' => 'es', // Idioma por defecto de la aplicación
+        'password_expiration_days' => (int)($_ENV['PASSWORD_EXPIRATION_DAYS'] ?? 180),
         'admin_user' => [
             'enabled' => (bool) ($_ENV['DEFAULT_ADMIN_ENABLED'] ?? 0),
             'username' => $_ENV['DEFAULT_ADMIN_USERNAME'] ?? 'admin_default',
