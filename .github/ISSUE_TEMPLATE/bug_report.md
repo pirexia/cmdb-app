@@ -7,30 +7,36 @@ assignees: ''
 
 ---
 
-## 🐞 Descripción del bug
+# Informe de Bug
 
-Describe el problema de forma clara y concisa.
+**Por favor, asegúrate de que tu problema no ha sido reportado previamente.**
 
-## 🔁 Pasos para reproducir
+** 🐞 Describe el bug**
+Una descripción clara y concisa de cuál es el bug.
 
-1. Ir a '...'
-2. Hacer clic en '...'
-3. Ver el error
+** 🔁 Para Reproducir**
+Pasos para reproducir el comportamiento:
+1. Ir a la página '...'
+2. Hacer clic en el botón '....'
+3. Rellenar el formulario con '....'
+4. Ver el error
 
-## ✅ Comportamiento esperado
+** ✅ Comportamiento Esperado**
+Una descripción clara y concisa de lo que esperabas que sucediera.
 
-Describe qué debería pasar.
+**📎 Comportamiento Actual**
+Una descripción clara y concisa de lo que sucede en realidad.
 
-## 📷 Evidencia
+** 📷 Capturas de Pantalla**
+Si es aplicable, añade capturas de pantalla para ayudar a explicar tu problema.
 
-Agrega capturas de pantalla o logs si es posible.
+** 🧪 Entorno (por favor, completa esta información):**
+ - Sistema Operativo del Servidor: [ej. Ubuntu 22.04, Windows Server 2019]
+ - Versión de PHP: [ej. 8.3.1]
+ - Servidor Web: [ej. Apache 2.4, Nginx 1.20]
+ - Base de Datos: [ej. MariaDB 10.6]
+ - Navegador (si aplica): [ej. Chrome 125, Firefox 124]
+ - Versión de la App/Commit: [ej. v1.2, o el hash del commit `git rev-parse HEAD`]
 
-## 🧪 Entorno
-
-- Sistema operativo:
-- Navegador:
-- Versión de la app:
-
-## 📎 Información adicional
-
-Agrega cualquier otro dato relevante.
+**📎 Contexto Adicional**
+Añade cualquier otro contexto sobre el problema aquí. Por ejemplo, si el problema solo ocurre con un tipo de usuario específico (Admin, Usuario local, Usuario LDAP, etc.) o después de una acción concreta como una importación CSV.
